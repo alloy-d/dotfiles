@@ -9,7 +9,7 @@ use strict;
 #use File::Spec;
 use Git;
 
-my $git_url = 'git://github.com/lloyda2/dotfiles.git';
+my $git_url = 'git@github.com:lloyda2/dotfiles.git';
 
 my %functions = (
     commit => [\&commit, "Commit all changes."],
