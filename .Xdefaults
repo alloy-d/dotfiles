@@ -1,0 +1,149 @@
+Xft.dpi: 128
+Xft.lcdfilter: lcddefault
+Xcursor.theme: Vanilla-DMZ
+
+*color0:  #000000
+*color15: #ffffff
+
+!! Tango colors
+! Black
+!*color0:  #2E3436
+*color8:  #555753
+! Red
+*color1:  #CC0000
+*color9:  #EF2929
+! Green
+*color2:  #4E9A06
+*color10: #8AE234
+! Yellow
+*color3:  #C4A000
+*color11: #FCE94F
+! Blue
+*color4:  #3465A4
+*color12: #729FCF
+! Purple
+*color5:  #75507B
+*color13: #AD7FA8
+! Cyan
+*color6:  #06989A
+*color14: #34E2E2
+! White
+*color7:  #D3D7CF
+!*color15: #EEEEEC
+
+!! _why's colors (dotfiles.org)
+!*background:  #000000
+!*foreground:  #efefcf
+!*color0:      #000000
+!*color1:      #9e1828
+!*color2:      #aece92
+!*color3:      #968a38
+!*color4:      #414171
+!*color5:      #963c59
+!*color6:      #418179
+!*color7:      #bebebe
+!*color8:      #666666
+!*color9:      #cf6171
+!*color10:     #c5f779
+!*color11:     #fff796
+!*color12:     #4186be
+!*color13:     #cf9ebe
+!*color14:     #71bebe
+!*color15:     #ffffff
+
+!! katratxo's colors (dotfiles.org)
+!*color0:  #000000
+!*color1:  #AA0000
+!*color2:  #00AA00
+!*color3:  #AA5500
+!*color4:  #0000AA
+!*color5:  #AA00AA
+!*color6:  #00AAAA
+!*color7:  #AAAAAA
+!*color8:  #555555
+!*color9:  #FF5555
+!*color10: #55FF55
+!*color11: #FFFF55
+!*color12: #5555FF
+!*color13: #FF55FF
+!*color14: #55FFFF
+!*color15: #FFFFFF
+
+!! babypuncher's colors (dotfiles.org)
+!*color0:  rgb:19/19/19
+!*color8:  rgb:25/25/25
+!*color1:  rgb:80/32/32
+!*color9:  rgb:98/2b/2b
+!*color2:  rgb:5b/76/2f
+!*color10: rgb:89/b8/3f
+!*color3:  rgb:aa/99/43
+!*color11: rgb:ef/ef/60
+!*color4:  rgb:32/4c/80
+!*color12: rgb:2b/4f/98
+!*color5:  rgb:70/6c/9a
+!*color13: rgb:82/6a/b1
+!*color6:  rgb:91/b1/93
+!*color14: rgb:a1/cd/cd
+!*color7:  rgb:ff/ff/ff
+!*color15: rgb:dd/dd/dd
+
+!! ootput (github)
+!*background: #1C1C1C
+!*foreground: #B4B4B4
+!*color0: #000000
+!*color1: #ff6565
+!*color2: #93d44f
+!*color3: #eab93d
+!*color4: #204a87
+!*color5: #ce5c00
+!*color6: #89b6e2
+!*color7: #cccccc
+!*color8: #555753
+!*color9: #ff8d8d
+!*color10: #c8e7a8
+!*color11: #ffc123
+!*color12: #3465a4
+!*color13: #f57900
+!*color14: #46a4ff
+!*color15: #ffffff
+
+!!Wra!th (github, wraith0x2b)
+!*color0: #000000
+!*color1: #8e2d10
+!*color2: #4b6826
+!*color3: #b88b10
+!*color4: #2d63a5
+!*color5: #8e3d9d
+!*color6: #33859d
+!*color7: #454545
+!*color8: #454545
+!*color9: #cc3a0e
+!*color10: #85bb40
+!*color11: #e0c73d
+!*color12: #4891ff
+!*color13: #b954cb
+!*color14: #47b4d4
+!*color15: #ffffff
+
+
+!urxvt*background: rgba:0000/0000/0000/8888
+urxvt*background: #000000
+urxvt*cursorBlink: false
+urxvt*depth: 32
+urxvt*foreground: white
+!urxvt*font: xft:DejaVu Sans Mono-8:antialias=true
+!urxvt*font: xft:Onuava-7:antialias=true
+urxvt*font: xft:Inconsolata-9:antialias=true
+urxvt*perl-ext-common: default,tabbed,matcher
+urxvt*scrollBar: false
+urxvt*transparent: true
+urxvt*transparentTabbar: true
+urxvt*shading: 50
+urxvt.cursorColor: #FF0000
+
+URxvt.pointerBlank: true
+URxvt.tabbed.tabbar-fg: 7
+URxvt.tabbed.tabbar-bg: 0
+URxvt.tabbed.tab-fg: 7
+URxvt.tabbed.tab-bg: 4
+URxvt.urgentOnBell: true

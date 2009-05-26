@@ -1,0 +1,14 @@
+:RCSUpdateHelp	rcs.txt	/*:RCSUpdateHelp*
+:RCSci	rcs.txt	/*:RCSci*
+:RCSco	rcs.txt	/*:RCSco*
+:RCSdiff	rcs.txt	/*:RCSdiff*
+:RCSlog	rcs.txt	/*:RCSlog*
+g:rcs_plugin_menu_force	rcs.txt	/*g:rcs_plugin_menu_force*
+g:rcs_plugin_menu_priority	rcs.txt	/*g:rcs_plugin_menu_priority*
+g:rcs_plugin_toplevel_menu	rcs.txt	/*g:rcs_plugin_toplevel_menu*
+rcs	rcs.txt	/*rcs*
+rcs-commands	rcs.txt	/*rcs-commands*
+rcs-configuration	rcs.txt	/*rcs-configuration*
+rcs-intro	rcs.txt	/*rcs-intro*
+rcs.txt	rcs.txt	/*rcs.txt*
+rcs.vim	rcs.txt	/*rcs.vim*
