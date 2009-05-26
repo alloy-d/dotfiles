@@ -54,7 +54,7 @@ sub install {
 sub commit {
     my $message = shift @ARGV or die "Need a commit message!\n";
     my $repository = Git->repository();
-    $repository->command_noisy('commit', '-a', "-m '$message'");
+    $repository->command_noisy('commit', '-a', "-m $message");
 }
 
 sub push {
