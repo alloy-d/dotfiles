@@ -12,7 +12,7 @@ $include /etc/Inputrc
 #
 # Set various bindings for emacs mode.
 
-set editing-mode vi
+set editing-mode emacs
 
 $if mode=emacs
 
