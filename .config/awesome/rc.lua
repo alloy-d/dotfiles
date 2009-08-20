@@ -1,597 +1,780 @@
--- Standard awesome library
-require("awful")
--- Theme handling library
-require("beautiful")
--- Notification library
-require("naughty")
--- Dynamic tagging library
-require("shifty")
--- Widget library
-require("wicked")
-
-
--- {{{ Variable definitions
--- Themes define colours, icons, and wallpapers
--- The default is a dark theme
---theme_path = "/usr/share/awesome/themes/default/theme.lua"
--- Uncommment this for a lighter theme
--- theme_path = "/usr/share/awesome/themes/sky/theme.lua"
-theme_path = "/home/lloyda2/.config/awesome/mytheme/theme.lua"
-
--- Actually load theme
-beautiful.init(theme_path)
-
--- This is used later as the default terminal and editor to run.
-terminal = "urxvt"
-editor = os.getenv("EDITOR") or "vim"
-browser  = "firefox"
-editor_cmd = terminal .. " -e " .. editor
-
--- Default modkey.
--- Usually, Mod4 is the key with a logo between Control and Alt.
--- If you do not like this or do not have such a key,
--- I suggest you to remap Mod4 to another key using xmodmap or other tools.
--- However, you can use another modifier like Mod1, but it may interact with others.
-modkey = "Mod4"
-
--- Table of layouts to cover with awful.layout.inc, order matters.
-layouts =
-{
-    awful.layout.suit.tile,
-    awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
-    awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
-    awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier,
-    awful.layout.suit.floating
-}
-
--- Table of clients that should be set floating. The index may be either
--- the application class or instance. The instance is useful when running
--- a console app in a terminal like (Music on Console)
---    xterm -name mocp -e mocp
---floatapps =
---{
---    -- by class
---    ["MPlayer"] = true,
---    ["pinentry"] = true,
---   ["gimp"] = true,
---    -- by instance
---    ["mocp"] = true
---}
-
--- Applications to be moved to a pre-defined tag by class or instance.
--- Use the screen and tags indices.
-apptags =
-{
-    -- ["Firefox"] = { screen = 1, tag = 2 },
-    -- ["mocp"] = { screen = 2, tag = 4 },
-}
-
--- Define if we want to use titlebar on all applications.
-use_titlebar = true
-
--- Applications to NOT have a titlebar when use_titlebar is true.
-notitlebarapps = 
-{
--- by class
-["Audacious"] = true,
-["Navigator"] = true,
-["urxvt"] = true,
-}
--- }}}
-
--- {{{ SHIFTY: configured tags
-shifty.config.tags = {
-  ["main"] = { exclusive = false, solitary = false, position = 1, init = true, screen = 1, slave = true },
-  ["web"] = { exclusive = true, solitary = true, position = 9, spawn = browser },
-  ["doc"] = { exclusive = true, solitary = true, position = 8 },
-  ["media"] = { exclusive = true, solitary = false, position = 7 },
-  ["chat"] = { exclusive = false, solitary = true, position = 6 },
-  ["dev"] = { exclusive = false, solitary = false, position = 2 },
-}
--- }}}
+--- Shifty: Dynamic tagging library for awesome3-git
+-- @author koniu &lt;gkusnierz@gmail.com&gt;
+-- @author bioe007 &lt;perry.hargrave@gmail.com&gt;
 --
--- {{{ SHIFTY: application matching rules
--- order here matters, early rules will be applied first
-shifty.config.apps = {
-  { match = { "Vimperator","Gran Paradiso","Firefox","Midori" }, tag = "web" },
-  { match = { "Document Viewer" },                               tag = "doc" },
-  { match = { "Audacious","gtkpod" },                            tag = "media" },
-  { match = { "Pidgin" },                                        tag = "chat" },
-  { match = { "GIMP","gimp" },                                   tag = "gimp" },
-}
--- }}}
+-- http://awesome.naquadah.org/wiki/index.php?title=Shifty
 
--- {{{ SHIFTY: default tag creation rules
--- parameter description
---  * floatBars : if floating clients should always have a title bar
---  * guess_name : whether shifty should try and guess tag names when
---      creating new (unconfigured) tags
---  * guess_position : as above, but for position parameter
---  * run : function to exec when shifty creates a new tag
---  * remember_index : ?
---  * all other parameters (e.g. layout, mwfact) follow awesome's tag API
-shifty.config.defaults={
-  layout = awful.layout.suit.tile,
-  ncol = 1,
-  mwfact = 0.50,
-  guess_name = true,
-  guess_position = true,
-  run = function(tag)
-  end,
-}
--- }}}
+-- package env
+local type = type
+local tag = tag
+local ipairs = ipairs
+local table = table
+local client = client
+local image = image
+local string = string
+local screen = screen
+local button = button
+local mouse = mouse
+local beautiful = require("beautiful")
+local awful = require("awful")
+local pairs = pairs
+local io = io
+local tonumber = tonumber
+local wibox = wibox
+local root = root
+local dbg= dbg
+module("shifty")
 
+config = {}
+config.tags = {}
+config.apps = {}
+config.defaults = {}
+config.guess_name = true
+config.guess_position = true
+config.remember_index = true
+config.default_name = "new"
+config.clientkeys = {}
+config.globalkeys = nil
+config.layouts = {}
+config.prompt_sources = { "config_tags", "config_apps", "existing", "history" }
+config.prompt_matchers = { "^", ":", "" }
 
--- {{{ Wibox
--- Create a textbox widget
-mytextbox = widget({ type = "textbox", align = "right" })
--- Set the default text in textbox
-mytextbox.text = "<b><small> " .. awesome.release .. " </small></b>"
+local matchp = ""
+local index_cache = {}
+for i = 1, screen.count() do index_cache[i] = {} end
 
--- Create a laucher widget and a main menu
-myawesomemenu = {
-   { "manual", terminal .. " -e man awesome" },
-   { "edit config", editor_cmd .. " " .. awful.util.getdir("config") .. "/rc.lua" },
-   { "restart", awesome.restart },
-   { "quit", awesome.quit }
-}
-
-mysystemmenu = {
-   { "lock", "xscreensaver-command -lock" },
-   { "suspend", "sudo pm-suspend --quirk-vbe-post" },
-   { "reboot", "sudo reboot" },
-   { "halt", "sudo halt" }
-}
-
-mymainmenu = awful.menu.new({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-                                        { "system", mysystemmenu },
-                                        { "open terminal", terminal }
-                                      }
-                            })
-
-mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
-                                     menu = mymainmenu })
-
--- Create a systray
-mysystray = widget({ type = "systray", align = "right" })
-
--- Create a wibox for each screen and add it
-mywibox = {}
-mypromptbox = {}
-mylayoutbox = {}
-mytaglist = {}
-mytaglist.buttons = awful.util.table.join(
-                    awful.button({ }, 1, awful.tag.viewonly),
-                    awful.button({ modkey }, 1, awful.client.movetotag),
-                    awful.button({ }, 3, function (tag) tag.selected = not tag.selected end),
-                    awful.button({ modkey }, 3, awful.client.toggletag),
-                    awful.button({ }, 4, awful.tag.viewnext),
-                    awful.button({ }, 5, awful.tag.viewprev)
-                    )
-mytasklist = {}
-mytasklist.buttons = awful.util.table.join(
-                     awful.button({ }, 1, function (c)
-                                              if not c:isvisible() then
-                                                  awful.tag.viewonly(c:tags()[1])
-                                              end
-                                              client.focus = c
-                                              c:raise()
-                                          end),
-                     awful.button({ }, 3, function ()
-                                              if instance then
-                                                  instance:hide()
-                                                  instance = nil
-                                              else
-                                                  instance = awful.menu.clients({ width=250 })
-                                              end
-                                          end),
-                     awful.button({ }, 4, function ()
-                                              awful.client.focus.byidx(1)
-                                              if client.focus then client.focus:raise() end
-                                          end),
-                     awful.button({ }, 5, function ()
-                                              awful.client.focus.byidx(-1)
-                                              if client.focus then client.focus:raise() end
-                                          end))
-
-for s = 1, screen.count() do
-    -- Create a promptbox for each screen
-    mypromptbox[s] = awful.widget.prompt({ align = "left" })
-    -- Create an imagebox widget which will contains an icon indicating which layout we're using.
-    -- We need one layoutbox per screen.
-    mylayoutbox[s] = widget({ type = "imagebox", align = "right" })
-    mylayoutbox[s]:buttons(awful.util.table.join(
-                           awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
-                           awful.button({ }, 3, function () awful.layout.inc(layouts, -1) end),
-                           awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
-                           awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)))
-    -- Create a taglist widget
-    mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, mytaglist.buttons)
-
-    memwidget = widget({
-                          type = 'textbox',
-                          name = 'memwidget',
-                          align = "right"
-                       })
-    wicked.register(memwidget, wicked.widgets.mem,
-                    ' <span color="' .. beautiful.bg_focus .. '" weight="bold">Memory: </span>$1% ($2 of $3 MB)   ', 5, nil, {2, 3, 4})
-
-    cpuwidget = widget({
-                          type = 'textbox',
-                          name = 'cpuwidget',
-                          align = "right"
-                       })
-    wicked.register(cpuwidget, wicked.widgets.cpu, '<span color="' .. beautiful.bg_focus .. '" weight="bold">CPU 1: </span>$2%    <span color="' .. beautiful.bg_focus .. '" weight="bold">CPU 2: </span>$3%   ', 5, nil, {0, 2, 2})
-
-    mpdwidget = widget({
-                          type = 'textbox',
-                          name = 'mpdwidget',
-                       })
---    wicked.register(mpdwidget, wicked.widgets.mpd, '<span color="' .. beautiful.bg_focus .. '" weight="bold">Playing: </span>$1')
-    wicked.register(mpdwidget, wicked.widgets.mpd,
-                    function (widget, args) 
-                       if args[1]:find('volume:') == nil then
-                          return '  <span color="' .. beautiful.bg_focus .. '" weight="bold">Playing: </span>' .. args[1]
-                       else
-                          return ''
-                       end
-                    end)
-
-    function battery_info()
-       local f = io.popen('acpi')
-       local line = f:read()
-       f:close()
-
-       local percent
-       local status
-       local time
-
-
-       if line:find('Discharging') ~= nil then
-          status = 'discharging'
-       elseif line:find('Full') ~= nil then
-          status = 'full'
-       elseif line:find('Charging') ~= nil then
-          status = 'charging'
-       end
-
---       local percents = line:match("%d+%%")
-       percent = line:match('%d+%%')
-
-       return {percent, status, time}
+--{{{ name2tags: matches string 'name' to tag objects
+-- @param name : tag name to find
+-- @param scr : screen to look for tags on
+-- @return table of tag objects or nil
+function name2tags(name, scr)
+  local ret = {}
+  local a, b = scr or 1, scr or screen.count()
+  for s = a, b do
+    for i, t in ipairs(screen[s]:tags()) do
+      if name == t.name then
+        table.insert(ret, t)
+      end
     end
-
-    batterywidget = widget({
-                              type = 'textbox',
-                              name = 'batterywidget',
-                              align = "left"
-                           })
-
-    wicked.register(batterywidget, battery_info, '<span color="' .. beautiful.bg_focus .. '" weight="bold">Battery: </span> $1 ($2)')
-
-
-    -- Create the wibox
-    mywibox[s] = wibox({ position = "top", fg = beautiful.fg_normal, bg = beautiful.bg_normal })
-    -- Add widgets to the wibox - order matters
-    mywibox[s].widgets = { mylauncher,
-                           mytaglist[s],
-                           mpdwidget,
-                           mypromptbox[s],
-                           cpuwidget,
-                           memwidget,
-                           batterywidget,
-                           mytextbox,
-                           mylayoutbox[s],
-                           s == 1 and mysystray or nil }
-
-    mywibox[s].screen = s
-end
--- }}}
-
--- {{{ SHIFTY: initialize shifty
--- the assignment of shifty.taglist must always be after it's actually
--- initialized with awful.widget.taglist.new()
-shifty.taglist = mytaglist
-shifty.init()
--- }}}
-
--- {{{ Mouse bindings
-root.buttons(awful.util.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev)
-))
--- }}}
-
--- {{{ Key bindings
-globalkeys = awful.util.table.join(
-    awful.key({ modkey,           }, "h",  awful.tag.viewprev       ),
-    awful.key({ modkey,           }, "l",  awful.tag.viewnext       ),
-    awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
-
-    -- SHIFTY: keybindings specific to shifty
-    awful.key({ modkey, "Shift" }, "d", shifty.del),       -- delete a tag
-    awful.key({ modkey, "Shift" }, "n", shifty.send_prev), -- move client to prev
-    awful.key({ modkey,         }, "n", shifty.send_next), -- move client to next
-    awful.key({ modkey,"Control"}, "n", function()
-      shifty.tagtoscr(awful.util.cycle(screen.count(), mouse.screen +1))
-    end), -- move client to next tag (?)
-    awful.key({ modkey,         }, "a", shifty.add),       -- create a new tag
-    awful.key({ modkey,         }, "r", shifty.rename),    -- rename a tag
-    awful.key({ modkey, "Shift" }, "a", function()         -- nopopup new tag
-      shifty.add({ nopopup = true }) 
-    end),
-
-
-    awful.key({ modkey,           }, "j",
-        function ()
-            awful.client.focus.byidx( 1)
-            if client.focus then client.focus:raise() end
-        end),
-    awful.key({ modkey,           }, "k",
-        function ()
-            awful.client.focus.byidx(-1)
-            if client.focus then client.focus:raise() end
-        end),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show(true)        end),
-
-    -- Layout manipulation
-    awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1) end),
-    awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1) end),
-    awful.key({ modkey, "Control" }, "j", function () awful.screen.focus( 1)       end),
-    awful.key({ modkey, "Control" }, "k", function () awful.screen.focus(-1)       end),
-    awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
-    awful.key({ modkey,           }, "Tab",
-        function ()
-            awful.client.focus.history.previous()
-            if client.focus then
-                client.focus:raise()
-            end
-        end),
-
-    -- Standard program
-    awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
-    awful.key({ modkey, "Control" }, "r", awesome.restart),
-    awful.key({ modkey, "Shift"   }, "q", awesome.quit),
-    awful.key({                   }, "F12",    function () awful.util.spawn(terminal) end),
-
-    awful.key({ modkey,           }, "Right", function () awful.tag.incmwfact( 0.05)    end),
-    awful.key({ modkey,           }, "Left",  function () awful.tag.incmwfact(-0.05)    end),
-    awful.key({ modkey, "Shift"   }, "Left",  function () awful.tag.incnmaster( 1)      end),
-    awful.key({ modkey, "Shift"   }, "Right", function () awful.tag.incnmaster(-1)      end),
-    awful.key({ modkey, "Control" }, "Left",  function () awful.tag.incncol( 1)         end),
-    awful.key({ modkey, "Control" }, "Right", function () awful.tag.incncol(-1)         end),
-    awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
-    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
-
-    -- Media keys
-    awful.key({ }, "XF86AudioPlay",        function () awful.util.spawn('mpc toggle')               end),
-    awful.key({ }, "XF86AudioStop",        function () awful.util.spawn('mpc stop')                 end),
-    awful.key({ }, "XF86AudioPrev",        function () awful.util.spawn('mpc prev')                 end),
-    awful.key({ }, "XF86AudioNext",        function () awful.util.spawn('mpc next')                 end),
-
-    awful.key({ }, "XF86AudioMute",        function () awful.util.spawn('amixer set Master toggle') end),
-    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn('amixer set Master 1-')     end),
-    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn('amixer set Master 1+')     end),
-
-    -- Function keys
-    awful.key({ }, "XF86ScreenSaver", function () awful.util.spawn('xscreensaver-command -lock')  end),
-    awful.key({ }, "XF86Sleep",       function () awful.util.spawn('pm-suspend --quirk-vbe-post') end),
-
-    -- Prompt
-    awful.key({ "Mod1" }, "F2", function () mypromptbox[mouse.screen]:run() end),
-
-    awful.key({ modkey }, "F4",
-              function ()
-                  awful.prompt.run({ prompt = "Run Lua code: " },
-                  mypromptbox[mouse.screen].widget,
-                  awful.util.eval, nil,
-                  awful.util.getdir("cache") .. "/history_eval")
-              end)
-)
-
--- Client awful tagging: this is useful to tag some clients and then do stuff like move to tag on them
-clientkeys = awful.util.table.join(
-    awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
-    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
-    awful.key({ "Mod1"            }, "F4",     function (c) c:kill()                         end),
-    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
-    awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
-    awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
-    awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
-    awful.key({ modkey }, "t", awful.client.togglemarked),
-    awful.key({ modkey,}, "m",
-        function (c)
-            c.maximized_horizontal = not c.maximized_horizontal
-            c.maximized_vertical   = not c.maximized_vertical
-        end)
-)
-
--- SHIFTY: assign client keys to shifty for use in match() function (manage
--- hook)
-shifty.config.clientkeys = clientkeys
-
--- compute the maximum number of digits we need, limited to 9
-for i=1, ( shifty.config.maxtags or 9 ) do
-    globalkeys = awful.util.table.join(globalkeys,
-        awful.key({ modkey }, i,
-                  function ()
-                    local t = awful.tag.viewonly(shifty.getpos(i))
-                  end),
-        awful.key({ modkey, "Control" }, i,
-                  function ()
-                    local t = shifty.getpos(i)
-                    t.selected = not t.selected
-                  end),
-        awful.key({ modkey, "Control", "Shift" }, i,
-                  function ()
-                    if client.focus then
-                      awful.client.toggletag(shifty.getpos(i))
-                    end
-                  end),
-  -- move clients to other tags
-        awful.key({ modkey, "Shift" }, i,
-                  function ()
-                    if client.focus then
-                      t = shifty.getpos(i)
-                      awful.client.movetotag(t)
-                      awful.tag.viewonly(t)
-                    end
-                  end)
-        )
+  end
+  if #ret > 0 then return ret end
 end
 
--- Set keys
-root.keys(globalkeys)
--- }}}
+function name2tag(name, scr, idx)
+ local ts = name2tags(name, scr)
+ if ts then return ts[idx or 1] end
+end
+--}}}
 
---[[ Placeholder: for end users who want to customize the behavior of new
---client appearances.
+--{{{ tag2index: finds index of a tag object
+-- @param scr : screen number to look for tag on
+-- @param tag : the tag object to find
+-- @return the index [or zero] or end of the list
+function tag2index(scr, tag)
+  for i,t in ipairs(screen[scr]:tags()) do
+    if t == tag then return i end
+  end
+end
+--}}}
+
+--{{{ rename
+--@param tag: tag object to be renamed
+--@param prefix: if any prefix is to be added
+--@param no_selectall:
+function rename(tag, prefix, no_selectall)
+  local theme = beautiful.get()
+  local t = tag or awful.tag.selected(mouse.screen)
+  local scr = t.screen
+  local bg = nil
+  local fg = nil
+  local text = prefix or t.name
+  local before = t.name
+
+  if t == awful.tag.selected(scr) then 
+    bg = theme.bg_focus or '#535d6c'
+    fg = theme.fg_urgent or '#ffffff'
+  else 
+    bg = theme.bg_normal or '#222222'
+    fg = theme.fg_urgent or '#ffffff'
+  end
+
+  awful.prompt.run( { 
+    fg_cursor = fg, bg_cursor = bg, ul_cursor = "single",
+    text = text, selectall = not no_selectall, prompt = " "  },
+    taglist[scr][tag2index(scr,t)*2],
+    function (name) if name:len() > 0 then t.name = name; end end, 
+    completion,
+    awful.util.getdir("cache") .. "/history_tags", nil,
+    function ()
+      if t.name == before then
+        if awful.tag.getproperty(t, "initial") then del(t) end
+      else
+        awful.tag.setproperty(t, "initial", true)
+        set(t)
+      end
+      awful.hooks.user.call("tags", scr)
+    end
+    )
+end
+--}}}
+
+--{{{ send: moves client to tag[idx]
+-- maybe this isn't needed here in shifty? 
+-- @param idx the tag number to send a client to
+function send(idx)
+  local scr = client.focus.screen or mouse.screen
+  local sel = awful.tag.selected(scr)
+  local sel_idx = tag2index(scr,sel)
+  local tags = screen[scr]:tags()
+  local target = awful.util.cycle(#tags, sel_idx + idx)
+  awful.client.movetotag(tags[target], client.focus)
+  awful.tag.viewonly(tags[target])
+end
+
+function send_next() send(1) end
+function send_prev() send(-1) end
+--}}}
+
+function shift_next() set(awful.tag.selected(), { rel_index = 1 }) end
+function shift_prev() set(awful.tag.selected(), { rel_index = -1 }) end
+
+--{{{ pos2idx: translate shifty position to tag index
+--@param pos: position (an integer)
+--@param scr: screen number
+function pos2idx(pos, scr)
+  local v = 1
+  if pos and scr then
+    for i = #screen[scr]:tags() , 1, -1 do
+      local t = screen[scr]:tags()[i]
+      if awful.tag.getproperty(t,"position") and awful.tag.getproperty(t,"position") <= pos then
+        v = i + 1
+        break 
+      end
+    end
+  end
+  return v
+end
+--}}}
+
+--{{{ select : helper function chooses the first non-nil argument
+--@param args - table of arguments
+function select(args)
+  for i, a in pairs(args) do
+    if a ~= nil then
+      return a
+    end
+  end
+end
+--}}}
+
+--{{{ tagtoscr : move an entire tag to another screen
 --
---Otherwise shifty.lua provides a manage hook already.
-awful.hooks.manage.register(function (c, startup) end)
---]]--
+--@param scr : the screen to move tag to
+--@param t : the tag to be moved [awful.tag.selected()]
+--@return the tag
+function tagtoscr(scr, t)
+  -- break if called with an invalid screen number
+  if not scr or scr < 1 or scr > screen.count() then return end
+  -- tag to move
+  local otag = t or awful.tag.selected() 
 
--- {{{ Hooks
--- Hook function to execute when focusing a client.
-awful.hooks.focus.register(function (c)
-    if not awful.client.ismarked(c) then
-        -- set the client's border color
-        c.border_color = beautiful.border_focus
-        -- give the client full opacity
-        c.opacity = 1
-        -- raise the client
-        c:raise()
+  -- set screen and then reset tag to order properly
+  if #otag:clients() > 0 then
+    for _ , c in ipairs(otag:clients()) do
+      if not c.sticky then
+        c.screen = scr
+        c:tags( { otag } )
+      else
+        awful.client.toggletag(otag,c)
+      end
     end
-end)
+  end
+  return otag
+end
+---}}}
 
--- Hook function to execute when unfocusing a client.
-awful.hooks.unfocus.register(function (c)
-    if not awful.client.ismarked(c) then
-        c.border_color = beautiful.border_normal
-        c.opacity = 0.8
-    end
-end)
+--{{{ set : set a tags properties
+--@param t: the tag
+--@param args : a table of optional (?) tag properties
+--@return t - the tag object
+function set(t, args)
+  if not t then return end
+  if not args then args = {} end
 
--- Hook function to execute when marking a client
-awful.hooks.marked.register(function (c)
-    c.border_color = beautiful.border_marked
-end)
+  -- set the name
+  t.name = args.name or t.name
 
--- Hook function to execute when unmarking a client.
-awful.hooks.unmarked.register(function (c)
-    c.border_color = beautiful.border_focus
-end)
+  -- attempt to load preset on initial run
+  local preset = (awful.tag.getproperty(t, "initial") and config.tags[t.name]) or {}
 
--- Hook function to execute when the mouse enters a client.
-awful.hooks.mouse_enter.register(function (c)
-    -- Sloppy focus, but disabled for magnifier layout
-    if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-        and awful.client.focus.filter(c) then
-        client.focus = c
-    end
-end)
+  -- pick screen and get its tag table
+  local scr = args.screen or (not t.screen and preset.screen) or t.screen or mouse.screen
+  if scr > screen.count() then scr = screen.count() end
+  if t.screen and scr ~= t.screen then
+    tagtoscr(scr, t)
+    t.screen = nil
+  end
+  local tags = screen[scr]:tags()
 
--- Hook function to execute when a new client appears.
-awful.hooks.manage.register(function (c, startup)
-    -- If we are not managing this application at startup,
-    -- move it to the screen where the mouse is.
-    -- We only do it for filtered windows (i.e. no dock, etc).
-    if not startup and awful.client.focus.filter(c) then
-        c.screen = mouse.screen
-    end
+  -- try to guess position from the name
+  local guessed_position = nil
+  if not (args.position or preset.position) and config.guess_position then
+    local num = t.name:find('^[1-9]')
+    if num then guessed_position = tonumber(t.name:sub(1,1)) end
+  end
 
-    local cls = c.class
-    local inst = c.instance
-    if use_titlebar then
-        -- Add a titlebar
-       if notitlebarapps[cls] or notitlebarapps[inst] or c.fullscreen then
-       else 
-          awful.titlebar.add(c, { modkey = modkey })
-       end
-    end
-    -- Add mouse bindings
-    c:buttons(awful.util.table.join(
-        awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
-        awful.button({ modkey }, 1, awful.mouse.client.move),
-        awful.button({ modkey }, 3, awful.mouse.client.resize)
-    ))
-    -- New client may not receive focus
-    -- if they're not focusable, so set border anyway.
-    c.border_width = beautiful.border_width
-    c.border_color = beautiful.border_normal
+  -- select from args, preset, getproperty, config.defaults.configs or defaults
+  local props = {
+    layout = select{ args.layout, preset.layout, awful.tag.getproperty(t,"layout"), config.defaults.layout, awful.layout.suit.tile },
+    mwfact = select{ args.mwfact, preset.mwfact, awful.tag.getproperty(t,"mwfact"), config.defaults.mwfact, 0.55 },
+    nmaster = select{ args.nmaster, preset.nmaster, awful.tag.getproperty(t,"nmaster"), config.defaults.nmaster, 1 },
+    ncol = select{ args.ncol, preset.ncol, awful.tag.getproperty(t,"ncol"), config.defaults.ncol, 1 },
+    matched = select{ args.matched, awful.tag.getproperty(t,"matched") },
+    exclusive = select{ args.exclusive, preset.exclusive, awful.tag.getproperty(t,"exclusive"), config.defaults.exclusive },
+    persist = select{ args.persist, preset.persist, awful.tag.getproperty(t,"persist"), config.defaults.persist },
+    nopopup = select{ args.nopopup, preset.nopopup, awful.tag.getproperty(t,"nopopup"), config.defaults.nopopup },
+    leave_kills = select{ args.leave_kills, preset.leave_kills, awful.tag.getproperty(t,"leave_kills"), config.defaults.leave_kills },
+    max_clients = select{ args.max_clients, preset.max_clients, awful.tag.getproperty(t,"max_clients"), config.defaults.max_clients },
+    position = select{ args.position, preset.position, guessed_position, awful.tag.getproperty(t,"position" ) },
+    icon = select{ args.icon and image(args.icon), preset.icon and image(preset.icon), awful.tag.getproperty(t,"icon"), config.defaults.icon and image(config.defaults.icon) },
+    icon_only = select{ args.icon_only, preset.icon_only, awful.tag.getproperty(t,"icon_only"), config.defaults.icon_only },
+    sweep_delay = select{ args.sweep_delay, preset.sweep_delay, awful.tag.getproperty(t,"sweep_delay"), config.defaults.sweep_delay },
+    overload_keys = select{ args.overload_keys, preset.overload_keys, awful.tag.getproperty(t,"overload_keys"), config.defaults.overload_keys },
+  }
 
-    -- Check if the application should be floating.
-    if floatapps[cls] then
-        awful.client.floating.set(c, floatapps[cls])
-    elseif floatapps[inst] then
-        awful.client.floating.set(c, floatapps[inst])
-    end
+  -- get layout by name if given as string
+  if type(props.layout) == "string" then
+    props.layout = getlayout(props.layout)
+  end
 
-    -- Check application->screen/tag mappings.
-    local target
-    if apptags[cls] then
-        target = apptags[cls]
-    elseif apptags[inst] then
-        target = apptags[inst]
-    end
-    if target then
-        c.screen = target.screen
-        awful.client.movetotag(tags[target.screen][target.tag], c)
-    end
-
-    -- Do this after tag mapping, so you don't see it on the wrong tag for a split second.
-    client.focus = c
-
-    -- Set key bindings
-    c:keys(clientkeys)
-
-    -- Set the windows at the slave,
-    -- i.e. put it at the end of others instead of setting it master.
-    -- awful.client.setslave(c)
-
-    -- Honor size hints: if you want to drop the gaps between windows, set this to false.
-    -- c.size_hints_honor = false
-end)
-
--- Hook function to execute when arranging the screen.
--- (tag switch, new client, etc)
-awful.hooks.arrange.register(function (screen)
-    local layout = awful.layout.getname(awful.layout.get(screen))
-    if layout and beautiful["layout_" ..layout] then
-        mylayoutbox[screen].image = image(beautiful["layout_" .. layout])
+  -- set keys
+  if args.keys or preset.keys then
+    local keys = awful.util.table.join(config.globalkeys, args.keys or preset.keys)
+    if props.overload_keys then
+      props.keys = keys
     else
-        mylayoutbox[screen].image = nil
+      props.keys = squash_keys(keys)
     end
+  end
 
-    -- Give focus to the latest client in history if no window has focus
-    -- or if the current window is a desktop or a dock one.
-    if not client.focus then
-        local c = awful.client.focus.history.get(screen, 0)
-        if c then client.focus = c end
+  -- calculate desired taglist index
+  local index = args.index or preset.index or config.defaults.index
+  local rel_index = args.rel_index or preset.rel_index or config.defaults.rel_index
+  local sel = awful.tag.selected(scr)
+  local sel_idx = (sel and tag2index(scr,sel)) or 0 --TODO: what happens with rel_idx if no tags selected
+  local t_idx = tag2index(scr,t)
+  local limit = (not t_idx and #tags + 1) or #tags
+  local idx = nil
+
+  if rel_index then
+    idx = awful.util.cycle(limit, (t_idx or sel_idx) + rel_index)
+  elseif index then
+    idx = awful.util.cycle(limit, index)
+  elseif props.position then
+    idx = pos2idx(props.position, scr)
+    if t_idx and t_idx < idx then idx = idx - 1 end
+  elseif config.remember_index and index_cache[scr][t.name] then
+    idx = index_cache[scr][t.name]
+  elseif not t_idx then
+    idx = #tags + 1
+  end
+
+  -- if we have a new index, remove from old index and insert
+  if idx then
+    if t_idx then table.remove(tags, t_idx) end
+    table.insert(tags, idx, t)
+    index_cache[scr][t.name] = idx
+  end
+
+  -- set tag properties and push the new tag table
+  screen[scr]:tags(tags)
+  for prop, val in pairs(props) do awful.tag.setproperty(t, prop, val) end
+
+  -- execute run/spawn
+  if awful.tag.getproperty(t, "initial") then
+    local spawn = args.spawn or preset.spawn or config.defaults.spawn
+    local run = args.run or preset.run or config.defaults.run
+    if spawn and args.matched ~= true then awful.util.spawn_with_shell(spawn, scr) end
+    if run then run(t) end
+    awful.tag.setproperty(t, "initial", nil)
+  end
+
+  return t
+end
+--}}}
+
+--{{{ add : adds a tag
+--@param args: table of optional arguments
+--
+function add(args)
+  if not args then args = {} end
+  local name = args.name or " "
+
+  -- initialize a new tag object and its data structure
+  local t = tag( name )
+
+  -- tell set() that this is the first time
+  awful.tag.setproperty(t, "initial", true)
+
+  -- apply tag settings
+  set(t, args)
+
+  -- unless forbidden or if first tag on the screen, show the tag
+  if not (awful.tag.getproperty(t,"nopopup") or args.noswitch) or #screen[t.screen]:tags() == 1 then awful.tag.viewonly(t) end
+
+  -- get the name or rename
+  if args.name then
+    t.name = args.name
+  else
+    -- FIXME: hack to delay rename for un-named tags for tackling taglist refresh
+    --        which disabled prompt from being rendered until input
+    awful.tag.setproperty(t, "initial", true)
+    if args.position then
+      f = function() rename(t, args.rename, true); awful.hooks.timer.unregister(f) end
+    else
+      f = function() rename(t); awful.hooks.timer.unregister(f) end
     end
-end)
+    awful.hooks.timer.register(0.01, f)
+  end
 
--- Hook called every minute
-awful.hooks.timer.register(10, function ()
-    mytextbox.text = os.date("<span weight='bold'> %a %b %d, %H:%M </span>")
-end)
+  return t
+end
+--}}}
+
+--{{{ del : delete a tag
+--@param tag : the tag to be deleted [current tag]
+function del(tag)
+  local scr = (tag and tag.screen) or mouse.screen or 1
+  local tags = screen[scr]:tags()
+  local sel = awful.tag.selected(scr)
+  local t = tag or sel
+  local idx = tag2index(scr,t)
+
+  -- return if tag not empty (except sticky)
+  local clients = t:clients()
+  local sticky = 0
+  for i, c in ipairs(clients) do
+    if c.sticky then sticky = sticky + 1 end
+  end
+  if #clients > sticky then return end
+
+  -- store index for later
+  index_cache[scr][t.name] = idx
+
+  -- remove tag
+  t.screen = nil
+
+  -- if the current tag is being deleted, restore from history
+  if t == sel and #tags > 1 then
+    awful.tag.history.restore(scr)
+    -- this is supposed to cycle if history is invalid?
+    -- e.g. if many tags are deleted in a row
+    if not awful.tag.selected(scr) then
+      awful.tag.viewonly(tags[awful.util.cycle(#tags, idx - 1)])
+    end
+  end
+
+  -- FIXME: what is this for??
+  if client.focus then client.focus:raise() end
+end
+--}}}
+
+--{{{ match : handles app->tag matching, a replacement for the manage hook in
+--            rc.lua
+--@param c : client to be matched
+function match(c, startup)
+  local nopopup, intrusive, nofocus, run, slave, wfact, struts, geom
+  local target_tag_names, target_tags = {}, {}
+  local typ = c.type
+  local cls = c.class
+  local inst = c.instance
+  local role = c.role
+  local name = c.name
+  local keys = config.clientkeys or c:keys() or {}
+  local target_screen = mouse.screen
+
+  c.border_color = beautiful.border_normal
+  c.border_width = beautiful.border_width
+
+  -- try matching client to config.apps
+  for i, a in ipairs(config.apps) do
+    if a.match then
+      for k, w in ipairs(a.match) do
+        if
+          (cls and cls:find(w)) or
+          (inst and inst:find(w)) or
+          (name and name:find(w)) or
+          (role and role:find(w)) or
+          (typ and typ:find(w))
+        then
+          if a.screen then target_screen = a.screen end
+          if a.tag then
+            if type(a.tag) == "string" then
+              target_tag_names = { a.tag }
+            else
+              target_tag_names = a.tag
+            end
+          end
+          if a.float ~= nil then awful.client.floating.set(c, a.float) end
+          if a.geometry ~=nil then geom = { x = a.geometry[1], y = a.geometry[2], width = a.geometry[3], height = a.geometry[4] } end
+          if a.slave ~=nil then slave = a.slave end
+          if a.nopopup ~=nil then nopopup = a.nopopup end
+          if a.intrusive ~=nil then intrusive = a.intrusive end
+          if a.fullscreen ~=nil then c.fullscreen = a.fullscreen end
+          if a.honorsizehints ~=nil then c.size_hints_honor = a.honorsizehints end
+          if a.kill ~=nil then c:kill(); return end
+          if a.ontop ~= nil then c.ontop = a.ontop end
+          if a.above ~= nil then c.above = a.above end
+          if a.below ~= nil then c.below = a.below end
+          if a.buttons ~= nil then c.buttons = a.buttons end
+          if a.nofocus ~= nil then nofocus = a.nofocus end
+          if a.keys ~= nil then keys = awful.util.table.join(keys, a.keys) end
+          if a.hide ~= nil then c.hide = a.hide end
+          if a.minimized ~= nil then c.minimized = a.minimized end
+          if a.dockable ~= nil then awful.client.dockable.set(c, a.dockable) end
+          if a.urgent ~= nil then c.urgent = a.urgent end
+          if a.opacity ~= nil then c.opacity = a.opacity end
+          if a.titlebar ~= nil then awful.titlebar.add(c, { modkey = modkey }) end
+          if a.run ~= nil then run = a.run end
+          if a.sticky ~= nil then c.sticky = a.sticky end
+          if a.wfact ~= nil then wfact = a.wfact end
+          if a.struts then struts = a.struts end
+          if a.skip_taskbar ~= nil then c.skip_taskbar = a.skip_taskbar end
+        end
+      end
+    end
+  end
+
+  -- set key bindings
+  c.keys = keys
+
+  -- set properties of floating clients
+  if awful.client.floating.get(c) then
+    if config.defaults.floatBars then       -- add a titlebar if requested in config.defaults
+      awful.titlebar.add( c, { modkey = modkey } )
+    end
+    awful.placement.centered(c, c.transient_for)
+    awful.placement.no_offscreen(c) -- this always seems to stick the client at 0,0 (incl titlebar)
+  end
+
+  -- if not matched to some names try putting client in c.transient_for or current tags
+  local sel = awful.tag.selectedlist(target_screen)
+  if not target_tag_names or #target_tag_names == 0 then
+    if c.transient_for then
+      target_tags = c.transient_for:tags()
+    elseif #sel > 0 then
+      for i, t in ipairs(sel) do
+        local mc = awful.tag.getproperty(t,"max_clients")
+        if not (awful.tag.getproperty(t,"exclusive") or (mc and mc >= #t:clients())) or intrusive then
+          table.insert(target_tags, t)
+        end
+      end
+    end
+  end
+
+  -- if we still don't know any target names/tags guess name from class or use default
+  if (not target_tag_names or #target_tag_names == 0) and (not target_tags or #target_tags == 0) then
+    if config.guess_name and cls then
+      target_tag_names = { cls:lower() }
+    else
+      target_tag_names = { config.default_name }
+    end
+  end
+
+  -- translate target names to tag objects, creating missing ones
+  if #target_tag_names > 0 and #target_tags == 0 then
+    for i, tn in ipairs(target_tag_names) do
+      local res = {}
+      for j, t in ipairs(name2tags(tn, target_screen) or name2tags(tn) or {}) do
+        local mc = awful.tag.getproperty(t,"max_clients")
+        if not (mc and (#t:clients() >= mc)) or intrusive then
+          table.insert(res, t)
+        end
+      end
+      if #res == 0 then
+        table.insert(target_tags, add({ name = tn, noswitch = true, matched = true }))
+      else
+        target_tags = awful.util.table.join(target_tags, res)
+      end
+    end
+  end
+
+  -- set client's screen/tag if needed
+  target_screen = target_tags[1].screen or target_screen
+  if c.screen ~= target_screen then c.screen = target_screen end
+  c:tags( target_tags )
+  if slave then awful.client.setslave(c) end
+  if wfact then awful.client.setwfact(wfact, c) end
+  if geom then c:geometry(geom) end
+  if struts then c:struts(struts) end
+
+  -- switch or highlight
+  local showtags = {}
+  local u = nil
+  if #target_tags > 0 then
+    for i,t in ipairs(target_tags) do
+      if not(awful.tag.getproperty(t,"nopopup") or nopopup) then
+        table.insert(showtags, t)
+      elseif not startup then
+        c.urgent = true
+      end
+    end
+    if #showtags > 0 then
+      awful.tag.viewmore(showtags, c.screen)
+    end
+  end
+
+  -- focus and raise accordingly or lower if supressed
+  if not (nofocus or c.hide or c.minimized) then
+    if (awful.tag.getproperty(target,"nopopup") or nopopup) and (target and target ~= sel) then
+      awful.client.focus.history.add(c)
+    else
+      client.focus = c
+    end
+    c:raise()
+  else
+    c:lower()
+  end
+
+  -- execute run function if specified
+  if run then run(c, target) end
+end
+--}}}
+
+--{{{ sweep : hook function that marks tags as used, visited, deserted
+--  also handles deleting used and empty tags 
+function sweep()
+  for s = 1, screen.count() do
+    for i, t in ipairs(screen[s]:tags()) do
+      local clients = t:clients()
+      local sticky = 0
+      for i, c in ipairs(clients) do
+        if c.sticky then sticky = sticky + 1 end
+      end
+      if #clients == sticky then
+        if not awful.tag.getproperty(t,"persist") and awful.tag.getproperty(t,"used") then
+          if awful.tag.getproperty(t,"deserted") or not awful.tag.getproperty(t,"leave_kills") then
+            local delay = awful.tag.getproperty(t,"sweep_delay")
+            if delay then
+              --FIXME: global f, what if more than one at a time is being swept
+              f = function() del(t); awful.hooks.timer.unregister(f) end
+              awful.hooks.timer.register(delay, f)
+            else
+              del(t)
+            end
+          else
+            if not t.selected and awful.tag.getproperty(t,"visited") then awful.tag.setproperty(t,"deserted", true) end
+          end
+        end
+      else
+        awful.tag.setproperty(t,"used",true)
+      end
+      if t.selected then awful.tag.setproperty(t,"visited",true) end
+    end
+  end
+end
+--}}}
+
+--{{{ getpos : returns a tag to match position
+--      * originally this function did a lot of client stuff, i think its
+--      * better to leave what can be done by awful to be done by awful
+--      *           -perry
+-- @param pos : the index to find
+-- @return v : the tag (found or created) at position == 'pos'
+function getpos(pos)
+  local v = nil
+  local existing = {}
+  local selected = nil
+  local scr = mouse.screen or 1
+  -- search for existing tag assigned to pos
+  for i = 1, screen.count() do
+    local s = awful.util.cycle(screen.count(), scr + i - 1)
+    for j, t in ipairs(screen[s]:tags()) do
+      if awful.tag.getproperty(t,"position") == pos then
+        table.insert(existing, t)
+        if t.selected and s == scr then selected = #existing end
+      end
+    end
+  end
+  if #existing > 0 then
+    -- if makeing another of an existing tag, return the end of the list
+    if selected then v = existing[awful.util.cycle(#existing, selected + 1)] else v = existing[1] end
+  end
+  if not v then
+    -- search for preconf with 'pos' and create it
+    for i, j in pairs(config.tags) do
+      if j.position == pos then v = add({ name = i, position = pos, noswitch = not switch }) end
+    end
+  end
+  if not v then
+    -- not existing, not preconfigured
+    v = add({ position = pos, rename = pos .. ':', no_selectall = true, noswitch = not switch })
+  end
+  return v
+end
+--}}}
+
+--{{{ init : search shifty.config.tags for initial set of tags to open
+function init()
+  local numscr = screen.count()
+
+  for i, j in pairs(config.tags) do
+    local scr = j.screen or 1
+    if j.init and ( scr <= numscr ) then
+        add({ name = i, persist = true, screen = scr, layout = j.layout, mwfact = j.mwfact }) 
+    end
+  end
+end
+--}}}
+
+--{{{ count : utility function returns the index of a table element
+--FIXME: this is currently used only in remove_dup, so is it really necessary?
+function count(table, element)
+  local v = 0
+  for i, e in pairs(table) do
+    if element == e then v = v + 1 end
+  end
+  return v
+end
+--}}}
+
+--{{{ remove_dup : used by shifty.completion when more than one
+--tag at a position exists
+function remove_dup(table)
+  local v = {}
+  for i, entry in ipairs(table) do
+    if count(v, entry) == 0 then v[#v+ 1] = entry end
+  end
+  return v
+end
+--}}}
+
+--{{{ completion : prompt completion
+--
+function completion(cmd, cur_pos, ncomp, sources, matchers)
+
+  -- get sources and matches tables
+  sources = sources or config.prompt_sources
+  matchers = matchers or config.prompt_matchers
+
+  local get_source = {
+    -- gather names from config.tags
+    config_tags = function()
+      local ret = {}
+      for n, p in pairs(config.tags) do table.insert(ret, n) end
+      return ret
+    end,
+    -- gather names from config.apps
+    config_apps = function()
+      local ret = {}
+      for i, p in pairs(config.apps) do
+        if p.tag then
+          if type(p.tag) == "string" then
+            table.insert(ret, p.tag)
+          else
+            ret = awful.util.table.join(ret, p.tag)
+          end
+        end
+      end
+      return ret
+    end,
+    -- gather names from existing tags, starting with the current screen
+    existing = function()
+      local ret = {}
+      for i = 1, screen.count() do
+        local s = awful.util.cycle(screen.count(), mouse.screen + i - 1)
+        local tags = screen[s]:tags()
+        for j, t in pairs(tags) do table.insert(ret, t.name) end
+      end
+      return ret
+    end,
+    -- gather names from history
+    history = function()
+      local ret = {}
+      local f = io.open(awful.util.getdir("cache") .. "/history_tags")
+      for name in f:lines() do table.insert(ret, name) end
+      f:close()
+      return ret
+    end,
+  }
+
+  -- if empty, match all
+  if #cmd == 0 or cmd == " " then cmd = "" end
+
+  -- match all up to the cursor if moved or no matchphrase
+  if matchp == "" or cmd:sub(cur_pos, cur_pos+#matchp) ~= matchp then
+    matchp = cmd:sub(1, cur_pos)
+  end
+
+  -- find matching commands
+  local matches = {}
+  for i, src in ipairs(sources) do
+    local source = get_source[src]()
+    for j, matcher in ipairs(matchers) do
+      for k, name in ipairs(source) do
+        if name:find(matcher .. matchp) then
+          table.insert(matches, name)
+        end
+      end
+    end
+  end
+
+  -- no matches
+  if #matches == 0 then return cmd, cur_pos end
+
+  -- remove duplicates
+  matches = remove_dup(matches)
+
+  -- cycle
+  while ncomp > #matches do ncomp = ncomp - #matches end
+
+  -- put cursor at the end of the matched phrase
+  if #matches == 1 then
+    cur_pos = #matches[ncomp] + 1
+  else
+    cur_pos = matches[ncomp]:find(matchp) + #matchp
+  end
+
+  -- return match and position
+  return matches[ncomp], cur_pos
+end
+--}}}
+
+-- {{{ tagkeys : hook function that sets keybindings per tag
+function tagkeys(s)
+  local sel = awful.tag.selected(s)
+  local keys = awful.tag.getproperty(sel, "keys") or config.globalkeys
+  if keys then root.keys = keys end
+end
 -- }}}
 
-
-xcompmgrcmd = 'xcompmgr -c -t-5 -l-5 -r4.2 -o.55'
-
-awful.util.spawn(xcompmgrcmd)
--- also start xcompmgr on second monitor if connected
-if screen.count() > 1 then
-   awful.screen.focus(1)
-   awful.util.spawn(xcompmgrcmd)
-   awful.screen.focus(0)
+-- {{{ squash_keys: helper function which removes duplicate keybindings
+-- by picking only the last one to be listed in keys table arg
+function squash_keys(keys)
+  local squashed = {}
+  local ret = {}
+  for i, k in ipairs(keys) do
+    squashed[table.concat(k.modifiers) .. k.keysym] = k
+  end
+  for i, k in pairs(squashed) do
+    table.insert(ret, k)
+  end
+  return ret
 end
-awful.util.spawn('nm-applet')
-awful.util.spawn('xscreensaver')
+-- }}}
+
+-- {{{ getlayout: returns a layout by name
+function getlayout(name)
+  for _, layout in ipairs(config.layouts) do
+    if awful.layout.getname(layout) == name then return layout end
+  end
+end
+-- }}}
+
+awful.hooks.manage.unregister(awful.tag.withcurrent)
+awful.hooks.tags.register(sweep)
+awful.hooks.tags.register(tagkeys)
+awful.hooks.clients.register(sweep)
+awful.hooks.manage.register(match)
+
+-- vim: foldmethod=marker:filetype=lua:expandtab:shiftwidth=2:tabstop=2:softtabstop=2:encoding=utf-8:textwidth=80
