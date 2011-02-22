@@ -1,0 +1,35 @@
+[ui]
+ignore = ~/.hgignore
+username = Adam Lloyd <adam@alloy-d.net>
+
+[email]
+from = "Adam Lloyd <adam@alloy-d.net>"
+method = sendmail
+
+[extensions]
+hgext.bookmarks=
+hgext.color=
+#hgext.inotify=
+hgext.extdiff=
+hgext.record=
+hgext.hggit=/home/adam/sys/lib/python/hg-git/hggit
+hgext.hgk=
+#hgext.hgshelve=/home/adam/lib/python/hgshelve/hgshelve.py
+#hgext.hgtasks=/home/adam/lib/python/hgtasks/hgext/tasks.py
+hgext.mq=
+hgext.patchbomb=
+hgext.prompt=/home/adam/sys/lib/python/hg-prompt/prompt.py
+hgext.convert=
+hgext.rebase=
+#hgext.hgsubversion=/home/adam/lib/python/hgsubversion/hgsubversion
+
+[extdiff]
+cmd.meld=
+cmd.kompare=
+
+[web]
+address=127.0.0.1
+allow_archive=bz2,zip
+port=8001
+style=monoblue
+

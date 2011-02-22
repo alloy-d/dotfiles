@@ -1,149 +1,134 @@
-Xft.dpi: 128
+Xft.dpi: 96
+Xft.antialias: 1
+Xft.hinting: 1
+Xft.hintstyle: full
+Xft.rgba: rgb
 Xft.lcdfilter: lcddefault
-Xcursor.theme: Vanilla-DMZ
+!Xft.embolden: true
+!Xcursor.theme: Vanilla-DMZ
+Xcursor.theme: Jimmac
 
-*color0:  #000000
+!*color0:  #000000
+!*color15: #ffffff
+
+! Light colorscheme (by me)
+!*background: #e5f3fd
+*background: #eaeaea
+*foreground: #212531
+
+*color0: #212531
+*color1: #da7a99
+*color2: #79d985
+*color3: #c19655
+*color4: #275aa9
+*color5: #513247
+*color6: #8dc1e8
+*color7: #e5f3fd
+
+*color8: #000000
+*color9: #c91422
+*color10: #297c26
+*color11: #fba820
+*color12: #0345b6
+*color13: #492940
+*color14: #3e93d9
 *color15: #ffffff
 
-!! Tango colors
-! Black
-!*color0:  #2E3436
-*color8:  #555753
-! Red
-*color1:  #CC0000
-*color9:  #EF2929
-! Green
-*color2:  #4E9A06
-*color10: #8AE234
-! Yellow
-*color3:  #C4A000
-*color11: #FCE94F
-! Blue
-*color4:  #3465A4
-*color12: #729FCF
-! Purple
-*color5:  #75507B
-*color13: #AD7FA8
-! Cyan
-*color6:  #06989A
-*color14: #34E2E2
-! White
-*color7:  #D3D7CF
-!*color15: #EEEEEC
 
-!! _why's colors (dotfiles.org)
-!*background:  #000000
-!*foreground:  #efefcf
-!*color0:      #000000
-!*color1:      #9e1828
-!*color2:      #aece92
-!*color3:      #968a38
-!*color4:      #414171
-!*color5:      #963c59
-!*color6:      #418179
-!*color7:      #bebebe
-!*color8:      #666666
-!*color9:      #cf6171
-!*color10:     #c5f779
-!*color11:     #fff796
-!*color12:     #4186be
-!*color13:     #cf9ebe
-!*color14:     #71bebe
-!*color15:     #ffffff
+! ! Colors by lolilolicon
+! !*background: #fcffdd
+! !*foreground: #5e5e58
+! !*cursorColor: #5e5e58
+! *color0: #666666
+! *color1: #ba3e73
+! *color2: #73ba3e
+! *color3: #ba733e
+! *color4: #3e73ba
+! *color5: #733eba
+! *color6: #3eba73
+! *color7: #aaaaaa
+! *color8: #434343
+! *color9: #87284d
+! *color10: #4d8728
+! *color11: #874d28
+! *color12: #284d87
+! *color13: #4d2887
+! *color14: #28874d
+! *color15: #8a8a8a
 
-!! katratxo's colors (dotfiles.org)
-!*color0:  #000000
-!*color1:  #AA0000
-!*color2:  #00AA00
-!*color3:  #AA5500
-!*color4:  #0000AA
-!*color5:  #AA00AA
-!*color6:  #00AAAA
-!*color7:  #AAAAAA
-!*color8:  #555555
-!*color9:  #FF5555
-!*color10: #55FF55
-!*color11: #FFFF55
-!*color12: #5555FF
-!*color13: #FF55FF
-!*color14: #55FFFF
-!*color15: #FFFFFF
+!! Colors of Thayer, found via Daisuke_Aramaki and based on Monokai
+!! Black
+!*color0: #262729
+!*color8: #554444
+!! Red
+!*color1: #F92671
+!*color9: #F92671
+!!*color9: #FF669D
+!! Green
+!*color2: #A6E22E
+!*color10: #A6E22E
+!!*color10: #BEED5F
+!! Yellow
+!*color3: #FD971F
+!*color11: #FD971F
+!!*color11: #E6DB74
+!! Blue
+!*color4: #66D9EF
+!*color12: #66D9EF
+!! Magenta
+!*color5: #9E6FFE
+!*color13: #9E6FFE
+!! Cyan
+!*color6: #5E7175
+!*color14: #A3BABF
+!! White
+!*color7: #CCCCC6
+!!*color7: #F8F8F2
+!*color15: #F8F8F2
+!
+!*foreground: #CCCCC6
+!*background: #262729
 
-!! babypuncher's colors (dotfiles.org)
-!*color0:  rgb:19/19/19
-!*color8:  rgb:25/25/25
-!*color1:  rgb:80/32/32
-!*color9:  rgb:98/2b/2b
-!*color2:  rgb:5b/76/2f
-!*color10: rgb:89/b8/3f
-!*color3:  rgb:aa/99/43
-!*color11: rgb:ef/ef/60
-!*color4:  rgb:32/4c/80
-!*color12: rgb:2b/4f/98
-!*color5:  rgb:70/6c/9a
-!*color13: rgb:82/6a/b1
-!*color6:  rgb:91/b1/93
-!*color14: rgb:a1/cd/cd
-!*color7:  rgb:ff/ff/ff
-!*color15: rgb:dd/dd/dd
-
-!! ootput (github)
-!*background: #1C1C1C
-!*foreground: #B4B4B4
-!*color0: #000000
-!*color1: #ff6565
-!*color2: #93d44f
-!*color3: #eab93d
-!*color4: #204a87
-!*color5: #ce5c00
-!*color6: #89b6e2
-!*color7: #cccccc
-!*color8: #555753
-!*color9: #ff8d8d
-!*color10: #c8e7a8
-!*color11: #ffc123
-!*color12: #3465a4
-!*color13: #f57900
-!*color14: #46a4ff
-!*color15: #ffffff
-
-!!Wra!th (github, wraith0x2b)
-!*color0: #000000
-!*color1: #8e2d10
-!*color2: #4b6826
-!*color3: #b88b10
-!*color4: #2d63a5
-!*color5: #8e3d9d
-!*color6: #33859d
-!*color7: #454545
-!*color8: #454545
-!*color9: #cc3a0e
-!*color10: #85bb40
-!*color11: #e0c73d
-!*color12: #4891ff
-!*color13: #b954cb
-!*color14: #47b4d4
-!*color15: #ffffff
-
-
-!urxvt*background: rgba:0000/0000/0000/8888
-urxvt*background: #000000
-urxvt*cursorBlink: false
+!urxvt*background: [95]#262729
+!
+!urxvt*background: [80]#d0d0d0
+!urxvt*background: #ffffff
+!urxvt*background: rgba:0000/0000/0000/f300
+!urxvt*background: #000000
 urxvt*depth: 32
-urxvt*foreground: white
-!urxvt*font: xft:DejaVu Sans Mono-8:antialias=true
+!urxvt*foreground: 0
+!urxvt*foreground: 7
+!urxvt*font: xft:DejaVu Sans Mono-9:antialias=true
 !urxvt*font: xft:Onuava-7:antialias=true
-urxvt*font: xft:Inconsolata-9:antialias=true
-urxvt*perl-ext-common: default,tabbed,matcher
+!urxvt*font: xft:Inconsolata-13:antialias=true:autohint=true
+urxvt*font: xft:Droid Sans Mono-11:antialias=true:autohint=true
+!urxvt*font: xft:Lekton
+!urxvt*font: xft:Droid Sans Mono-10:antialias=false:autohint=false
+!urxvt*font: xft:Inconsolata-13:antialias=false:autohint=false
+!urxvt*font: xft:Inconsolata-13:antialias=true:autohint=false
+urxvt*keysym.C-minus: command:\033]50;xft:Inconsolata-10:antialias=false:autohint=false\007
+urxvt*keysym.C-0: command:\033]50;xft:Inconsolata-13:antialias=false:autohint=false\007
+urxvt*keysym.C-equal: command:\033]50;xft:Inconsolata-20:antialias=false:autohint=false\007
+!urxvt*font: xft:Onuava-7
+urxvt*perl-ext-common: default,matcher
 urxvt*scrollBar: false
-urxvt*transparent: true
-urxvt*transparentTabbar: true
-urxvt*shading: 50
-urxvt.cursorColor: #FF0000
+!urxvt*transparentTabbar: true
+urxvt*urgentOnBell: true
+urxvt.cursorColor: 1
+urxvt.cursorBlink: true
+!urxvt.cursorUnderline: true
 
+URxvt.internalBorder: 0
 URxvt.pointerBlank: true
-URxvt.tabbed.tabbar-fg: 7
-URxvt.tabbed.tabbar-bg: 0
-URxvt.tabbed.tab-fg: 7
-URxvt.tabbed.tab-bg: 4
+!URxvt.tabbed.tabbar-fg: 7
+!URxvt.tabbed.tabbar-bg: -1
+!URxvt.tabbed.tab-fg: 7
+!URxvt.tabbed.tab-bg: -1
+!URxvt.tintColor: #ffffff
+!URxvt.shading: 50
+!URxvt.transparent: true
 URxvt.urgentOnBell: true
+URxvt.urlLauncher: chromium
+
+XTerm.cursorUnderline: true
+XTerm.font: -*-terminus-*-*-*-*-12-*-*-*-*-*-*-*

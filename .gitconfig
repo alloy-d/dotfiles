@@ -1,9 +1,3 @@
 [user]
 	name = Adam Lloyd
-	email = lloyda2@rpi.edu
-[color]
-	diff = auto
-	status = auto
-	branch = auto
-[core]
-	excludesfile = "/home/lloyda2/.git.d/global_excludes"
+	email = adam@alloy-d.net

@@ -1,0 +1,273 @@
+;; -*-lisp-*-
+;; vim:ft=lisp
+;;
+;; Here is a sample .stumpwmrc file
+
+(in-package :stumpwm)
+
+;; the mpd module is clever, but I'd rather use simple shell commands.
+;(load-module "mpd")
+;(setf *mpd-server* '(127 0 0 1))
+;(mpd-connect)
+;(define-key *root-map* (kbd "m") '*mpd-map*)
+
+;; click-to-focus.  I'm a horrible person, I know.
+(defparameter *mouse-focus-policy* :click)
+
+;; change the prefix key to something else
+(set-prefix-key (kbd "C-s"))
+
+;; someone else's handy shortcut
+(defun cat (&rest strings)
+  (apply 'concatenate 'string strings))
+
+;; from http://cl-cookbook.sourceforge.net/strings.html
+(defun replace-all (string part replacement &key (test #'char=))
+  "Returns a new string in which all the occurences of the part are replaced with replacement."
+  (with-output-to-string (out)
+    (loop with part-length = (length part)
+          for old-pos = 0 then (+ pos part-length)
+          for pos = (search part string
+                            :start2 old-pos
+                            :test test)
+          do (write-string string out
+                           :start old-pos
+                           :end (or pos (length string)))
+          when pos do (write-string replacement out)
+          while pos)))
+
+;; TODO: will not work without patching stumpwm's color code.
+; (setf *colors* (list
+;                "#262729"
+;                "#f93671"
+;                "#a6e22e"
+;                "#fd971f"
+;                "#66d9ef"
+;                "#9e6ffe"
+;                "#5e7175"
+;                "#f8f8f2"))
+
+;; things for me
+(defparameter *fg-color* "blue")
+(defparameter *bg-color* "white")
+(defparameter *focus-color* "cyan")
+(defparameter *border-color* "cyan")
+(defparameter *font* "-xos4-terminus-medium-*-*-*-14-*-*-*-*-*-iso10646-*")
+;(defparameter *font* "-*-fkp-medium-r-normal-*-17-120-100-100-m-*-*-*")
+;(defparameter *font* "-*-pixelcarnage monospace-*-*-*-*-*-*-*-*-*-*-*-*")
+(defparameter *urxvt-shading* "180") ;; 160 works well for light backgrounds; higher is more opaque
+(defparameter *9t-root* "/home/adam/sys/mnt/twitter")
+(defparameter *sound-system* "alsa")
+
+(defparameter *screenshot-path* "/home/adam/images/screenshots")
+
+(defparameter *term-command* 
+  (cat "urxvtc "
+       " -depth 24 "
+       " -tr "
+       " -sh " *urxvt-shading*
+       " -fade 70 "
+       " -fadecolor '[0]grey' "
+       " -fn '" *font* "'"))
+(defparameter *lock-command* "xlock")
+(defparameter *launcher-command*
+  (cat "dmenu_run "
+       " -fn " *font*
+       " -nb " *bg-color*
+       " -nf " *fg-color*
+       " -sf " *fg-color*
+       " -sb " *focus-color*))
+
+(defcommand run-launcher () ()
+            "Run a launcher (dmenu, for example)."
+            (run-shell-command *launcher-command*))
+(defcommand spawn-term (&optional (command "")) (:rest)
+            "Open a new terminal emulator."
+            (run-shell-command *term-command*))
+(defcommand lock-screen () ()
+            "Lock the screen."
+            (run-shell-command *lock-command*))
+(defcommand gselect-by-first () ()
+            "Select the first group that starts with the next typed letter."
+            (let ((initial (read-one-char (current-screen))))
+              (when initial
+                (eval-command (format nil "gselect ~a" initial)))))
+
+(defcommand screenshot () ()
+            "Take a screenshot."
+            (run-shell-command (cat "scrot -e 'mv $f " *screenshot-path* "'")))
+
+;; TODO: make sure Twitter is mounted!
+(defcommand tweet () (:rest)
+            "Post to Twitter."
+            (let ((tweet (read-one-line (current-screen) "Tweet: ")))
+              (when tweet
+                (run-shell-command (cat (format nil "echo \"~a\" >> " 
+                                                (replace-all tweet "\"" "\\\"")) *9t-root* "/status")))))
+
+(defcommand surf-to () (:rest)
+            "Use surf to open a URL."
+            (let ((url (read-one-line (current-screen) "Surf to: ")))
+              (when url
+                (run-shell-command (cat "surf " url)))))
+
+;; ALSA volume control
+(defcommand alsa-volume-lower () ()
+            "Lower the volume using ALSA."
+            (run-shell-command "amixer set Master 1-"))
+(defcommand alsa-volume-raise () ()
+            "Raise the volume using ALSA."
+            (run-shell-command "amixer set Master 1+"))
+(defcommand alsa-volume-toggle () ()
+            "Mute or unmute the volume using ALSA."
+            (run-shell-command "amixer set Master toggle"))
+
+;; OSS volume control
+(defcommand oss-volume-lower () ()
+            "Lower the volume using OSS."
+            (run-shell-command "ossmix misc.front -- -1"))
+(defcommand oss-volume-raise () ()
+            "Raise the volume using OSS."
+            (run-shell-command "ossmix misc.front +1"))
+(defcommand oss-volume-toggle () ()
+            "Mute or unmute the volume using OSS (note: unmute is fairly useless."
+            (run-shell-command "ossmix misc.front TOGGLE"))
+
+;; Commands actually used to control volume
+;; FIXME: these should be aliases, no?
+(defcommand volume-lower () () 
+            "Lower the volume."
+            (eval-command (cat *sound-system* "-volume-lower")))
+(defcommand volume-raise () ()
+            "Raise the volume."
+            (eval-command (cat *sound-system* "-volume-raise")))
+(defcommand volume-toggle () ()
+            "Mute or unmute the volume."
+            (eval-command (cat *sound-system* "-volume-toggle")))
+
+;; MPD control
+(defcommand mpd-toggle () ()
+  (run-shell-command "mpc toggle"))
+(defcommand mpd-stop () ()
+  (run-shell-command "mpc stop"))
+(defcommand mpd-next () ()
+  (run-shell-command "mpc next"))
+(defcommand mpd-prev () ()
+  (run-shell-command "mpc prev"))
+
+;;;; key bindings for the top-map (no prefix)
+(define-key *top-map* (kbd "M-Tab") "fnext")
+(define-key *top-map* (kbd "M-ISO_Left_Tab") "fother") ;; ISO_Left_Tab == backtab
+
+;; Vim-style navigation (like wmii), for colemak
+(define-key *top-map* (kbd "s-h") "move-focus left")
+(define-key *top-map* (kbd "s-n") "move-focus down")
+(define-key *top-map* (kbd "s-e") "move-focus up")
+(define-key *top-map* (kbd "s-i") "move-focus right")
+(define-key *top-map* (kbd "s-H") "move-window left")
+(define-key *top-map* (kbd "s-N") "move-window down")
+(define-key *top-map* (kbd "s-E") "move-window up")
+(define-key *top-map* (kbd "s-I") "move-window right")
+
+;; group navigation with super-[1-9], like <insert tiler here>
+(dotimes (i 10)
+  (unless (eq i 0)
+    (define-key *top-map* (kbd (format nil "s-~a" i))
+                (format nil "gselect ~a" i))))
+
+;; group creation/navigation with s-t, like wmii
+(define-key *top-map* (kbd "s-t") "gnew")
+(define-key *top-map* (kbd "s-T") "gmove")
+(define-key *top-map* (kbd "s-v") "gselect-by-first")
+
+;; Audio keys
+(define-key *top-map* (kbd "XF86AudioLowerVolume") "volume-lower")
+(define-key *top-map* (kbd "XF86AudioRaiseVolume") "volume-raise")
+(define-key *top-map* (kbd "XF86AudioMute") "volume-toggle")
+(define-key *top-map* (kbd "XF86AudioPlay") "mpd-toggle")
+(define-key *top-map* (kbd "XF86AudioStop") "mpd-stop")
+(define-key *top-map* (kbd "XF86AudioNext") "mpd-next")
+(define-key *top-map* (kbd "XF86AudioPrev") "mpd-prev")
+
+(define-key *top-map* (kbd "s-p") "run-launcher")
+(define-key *top-map* (kbd "s-F2") "run-launcher")
+(define-key *top-map* (kbd "s-Return") "spawn-term")
+(define-key *top-map* (kbd "s-C") "delete")
+
+(define-key *top-map* (kbd "SunPrint_Screen") "screenshot")
+
+;; TODO: unbind the *proper* s
+(loop for i in '("e" "C-e" "s" "S" "w") do 
+      (undefine-key *root-map* (kbd i)))
+
+;; tmux-like bindings
+(define-key *root-map* (kbd "=") "vsplit")
+(define-key *root-map* (kbd "%") "hsplit")
+(define-key *root-map* (kbd "w") "select")
+
+(define-key *root-map* (kbd "C-r") "refresh")
+
+(define-key *groups-map* (kbd "v") "gselect-by-first")
+
+;; open a terminal
+(define-key *root-map* (kbd "c") "spawn-term")
+(define-key *root-map* (kbd "C-c") "spawn-term")
+(define-key *root-map* (kbd "Return") "spawn-term")
+
+(define-key *root-map* (kbd "C-l") "lock-screen")
+
+;; I'm not even sure this is a good idea...
+(define-key *root-map* (kbd "t") "tweet")
+
+(define-key *root-map* (kbd "s") "surf-to")
+
+;; Message window font
+(set-font *font*)
+
+;; Draw the window border with all available space.
+(setf *window-border-style* :NONE)
+
+(setf *screen-mode-line-format*
+      (list "[%g] %w"))
+(setf *mode-line-position* :top)
+(setf *mode-line-border-width* 0)
+(setf *mode-line-pad-y* 0)
+(setf *mode-line-pad-x* 0)
+
+;;; Define window placement policy...
+
+;; Clear rules
+(clear-window-placement-rules)
+
+;; Last rule to match takes precedence!
+;; TIP: if the argument to :title or :role begins with an ellipsis, a substring
+;; match is performed.
+;; TIP: if the :create flag is set then a missing group will be created and
+;; restored from *data-dir*/create file.
+;; TIP: if the :restore flag is set then group dump is restored even for an
+;; existing group using *data-dir*/restore file.
+(define-frame-preference "Default"
+  ;; frame raise lock (lock AND raise == jumpto)
+  (0 t nil :class "Konqueror" :role "...konqueror-mainwindow")
+  (1 t nil :class "XTerm"))
+
+(define-frame-preference "Ardour"
+  (0 t   t   :instance "ardour_editor" :type :normal)
+  (0 t   t   :title "Ardour - Session Control")
+  (0 nil nil :class "XTerm")
+  (1 t   nil :type :normal)
+  (1 t   t   :instance "ardour_mixer")
+  (2 t   t   :instance "jvmetro")
+  (1 t   t   :instance "qjackctl")
+  (3 t   t   :instance "qjackctl" :role "qjackctlMainForm"))
+
+;(define-frame-preference "web"
+;  (0 t      t   t
+
+;(add-hook *new-frame-hook* (lambda (new)
+;                             (frame-set-x new (+ (frame-x new) 16))
+;                             (frame-set-y new (+ (frame-y new) 14))
+;                             (setf (frame-height new) (- (frame-height new) 14))
+;                             (setf (frame-width new) (- (frame-width new) 16))))
+
+(run-shell-command "sh ~/.fehbg")

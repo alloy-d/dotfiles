@@ -1,147 +1,185 @@
 ;; .emacs
 
-;;; uncomment this line to disable loading of "default.el" at startup
-;; (setq inhibit-default-init t)
+(add-to-list 'load-path "~/sys/go/misc/emacs")
+(add-to-list 'load-path "~/sys/lib/elisp")
+(add-to-list 'load-path "~/sys/lib/elisp/color-theme-molokai")
+(add-to-list 'load-path "~/sys/lib/elisp/ruby-mode")
+(add-to-list 'load-path "/usr/lib/erlang/lib/tools-2.6.5.1/emacs")
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/dvc")
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/haskell-mode")
 
-;; enable visual feedback on selections
-;(setq transient-mark-mode t)
+(add-to-list 'exec-path "/usr/lib/erlang/bin")
 
-;; default to better frame titles
-(setq frame-title-format
-      (concat  "%b - emacs@" (system-name)))
-
-;; default to unified diffs
-(setq diff-switches "-u")
-
-;; always end a file with a newline
-;(setq require-final-newline 'query)
-
-;;; uncomment for CJK utf-8 support for non-Asian users
-;; (require 'un-define)
-(custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(inhibit-startup-screen t))
-(custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#ffffff" :foreground "#1a1a1a" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 80 :width normal :foundry "monotype" :family "Andale Mono")))))
-
-
-;;;; EXTERNAL LIBRARIES ;;;;
-;; add path for my elisp libraries
-(add-to-list 'load-path "~/lib/elisp/")
-
-;; use icomplete+
-(require 'icomplete+)
-
-;; use git-emacs
-;;(require 'git-emacs)
-
-;; use emacs-git-mode
-(require 'git)
-(autoload 'git-blame-mode "git-blame" "Minor mode for incremental blame for Git." t)
-
-;; use nxhtml
-(load "~/lib/elisp/nxhtml/autostart.el")
- (add-hook 'nxml-mode-hook
-           (lambda () (rng-validate-mode 0))
-           t)
-
-;; use doxymacs
-;(require 'doxymacs)
-;(add-hook 'c-mode-common-hook 'doxymacs-mode)
-;(defun my-doxymacs-font-lock-hook ()
-;  (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
-;      (doxymacs-font-lock)))
-;(add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
-
-;; use filladapt
+(require 'autopair)
+(require 'color-theme-molokai)
+;; (require 'erlang-start) ;; don't like this...
 (require 'filladapt)
-(add-hook 'c-mode-common-hook 'turn-on-filladapt-mode)
+(require 'icomplete+)
+;; (require 'git)
+
+;; (autoload 'git-blame-mode "git-blame"
+;;   "Minor mode for incremental blame for Git." t)
+(autoload 'go-mode "go-mode"
+  "Major mode for editing Go files.")
+(autoload 'haml-mode "haml-mode"
+  "Major mode for editing HAML files.")
+(autoload 'haskell-mode "haskell-mode"
+  "Major mode for editing Haskell files.")
+(autoload 'markdown-mode "markdown-mode.el"
+  "Major mode for editing Markdown files.")
+(autoload 'php-mode "php-mode"
+  "Major mode for editing PHP files.")
+(autoload 'quack "quack"
+  "Enhanced support for editing and running Scheme code.")
+(autoload 'ruby-mode "ruby-mode"
+  "Major mode for editing Ruby files.")
+(autoload 'sass-mode "sass-mode"
+  "Major mode for editing Sass files.")
+(autoload 'yaml-mode "yaml-mode"
+  "Major mode for editing YAML files.")
+
+;; (load "~/lib/elisp/nxhtml/autostart.el")
 
 
+(setq diff-switches "-u")
+(setq erlang-root-dir "/usr/lib/erlang")
+(setq frame-title-format (concat "%b - emacs@" (system-name)))
+(setq inhibit-startup-screen t)
+(setq prolog-program-name "/usr/bin/pl")
+(setq require-final-newline 'visit-save)
 
-;;;; MODES ;;;;
-;; Configure org-mode
-(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-(global-set-key "\C-c l" 'org-store-link)
-(global-set-key "\C-c a" 'org-agenda)
-(global-set-key "\C-c b" 'org-iswitchb)
+(setq-default browse-url-browser-function 'browse-url-generic)
+(setq-default browse-url-generic-program "chromium")
 (setq-default calendar-week-start-day 1)
-
-;; use lua mode for lua files
-(setq auto-mode-alist (cons '("\.lua$" . lua-mode) auto-mode-alist))
-(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
-
-;;;; GLOBAL MINOR MODES ;;;;
-;; use spaces instead of tabs
 (setq-default indent-tabs-mode nil)
-(setq-default tab-width 2)
-(setq-default standard-indent 2)
-
-;; show line numbers in left margin
-(global-linum-mode 1)
-
-;; highlight the current line
-(global-hl-line-mode 1)
-
-;; get rid of the scrollbar and menubar
-(scroll-bar-mode 0)
-(tool-bar-mode 0)
-(menu-bar-mode 0)
-
-;; display battery info on the mode line
-(display-battery-mode 1)
-
-;; display the column number in the mode line
-(setq-default column-number-mode 1)
-
-;; enable adaptive fill mode
-;(setq-default adaptive-fill-mode 1)
-
-;; enable icomplete-mode
-(icomplete-mode 1)
-
-;; use color in shells
-(ansi-color-for-comint-mode-on)
+(setq-default mail-self-blind t)
+(setq-default rmail-file-name "~/.rmail")
+(setq-default standard-indent 4)
+(setq-default tab-width 4)
+(setq-default user-mail-address "adam@alloy-d.net")
 
 
-;;;; CUSTOM FUNCTION DEFINITIONS ;;;;
+;; ;; laptop screen only
+;; (set-face-attribute 'default nil
+;;                     :family "Droid Sans Mono"
+;;                     :height 98)
+;; (set-face-attribute 'default nil
+;;                     :family "Consolas"
+;;                     :height 102)
+;; (set-face-attribute 'default nil
+;;                     :family "Inconsolata"
+;;                     :height 102)
+
+;; laptop screen and 1440x900 second monitor
+;; (set-face-attribute 'default nil
+;;                     :family "Inconsolata"
+;;                     :height 120)
+;; (set-face-attribute 'default nil
+;;                     :family "Inconsolata"
+;;                     :height 151)
+;; (set-face-attribute 'default nil
+;;                     :family "Droid Sans Mono"
+;;                     :height 116)
+;; (set-face-attribute 'default nil
+;;                     :family "Consolas"
+;;                     :height 141)
+(set-face-attribute 'default nil
+                    :family "Consolas"
+                    :height 151)
+
+;; ;; laptop screen and Sun monitor in AE215.
+;; (set-face-attribute 'default nil
+;;                     :family "Droid Sans Mono"
+;;                     :height 135)
+;; (set-face-attribute 'default nil
+;;                     :family "Inconsolata"
+;;                     :height 130)
+
+(add-to-list 'auto-mode-alist '("\\.go$" . go-mode))
+(add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
+(add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
+(add-to-list 'auto-mode-alist '("\\.m{d,arkdown}$" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.notes$" . org-mode))
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+(add-to-list 'auto-mode-alist '("\\.php[345]?$" . php-mode))
+(add-to-list 'auto-mode-alist '("\\.pl$" . prolog-mode))
+(add-to-list 'auto-mode-alist '("\\.s$" . scheme-mode))
+(add-to-list 'auto-mode-alist '("\\.sass$" . sass-mode))
+(add-to-list 'auto-mode-alist '("\\.ya?ml$" . yaml-mode))
+
+(add-to-list 'auto-mode-alist '("/PKGBUILD$" . shell-script-mode))
+
+
+;; (defun doxymacs-font-lock-hook ()
+;;   (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
+;;       (doxymacs-font-lock)))
+
 (defun open-new-line (arg)
   "Open a new line below the current line and move to its start."
   (interactive "P")
   (end-of-line)
-  (newline 1))
+  (newline-and-indent))
 
-;;;; VARIABLE OVERRIDES ;;;;
-;; tab width
-(setq-default tab-width 2)
+;; (dolist (command '(yank yank-pop))
+;;   (eval `(defadvice ,command (after indent-region activate)
+;;            (and (not current-prefix-arg)
+;;                 (member major-mode '(c-mode
+;;                                      c++-mode
+;;                                      emacs-lisp-mode
+;;                                      haskell-mode
+;;                                      latex-mode
+;;                                      lua-mode
+;;                                      plain-tex-mode
+;;                                      python-mode
+;;                                      ruby-mode
+;;                                      scheme-mode))
+;;                 (let ((mark-even-if-inactive transient-mark-mode))
+;;                   (indent-region (region-beginning) (region-end) nil))))))
 
-;; for mail
-(setq-default user-mail-address "lloyda2@rpi.edu")
-(setq-default mail-self-blind t)
-(setq-default rmail-file-name "~/.rmail")
 
-;;;; CUSTOM KEYBINDINGS ;;;;
-;; give C-x C-m the same functionality as M-x
-(global-set-key "\C-x\C-m" 'execute-extended-command)
+(add-hook 'c-mode-common-hook 'turn-on-filladapt-mode)
+;; (add-hook 'font-lock-mode-hook  'doxymacs-font-lock-hook)
+(add-hook 'nxml-mode-hook
+          (lambda () (rng-validate-mode 0))
+          t)
+(add-hook 'ruby-mode-hook
+          (lambda ()
+            (add-hook 'local-write-file-hooks
+                      '(lambda ()
+                         (save-excursion
+                           (untabify (point-min) (point-max))
+                           (delete-trailing-whitespace)
+                           )))
+            (set (make-local-variable 'indent-tabs-mode) 'nil)
+            (set (make-local-variable 'tab-width) 2)
+            (define-key ruby-mode-map "\C-m" 'reindent-then-newline-and-indent)
+            ))
 
-;; bind backward-kill-word to C-w; rebind kill-region to C-x C-k
+
+(global-set-key "\C-c a" 'org-agenda)
+(global-set-key "\C-c b" 'org-iswitchb)
+(global-set-key "\C-c l" 'org-store-link)
+(global-set-key "\C-m" 'newline-and-indent)
+(global-set-key "\C-o" 'open-new-line)
 (global-set-key "\C-w" 'backward-kill-word)
 (global-set-key "\C-x\C-k" 'kill-region)
-
-;; rebind C-o to open-new-line
-(global-set-key "\C-o" 'open-new-line)
-
-;; bind C-f12 to shell
-(global-set-key [(control f12)] 'shell)
+(global-set-key "\C-x\C-m" 'execute-extended-command)
 
 
-(put 'upcase-region 'disabled nil)
+(ansi-color-for-comint-mode-on)
+(autopair-global-mode)
+(color-theme-molokai)
+(column-number-mode 1)
+;; (display-battery-mode 1)
+(display-time-mode 1)
+(fringe-mode (cons 4 4))
+(global-hl-line-mode 1)
+(icomplete-mode 1)
+(menu-bar-mode 0)
+(scroll-bar-mode 0)
+(tool-bar-mode 0)
+
+
 
 (put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)

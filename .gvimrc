@@ -1,6 +1,10 @@
-set gfn=Monospace\ 8
+"set gfn=Monospace\ 8
+set gfn=Inconsolata\ 13
 set bg=light
-colo spring
+let g:molokai_original=0
+colo molokai
+"colo winter
+"colo colorful
 
 set cursorline
 "set cursorcolumn
@@ -14,5 +18,5 @@ set guioptions-=T
 " Remove the right scrollbar
 set guioptions-=r
 
-" Use consold dialogs instead of popups
+" Use console dialogs instead of popups
 set guioptions+=c
