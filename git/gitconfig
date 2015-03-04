@@ -1,0 +1,25 @@
+[user]
+  name = Adam Lloyd
+  email = adam@alloy-d.net
+[alias]
+  ci = commit
+  co = checkout
+  d  = difftool
+  st = status --short
+  pr = pull-request
+  current = rev-parse --abbrev-ref HEAD
+  autocommit = !"git commit -m \"$(curl -s 'http://whatthecommit.com' | grep -A1 'id=\"content\"' | tail -n 1 | tr -d '<p>')\""
+  lol = log --oneline --graph --decorate
+[color]
+  ui = auto
+[core]
+  editor = nano
+  excludesfile = /Users/adam/.gitignore
+[difftool "Kaleidoscope"]
+  cmd = ksdiff-wrapper git \"$LOCAL\" \"$REMOTE\"
+[difftool]
+  prompt = false
+[diff]
+  tool = Kaleidoscope
+[push]
+  default = simple
