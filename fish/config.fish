@@ -3,7 +3,7 @@ set fish_greeting
 # Third-party tools
 # -----------------
 
-. /usr/local/etc/autojump.fish
+[ -f /usr/local/share/autojump/autojump.fish ]; and . /usr/local/share/autojump/autojump.fish
 
 
 # Aliases
