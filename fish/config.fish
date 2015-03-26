@@ -28,6 +28,8 @@ alias vp='vagrant provision'
 set -x GOPATH $HOME/.go
 set -x PATH $HOME/.rbenv/shims $GOPATH/bin /usr/local/opt/go/libexec/bin $PATH
 
+set -x COWPATH "$HOME/.cows:$COWPATH"
+
 set -x ARDUINO_DIR /Applications/Arduino.app/Contents/Java/
 set -x ARDMK_DIR $HOME/Code/Arduino-Makefile
 
