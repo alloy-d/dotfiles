@@ -20,7 +20,12 @@ alias bx='bundle exec'
 # Convenience aliases for Vagrant:
 alias vp='vagrant provision'
 
-
+# Aliases for git:
+alias gap='git add -p'
+alias gci='git ci'
+alias gp='git push'
+alias gpsu='git push --set-upstream'
+alias gst='git st'
 
 # Environment
 # -----------
