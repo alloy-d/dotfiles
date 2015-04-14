@@ -9,8 +9,6 @@ set fish_greeting
 # Aliases
 # -------
 
-alias subl='/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl'
-
 alias c='curl -D - -H -'
 
 # Some convenience aliases for bundler:
