@@ -17,6 +17,7 @@ alias bx='bundle exec'
 
 # Convenience aliases for Vagrant:
 alias vp='vagrant provision'
+alias vssh='vagrant ssh'
 
 # Aliases for git:
 alias gap='git add -p'
