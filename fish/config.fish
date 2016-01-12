@@ -37,7 +37,8 @@ set -x COWPATH "$HOME/.cows:$COWPATH"
 set -x ARDUINO_DIR /Applications/Arduino.app/Contents/Java/
 set -x ARDMK_DIR $HOME/Code/Arduino-Makefile
 
-set -x ANSIBLE_VAULT_PASSWORD_FILE $HOME/.vault.txt
+# Point Ansible to a vault password file:
+#set -x ANSIBLE_VAULT_PASSWORD_FILE $HOME/.vault.txt
 
 
 # Fortune
