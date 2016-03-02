@@ -14,7 +14,7 @@
   ui = auto
 [core]
   editor = nano
-  excludesfile = /Users/adam/.gitignore
+  excludesfile = ~/.gitignore
 [difftool "Kaleidoscope"]
   cmd = ksdiff-wrapper git \"$LOCAL\" \"$REMOTE\"
 [difftool]
