@@ -1,6 +1,7 @@
 [user]
   name = Adam Lloyd
   email = adam@alloy-d.net
+  signingkey = 8C3DAAD7
 [alias]
   ci = commit
   co = checkout
@@ -12,6 +13,8 @@
   lol = log --oneline --graph --decorate
 [color]
   ui = auto
+[commit]
+  gpgsign = yes
 [core]
   editor = nano
   excludesfile = ~/.gitignore
