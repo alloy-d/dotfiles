@@ -34,6 +34,8 @@ set -x PATH $HOME/.rbenv/shims $GOPATH/bin /usr/local/opt/go/libexec/bin /usr/lo
 
 set -x COWPATH "$HOME/.cows:$COWPATH"
 
+set -x NVM_DIR "$HOME/.nvm"
+
 set -x ARDUINO_DIR /Applications/Arduino.app/Contents/Java/
 set -x ARDMK_DIR $HOME/Code/Arduino-Makefile
 
