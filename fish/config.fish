@@ -30,7 +30,7 @@ alias gst='git st'
 # -----------
 
 set -x GOPATH $HOME/.go
-set -x PATH $HOME/.rbenv/shims $GOPATH/bin /usr/local/opt/go/libexec/bin /usr/local/sbin $PATH
+set -x PATH $HOME/.rbenv/shims /usr/local/sbin $PATH
 
 set -x COWPATH "$HOME/.cows:$COWPATH"
 
