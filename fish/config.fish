@@ -26,11 +26,13 @@ alias gp='git push'
 alias gpsu='git push --set-upstream'
 alias gst='git st'
 
+alias swift="env PATH=/System/Library/Frameworks/Python.framework/Versions/Current/bin:$PATH swift"
+
 # Environment
 # -----------
 
 set -x GOPATH $HOME/.go
-set -x PATH $HOME/.rbenv/shims /usr/local/sbin $PATH
+set -x PATH $HOME/.rbenv/shims $PATH
 
 set -x COWPATH "$HOME/.cows:$COWPATH"
 
@@ -54,3 +56,6 @@ if status --is-interactive
     echo ""
   end
 end
+
+# opam configuration
+source /Users/adam/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
