@@ -59,3 +59,6 @@ end
 
 # opam configuration
 source /Users/adam/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
+
+# HBO configuration
+source "$HOME/Code/HBO/config.fish"; or true
