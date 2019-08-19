@@ -36,6 +36,8 @@ set -x PATH $HOME/.rbenv/shims $PATH
 
 set -x COWPATH "$HOME/.cows:$COWPATH"
 
+set -x RIPGREP_CONFIG_PATH "$HOME/.ripgreprc"
+
 set -x NVM_DIR "$HOME/.nvm"
 
 set -x ARDUINO_DIR /Applications/Arduino.app/Contents/Java/
