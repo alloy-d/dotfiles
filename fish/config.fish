@@ -63,4 +63,7 @@ end
 source /Users/adam/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
 
 # HBO configuration
-source "$HOME/Code/HBO/config.fish"; or true
+set HBO_CONFIG "$HOME/Code/HBO/config.fish"
+if test -e "$HBO_CONFIG"
+  source "$HBO_CONFIG"
+end
