@@ -32,7 +32,7 @@ alias swift="env PATH=/System/Library/Frameworks/Python.framework/Versions/Curre
 # -----------
 
 set -x GOPATH $HOME/.go
-set -x PATH $HOME/.rbenv/shims $PATH
+set -x PATH $HOME/.rbenv/shims $PATH /usr/local/sbin
 
 set -x COWPATH "$HOME/.cows:$COWPATH"
 
