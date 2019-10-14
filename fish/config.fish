@@ -31,6 +31,8 @@ alias swift="env PATH=/System/Library/Frameworks/Python.framework/Versions/Curre
 # Environment
 # -----------
 
+set -x EDITOR nvim
+
 set -x GOPATH $HOME/.go
 set -x PATH $HOME/.rbenv/shims $PATH
 
