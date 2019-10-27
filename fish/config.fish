@@ -47,6 +47,12 @@ set -x ARDMK_DIR $HOME/Code/Arduino-Makefile
 #set -x ANSIBLE_VAULT_PASSWORD_FILE $HOME/.vault.txt
 
 
+# GPG Agent
+# ---------
+set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
+gpgconf --launch gpg-agent
+
+
 # Fortune
 # -------
 
