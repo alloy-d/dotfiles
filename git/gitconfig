@@ -1,7 +1,7 @@
 [user]
   name = Adam Lloyd
   email = adam@alloy-d.net
-  signingkey = 8C3DAAD7
+  signingkey = 0xCE6763347250996E
 [alias]
   ci = commit
   co = checkout
