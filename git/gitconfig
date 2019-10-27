@@ -16,7 +16,7 @@
 [commit]
   gpgsign = yes
 [core]
-  editor = nano
+  editor = nvim
   excludesfile = ~/.gitignore
 [difftool "Kaleidoscope"]
   cmd = ksdiff-wrapper git \"$LOCAL\" \"$REMOTE\"
