@@ -28,6 +28,10 @@ alias gst='git st'
 
 alias swift="env PATH=/System/Library/Frameworks/Python.framework/Versions/Current/bin:$PATH swift"
 
+function rgl --wraps rg
+  rg --color=always $argv | less -R
+end
+
 # Environment
 # -----------
 
