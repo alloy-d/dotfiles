@@ -23,6 +23,7 @@ alias vssh='vagrant ssh'
 alias gap='git add -p'
 alias gci='git ci'
 alias gp='git push'
+alias gpc='git push origin (git current)'
 alias gpsu='git push --set-upstream'
 alias gst='git st'
 
