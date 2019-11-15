@@ -27,6 +27,10 @@ alias gpc='git push origin (git current)'
 alias gpsu='git push --set-upstream'
 alias gst='git st'
 
+# Aliases for vim:
+alias nview='nvim -R'
+alias ndiff='nvim -d'
+
 alias swift="env PATH=/System/Library/Frameworks/Python.framework/Versions/Current/bin:$PATH swift"
 
 function rgl --wraps rg
