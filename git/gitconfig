@@ -20,10 +20,12 @@
   excludesfile = ~/.gitignore
 [difftool "Kaleidoscope"]
   cmd = ksdiff-wrapper git \"$LOCAL\" \"$REMOTE\"
+[difftool "nvim diff"]
+  cmd = nvim -R -d \"$LOCAL\" \"$REMOTE\"
 [difftool]
   prompt = false
 [diff]
-  tool = Kaleidoscope
+  tool = nvim diff
 [push]
   default = simple
 [gpg]
