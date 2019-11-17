@@ -23,8 +23,13 @@ alias vssh='vagrant ssh'
 alias gap='git add -p'
 alias gci='git ci'
 alias gp='git push'
+alias gpc='git push origin (git current)'
 alias gpsu='git push --set-upstream'
 alias gst='git st'
+
+# Aliases for vim:
+alias nview='nvim -R'
+alias ndiff='nvim -d'
 
 alias swift="env PATH=/System/Library/Frameworks/Python.framework/Versions/Current/bin:$PATH swift"
 
@@ -43,6 +48,8 @@ set -x PATH $HOME/.rbenv/shims $PATH /usr/local/sbin
 set -x COWPATH "$HOME/.cows:$COWPATH"
 
 set -x RIPGREP_CONFIG_PATH "$HOME/.ripgreprc"
+
+set -x BAT_THEME "ansi-dark"
 
 set -x NVM_DIR "$HOME/.nvm"
 
