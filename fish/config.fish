@@ -27,6 +27,16 @@ alias gpc='git push origin (git current)'
 alias gpsu='git push --set-upstream'
 alias gst='git st'
 
+function gmtm --wraps 'git merge' --description 'merge a branch into the latest master'
+  git co master && git pull origin master && git merge --no-ff $argv
+end
+function gmm --wraps 'git merge' --description 'merge the latest master into the current branch'
+  git fetch origin && git merge --no-ff origin/master $argv
+end
+function gdel --wraps 'git branch' --description 'deletes a git branch real good'
+  git branch -d "$argv[1]" && git push origin ":$argv[1]"
+end
+
 # Aliases for vim:
 alias nview='nvim -R'
 alias ndiff='nvim -d'
