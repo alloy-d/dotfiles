@@ -43,8 +43,8 @@ alias ndiff='nvim -d'
 
 alias swift="env PATH=/System/Library/Frameworks/Python.framework/Versions/Current/bin:$PATH swift"
 
-function rgl --wraps rg
-  rg --color=always $argv | less -R
+function rgl --wraps rg --description 'rg with pager'
+  rg --color=always --heading --line-number $argv | less -R
 end
 
 # Environment
