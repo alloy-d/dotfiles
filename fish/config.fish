@@ -27,6 +27,10 @@ alias gpc='git push origin (git current)'
 alias gpsu='git push --set-upstream'
 alias gst='git st'
 
+function kubegrep --wraps 'grep' --description 'grep for a pod name'
+  kubectl get pods | grep $argv | cut -f1 -d' '
+end
+
 function gmtm --wraps 'git merge' --description 'merge a branch into the latest master'
   git co master && git pull origin master && git merge --no-ff $argv
 end
