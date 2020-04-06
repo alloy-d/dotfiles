@@ -32,8 +32,18 @@ alias gpc='git push origin (git current)'
 alias gpsu='git push --set-upstream'
 alias gst='git st'
 
-function kubegrep --wraps 'grep' --description 'grep for a pod name'
-  kubectl get pods | grep $argv | cut -f1 -d' '
+function kubenames --wraps 'kubectl' --description 'get just the names of things from kubectl output'
+  cut -f1 -d' ' | grep -v '^NAME$'
+end
+
+function kubenamegrep --wraps 'grep' --description 'grep just the names of things from kubectl output'
+  grep $argv | kubenames
+end
+alias knames='kubenames'
+alias kng='kubenamegrep'
+
+function podgrep --wraps 'grep' --description 'grep for a pod name'
+  kubectl get pods | kubenamegrep $argv
 end
 
 function gmtm --wraps 'git merge' --description 'merge a branch into the latest master'
