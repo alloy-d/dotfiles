@@ -5,6 +5,11 @@ set fish_greeting
 
 [ -f /usr/local/share/autojump/autojump.fish ]; and . /usr/local/share/autojump/autojump.fish
 
+if status --is-interactive
+  set BASE16_SHELL "$HOME/.config/base16-shell/"
+  source "$BASE16_SHELL/profile_helper.fish"
+end
+
 
 # Aliases
 # -------
