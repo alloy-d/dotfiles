@@ -3,7 +3,16 @@ set fish_greeting
 # Third-party tools
 # -----------------
 
-[ -f /usr/local/share/autojump/autojump.fish ]; and . /usr/local/share/autojump/autojump.fish
+if [ -f /usr/share/autojump/autojump.fish ]
+  source /usr/share/autojump/autojump.fish
+else if [ -f /usr/local/share/autojump/autojump.fish ]
+  source /usr/local/share/autojump/autojump.fish
+end
+
+if status --is-interactive
+  set BASE16_SHELL "$HOME/.config/base16-shell"
+  source "$BASE16_SHELL/profile_helper.fish"
+end
 
 if status --is-interactive
   set BASE16_SHELL "$HOME/.config/base16-shell/"
