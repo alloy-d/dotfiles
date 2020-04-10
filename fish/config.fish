@@ -79,6 +79,7 @@ end
 # -----------
 
 set -x EDITOR nvim
+set -x TERMINAL kitty
 
 set -x GOPATH $HOME/.go
 set -x PATH $HOME/.rbenv/shims $PATH /usr/local/sbin
