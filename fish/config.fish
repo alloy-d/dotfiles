@@ -95,6 +95,8 @@ set -x NVM_DIR "$HOME/.nvm"
 set -x ARDUINO_DIR /Applications/Arduino.app/Contents/Java/
 set -x ARDMK_DIR $HOME/Code/Arduino-Makefile
 
+set -x SXHKD_SHELL /usr/bin/sh
+
 # Point Ansible to a vault password file:
 #set -x ANSIBLE_VAULT_PASSWORD_FILE $HOME/.vault.txt
 
