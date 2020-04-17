@@ -3,7 +3,8 @@
 #   qute://help/configuring.html
 #   qute://help/settings.html
 
-# Uncomment this to still load settings configured via autoconfig.yml
+import os
+
 config.load_autoconfig()
 
 config.set('editor.command', ['nvim-qt', '{file}'])
@@ -28,3 +29,25 @@ config.bind('I', 'scroll right', mode='caret')
 config.bind('n', 'move-to-next-line', mode='caret')
 config.bind('e', 'move-to-prev-line', mode='caret')
 config.bind('i', 'move-to-next-char', mode='caret')
+
+
+def load_base16_colors():
+    home = os.getenv("HOME")
+    base16_dir = os.path.join(home, ".config", "base16-qutebrowser")
+
+    shell_theme_file = os.path.join(home, ".base16_theme")
+
+    if not os.path.islink(shell_theme_file):
+        return
+
+    real_theme_file = os.path.realpath(shell_theme_file)
+    theme_name = os.path.splitext(os.path.basename(real_theme_file))[0]
+
+    colors_config_file = os.path.join(
+            base16_dir, "themes", "default",
+            theme_name + ".config.py")
+
+    config.source(colors_config_file)
+
+
+load_base16_colors()
