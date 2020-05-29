@@ -99,15 +99,8 @@ set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
 set -x GPG_TTY (tty)
 gpgconf --launch gpg-agent
 
-
 # opam configuration
 source /Users/adam/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
-
-# HBO configuration
-set -l HBO_CONFIG "$HOME/Code/HBO/config.fish"
-if test -e "$HBO_CONFIG"
-  source "$HBO_CONFIG"
-end
 
 set -l OS_SPECIFIC_CONFIG "$HOME/.config/fish/os-specific/$OS.fish"
 set -l HOST_SPECIFIC_CONFIG "$HOME/.config/fish/host-specific/$HOST.fish"
