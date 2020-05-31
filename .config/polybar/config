@@ -1,0 +1,271 @@
+;==========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/polybar/polybar
+;
+;   The README contains a lot of information
+;
+;==========================================================
+
+[colors]
+black = ${xrdb:color0:#000}
+red = ${xrdb:color1:#c00}
+green = ${xrdb:color2:#0c0}
+yellow = ${xrdb:color3:#cc0}
+blue = ${xrdb:color4:#00c}
+magenta = ${xrdb:color5:#c0c}
+cyan = ${xrdb:color6:#0cc}
+white = ${xrdb:color7:#ccc}
+bright-black = ${xrdb:color8:#000}
+bright-red = ${xrdb:color9:#f00}
+bright-green = ${xrdb:color10:#0f0}
+bright-yellow = ${xrdb:color11:#ff0}
+bright-blue = ${xrdb:color12:#00f}
+bright-magenta = ${xrdb:color13:#f0f}
+bright-cyan = ${xrdb:color14:#0ff}
+bright-white = ${xrdb:color15:#fff}
+
+;background = ${xrdb:color0:#222}
+background = #00222200
+background-alt = ${colors.bright-black}
+foreground = ${colors.bright-white}
+;foreground-alt = ${xrdb:color17:#ccc}
+foreground-alt = ${colors.bright-black}
+foreground-minimal = ${xrdb:color19:#888}
+foreground-minimal-alt = ${xrdb:color21:#999}
+primary = ${colors.red}
+secondary = ${colors.green}
+alert = ${colors.bright-red}
+
+[bar/base]
+;monitor = ${env:MONITOR:HDMI-1}
+;width = 100%-24
+;height = 27
+;height = 29
+;offset-x = 1%
+;offset-y = 1%
+;radius = 6.0
+fixed-center = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 1
+line-color = ${colors.foreground-alt}
+
+border-size = 6
+border-color = #00000000
+
+padding-left = 1
+padding-right = 1
+
+module-margin-left = 1
+module-margin-right = 1
+
+font-0 = Inconsolata:size=14
+font-1 = Inconsolata:weight=black:size=14
+font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
+font-3 = siji:pixelsize=10;1
+font-4 = Inconsolata:weight=semibold:size=11
+
+tray-position = none
+
+wm-restack = bspwm
+;wm-restack = i3
+
+;override-redirect = true
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+[bar/top]
+inherit = bar/base
+
+modules-left = pulse
+modules-center = bspwm
+modules-right = date
+
+scroll-up = bspwm-desknext
+scroll-down = bspwm-deskprev
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+[bar/bottom]
+inherit = bar/base
+
+modules-left = cpu-temperature gpu-temperature
+modules-right = cpu memory eth
+
+bottom = true
+
+[module/xwindow]
+type = internal/xwindow
+label = %title%
+
+[module/bspwm]
+type = internal/bspwm
+
+label-focused = %name%
+label-focused-foreground = ${colors.foreground}
+label-focused-padding = 2
+label-focused-underline = ${colors.foreground-alt}
+
+label-occupied = %name%
+label-occupied-padding = 2
+label-occupied-foreground = ${colors.foreground-minimal}
+label-occupied-underline = ${colors.foreground-alt}
+
+label-urgent = %name%!
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+
+label-empty = %name%
+label-empty-foreground = ${colors.foreground-minimal}
+label-empty-padding = 2
+
+; Separator in between workspaces
+; label-separator = |
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+format-prefix = "CPU "
+format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-font = 2
+;format-underline = ${colors.red}
+label = %percentage:02%%
+
+[module/memory]
+type = internal/memory
+interval = 2
+format-prefix = "MEM "
+format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-font = 2
+;format-underline = ${colors.magenta}
+label = %percentage_used:02%%
+
+[module/eth]
+type = internal/network
+interface = enp5s0
+interval = 3.0
+
+format-connected-prefix = "NET "
+format-connected-prefix-foreground = ${colors.foreground-alt}
+format-connected-prefix-font = 2
+label-connected = %local_ip%
+
+;format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+format-disconnected-prefix = "NET "
+format-disconnected-prefix-foreground = ${colors.foreground-alt}
+format-disconnected-prefix-font = 2
+label-disconnected = %ifname% down
+label-disconnected-foreground = ${colors.foreground-alt}
+
+[module/date]
+type = internal/date
+interval = 5
+
+date =
+date-alt = " %Y-%m-%d"
+
+time = %H:%M
+time-alt = %H:%M:%S
+
+format-prefix = TIME
+format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-font = 2
+;format-underline = ${colors.blue}
+
+label = %date% %time%
+
+[module/volume]
+format-volume = <label-volume> <bar-volume>
+label-volume = VOL
+label-volume-foreground = ${colors.foreground-alt}
+label-volume-font = 2
+
+format-muted-prefix = " "
+format-muted-foreground = ${colors.foreground-alt}
+label-muted = sound muted
+
+bar-volume-width = 10
+bar-volume-foreground-0 = ${colors.green}
+bar-volume-foreground-1 = ${colors.green}
+bar-volume-foreground-2 = ${colors.green}
+bar-volume-foreground-3 = ${colors.green}
+bar-volume-foreground-4 = ${colors.green}
+bar-volume-foreground-5 = ${colors.red}
+bar-volume-foreground-6 = ${colors.bright-red}
+bar-volume-gradient = false
+bar-volume-indicator = |
+bar-volume-indicator-font = 3
+bar-volume-fill = ─
+bar-volume-fill-font = 3
+bar-volume-empty = ─
+bar-volume-empty-font = 3
+bar-volume-empty-foreground = ${colors.foreground-minimal}
+
+[module/pulse]
+inherit = module/volume
+type = internal/pulseaudio
+;click-right = kitty fish -c pulsemixer &
+
+[module/mpris]
+label-font = 5
+type = custom/script
+exec = ~/.config/polybar-scripts/polybar-scripts/player-mpris-tail/player-mpris-tail.py
+click-left = ~/.config/polybar-scripts/polybar-scripts/player-mpris-tail/player-mpris-tail.py play-pause &
+click-middle = ~/.config/polybar-scripts/polybar-scripts/player-mpris-tail/player-mpris-tail.py previous &
+click-right = ~/.config/polybar-scripts/polybar-scripts/player-mpris-tail/player-mpris-tail.py next &
+tail = true
+
+[module/temperature]
+type = internal/temperature
+warn-temperature = 60
+
+format = <label>
+;format-underline = #f50a4d
+format-warn = <label-warn>
+;format-warn-underline = ${self.format-underline}
+
+label = %temperature-c%
+label-warn = %temperature-c%
+
+[module/cpu-temperature]
+inherit = module/temperature
+hwmon-path = /sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon3/temp1_input
+label = ${env:CPU_TEMP_LABEL}
+label-warn = ${env:CPU_TEMP_LABEL_WARN}
+
+[module/gpu-temperature]
+inherit = module/temperature
+warn-temperature = 80
+hwmon-path = /sys/devices/pci0000:00/0000:00:03.1/0000:09:00.0/hwmon/hwmon4/temp1_input
+label = ${env:GPU_TEMP_LABEL}
+label-warn = ${env:GPU_TEMP_LABEL_WARN}
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+;pseudo-transparency = false
+
+[global/wm]
+margin-top = 5
+margin-bottom = 5
+
+; vim:ft=dosini
