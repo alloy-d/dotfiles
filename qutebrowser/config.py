@@ -33,7 +33,7 @@ config.bind('i', 'move-to-next-char', mode='caret')
 
 def load_base16_colors():
     home = os.getenv("HOME")
-    base16_dir = os.path.join(home, ".config", "base16-qutebrowser")
+    base16_dir = os.path.join(home, ".local", "share", "base16", "qutebrowser")
 
     shell_theme_file = os.path.join(home, ".base16_theme")
 
