@@ -17,6 +17,9 @@ config.bind('n', 'scroll down')
 config.bind('e', 'scroll up')
 config.bind('i', 'scroll right')
 
+config.bind('k', 'search-next')
+config.bind('K', 'search-prev')
+
 config.bind('H', 'tab-prev')
 config.bind('I', 'tab-next')
 config.bind('<Ctrl-o>', 'back')
