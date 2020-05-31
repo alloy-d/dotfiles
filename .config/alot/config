@@ -1,0 +1,29 @@
+theme = mutt
+
+[bindings]
+j =
+k =
+n = move down
+e = move up
+
+$ = retag spam
+
+[[search]]
+a = untag unread,inbox
+
+[[thread]]
+'g n' = move next sibling
+'g e' = move previous sibling
+'g h' = move parent
+'g i' = move first reply
+
+[accounts]
+[[personal]]
+realname = Adam Wilson Lloyd
+address = adam@alloy-d.net
+aliases = adam.wilson.lloyd@protonmail.com
+alias_regexp = adam\+.+@alloy-d.net
+gpg_key = CE6763347250996E
+sendmail_command = msmtp --account=protonmail -t
+sent_box = maildir://~/.mail/Sent
+draft_box = maildir://~/.mail/Drafts

@@ -1,0 +1,8 @@
+[MailMover]
+folders = protonmail/INBOX protonmail/Spam
+rename = True
+
+# rules
+protonmail/INBOX = 'tag:spam':protonmail/Spam 'NOT tag:inbox AND NOT tag:new':protonmail/Archive
+protonmail/Spam = 'NOT tag:spam AND tag:inbox':protonmail/INBOX 'NOT tag:spam':protonmail/Archive
+#Archive = 'tag:spam':Spam
