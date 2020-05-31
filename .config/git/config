@@ -17,7 +17,6 @@
   gpgsign = yes
 [core]
   editor = nvim
-  excludesfile = ~/.gitignore
 [difftool "Kaleidoscope"]
   cmd = ksdiff-wrapper git \"$LOCAL\" \"$REMOTE\"
 [difftool "nvim diff"]
