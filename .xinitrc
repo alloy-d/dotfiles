@@ -44,7 +44,6 @@ xplugd
 
 # enable compositing
 picom -b
-#compton --config ~/.config/compton/compton.conf -b
 
 session=${1-bspwm}
 case $session in
