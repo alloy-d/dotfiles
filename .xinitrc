@@ -36,6 +36,9 @@ fi
 
 [ -x "$HOME/.xinit-input.sh" ] && ~/.xinit-input.sh
 
+# notifications for AppArmor DENIED actions
+pgrep -x aa-notify || aa-notify -p -s 1 -w 60 -f /var/log/audit/audit.log
+
 # adjust colors at night
 redshift &
 
