@@ -1,0 +1,25 @@
+IMAPAccount protonmail
+Host 127.0.0.1
+Port 1143
+User adam@alloy-d.net
+PassCmd "pass machine-local/dogwood/protonmail-bridge"
+SSLType STARTTLS
+SSLVersions TLSv1.2
+CertificateFile ~/.cert/protonmail-bridge.crt
+
+IMAPStore remote
+Account protonmail
+
+MaildirStore protonmail-local
+Path ~/.mail/protonmail/
+Inbox ~/.mail/protonmail/INBOX/
+
+Channel inbox
+Master :remote:
+Slave :protonmail-local:
+Patterns * !"Drafts" !"All Mail"
+Create Slave
+SyncState *
+
+Group protonmail
+Channel inbox
