@@ -1,0 +1,6 @@
+apparmor
+
+mkdir ${HOME}/downloads
+
+whitelist ${HOME}/.local/share/base16/qutebrowser
+whitelist ${HOME}/.base16_theme
