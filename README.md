@@ -1,6 +1,6 @@
 # Usage
 
-This puts the git working directory in $HOME.
+This puts the git working directory in `$HOME`.
 
 Everything _not_ under `.config` is ignored by default, so it's
 worthwhile to check for other files occasionally.
@@ -14,7 +14,7 @@ $ git config core.worktree "$HOME"
 $ git config core.sparseCheckout true
 $ cat | git sparse-checkout set --stdin
 /*
-!README.md
+!/README.md
 ^D
 $ git checkout master
 $ echo "gitdir: ~/.dotfiles.d/.git" > ~/.git
