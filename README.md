@@ -5,6 +5,11 @@ This puts the git working directory in `$HOME`.
 Everything _not_ under `.config` is ignored by default, so it's
 worthwhile to check for other files occasionally.
 
+At the moment, I still keep [my `vim` configs][vim-config] in a separate
+repo.
+
+[vim-config]: https://github.com/alloy-d/vim-config
+
 ## Setup
 
 ```sh
