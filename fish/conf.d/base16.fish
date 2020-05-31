@@ -1,6 +1,6 @@
 # Mostly lifted from https://github.com/chriskempson/base16-shell
 if status --is-interactive
-  set BASE16_SHELL_DIR "$HOME/.config/base16-files/shell"
+  set BASE16_SHELL_DIR "$HOME/.local/share/base16/shell"
   set BASE16_SHELL_HOOKS "$HOME/.config/base16-hooks"
 
   # load currently active theme:
