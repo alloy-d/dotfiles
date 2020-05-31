@@ -8,6 +8,8 @@ import os
 config.load_autoconfig()
 
 config.set('editor.command', ['nvim-qt', '{file}'])
+config.set('fonts.default_family', 'Iosevka')
+config.set('fonts.default_size', '10pt')
 config.set('hints.chars', 'arstdhneio')
 config.set('scrolling.smooth', True)
 
