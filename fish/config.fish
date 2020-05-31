@@ -95,9 +95,13 @@ set -x ARDMK_DIR $HOME/Code/Arduino-Makefile
 
 # GPG Agent
 # ---------
-set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
+if test -e "$SSH_AUTH_SOCK"
+  # Could already be set by pam_env.
+  set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
+end
 set -x GPG_TTY (tty)
 gpgconf --launch gpg-agent
+gpg-connect-agent updatestartuptty /bye > /dev/null
 
 # opam configuration
 source /Users/adam/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
