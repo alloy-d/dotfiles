@@ -1,0 +1,14 @@
+#!/usr/bin/dash
+# vim: set ft=sh
+
+TYPE=$1
+DEVICE=$2
+STATUS=$3
+shift 3
+DESC=$*
+
+case "$TYPE,$STATUS,$DESC" in
+  keyboard,connected,*)
+    setxkbmap -variant colemak
+    ;;
+esac
