@@ -14,6 +14,7 @@ mac_checkout() {
 /.config/fish
 /.config/git
 /.config/kitty
+/.config/nano
 /.config/nvim
 /.config/qutebrowser
 /.config/ranger
