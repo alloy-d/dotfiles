@@ -12,17 +12,12 @@ repo.
 
 ## Setup
 
+Somewhat clumsily, this repo includes a script to clone this repo:
+
 ```sh
-$ git clone --no-checkout git@github.com:alloy-d/dotfiles.git ~/.dotfiles.d
-$ pushd ~/.dotfiles.d
-$ git config core.worktree "$HOME"
-$ git config core.sparseCheckout true
-$ cat | git sparse-checkout set --stdin
-/*
-!/README.md
-^D
-$ git checkout master
-$ echo "gitdir: ~/.dotfiles.d/.git" > ~/.git
+$ DIR=$(mktemp -d)
+$ git clone git@github.com:alloy-d/dotfiles.git $DIR
+$ $DIR/scripts/init.sh
 ```
 
 ## Listing untracked and ignored files
