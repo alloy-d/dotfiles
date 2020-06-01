@@ -1,0 +1,12 @@
+set autoindent
+set cutfromcursor
+set tabsize 2
+set tabstospaces
+
+bind ^C exit main
+bind ^W chopwordleft all
+
+include /usr/share/nano/nanorc.nanorc
+include /usr/share/nano/json.nanorc
+include /usr/share/nano/lua.nanorc
+include /usr/share/nano/sh.nanorc
