@@ -19,6 +19,11 @@ config.bind('i', 'scroll right')
 
 config.bind('k', 'search-next')
 config.bind('K', 'search-prev')
+config.bind('s', 'enter-mode insert')
+# Not necessary, but let's be cleare that these things will no longer
+# work.
+for binding in ('sf', 'sk', 'sl', 'ss'):
+    config.unbind(binding, mode='normal')
 
 config.bind('H', 'tab-prev')
 config.bind('I', 'tab-next')
