@@ -67,17 +67,6 @@ set -x MANWIDTH 80
 
 set -x GOPATH $HOME/.go
 
-function prepend_to_path
-  for entry in $argv
-    contains $entry $PATH; or set -x PATH $entry $PATH
-  end
-end
-function append_to_path
-  for entry in $argv
-    contains $entry $PATH; or set -x PATH $PATH $entry
-  end
-end
-
 prepend_to_path $HOME/.local/bin $HOME/.rbenv/shims
 append_to_path /usr/local/sbin
 
