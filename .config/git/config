@@ -25,6 +25,8 @@
   prompt = false
 [diff]
   tool = nvim diff
+[pull]
+  rebase = false
 [push]
   default = simple
 [gpg]
