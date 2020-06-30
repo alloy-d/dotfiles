@@ -12,6 +12,11 @@ alias c='curl -D - -H -'
 alias nview='nvim -R'
 alias ndiff='nvim -d'
 
+# Aliases for tmux:
+alias tat='tmux attach -t'
+alias tns='tmux new -s'
+alias tls='tmux ls'
+
 # Aliases for git:
 alias gap='git add -p'
 alias gci='git ci'
