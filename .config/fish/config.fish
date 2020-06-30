@@ -1,7 +1,7 @@
 set fish_greeting
 
 set -l OS (uname)
-set -l HOST (hostname)
+set -x HOST (hostname) # sic, used by other configs
 
 # Aliases
 # -------
@@ -102,6 +102,15 @@ end
 set -x GPG_TTY (tty)
 gpgconf --launch gpg-agent
 gpg-connect-agent updatestartuptty /bye > /dev/null
+
+
+# asdf version manager
+# On macOS, this would be (brew --prefix asdf)/asdf.fish,
+# but it's much, much faster to *not* run that.
+set -l ASDF_SETUP /usr/local/opt/asdf/asdf.fish
+if test -e "$ASDF_SETUP"
+  source "$ASDF_SETUP"
+end
 
 # opam configuration
 source /Users/adam/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
