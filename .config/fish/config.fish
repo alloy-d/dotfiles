@@ -1,7 +1,7 @@
 set fish_greeting
 
 set -l OS (uname)
-set -x HOST (hostname) # sic, used by other configs
+set -x HOST (hostname -s) # sic, used by other configs
 
 # Aliases
 # -------
