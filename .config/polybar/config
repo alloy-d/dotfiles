@@ -233,7 +233,7 @@ tail = true
 
 [module/temperature]
 type = internal/temperature
-warn-temperature = 60
+warn-temperature = 80
 
 format = <label>
 ;format-underline = #f50a4d
