@@ -22,6 +22,10 @@ super + ctrl + {_,alt + shift +}q
 super + backslash
   passmenu
 
+# media
+super + ctrl + alt + shift + p
+  mpc toggle
+
 #
 # bspwm hotkeys
 #
