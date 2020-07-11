@@ -17,8 +17,8 @@ bspc config right_padding  20
 bspc config left_padding   20
 
 bspc config split_ratio          0.52
-bspc config borderless_monocle   true
-bspc config gapless_monocle      true
+bspc config borderless_monocle   false
+bspc config gapless_monocle      false
 
 bspc rule -a Gimp desktop='^8' state=floating follow=on
 bspc rule -a dolphin-emu desktop='^9' state=floating follow=on
