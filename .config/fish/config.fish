@@ -77,8 +77,6 @@ append_to_path /usr/local/sbin
 
 set -x COWPATH "$HOME/.cows:$COWPATH"
 
-set -x RIPGREP_CONFIG_PATH "$HOME/.ripgreprc"
-
 set -x BAT_THEME "ansi-dark"
 
 set -x NVM_DIR "$HOME/.nvm"
