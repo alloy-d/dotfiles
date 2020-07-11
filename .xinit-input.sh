@@ -14,5 +14,5 @@ if [ -n "$TRACKBALL" ]; then
 fi
 
 # use Colemak
-setxkbmap -variant colemak
+setxkbmap -variant colemak -option caps:ctrl_modifier
 

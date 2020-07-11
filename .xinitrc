@@ -42,6 +42,10 @@ pgrep -x aa-notify || aa-notify -p -s 1 -w 60 -f /var/log/audit/audit.log
 # adjust colors at night
 redshift &
 
+# remap caps lock to escape
+# (it also gets mapped to ctrl separately by setxkbmap)
+xcape -e "Caps_Lock=Escape" -t 100
+
 # deal with devices being connected and disconnected
 xplugd
 

@@ -9,6 +9,6 @@ DESC=$*
 
 case "$TYPE,$STATUS,$DESC" in
   keyboard,connected,*)
-    setxkbmap -variant colemak
+    setxkbmap -variant colemak -option caps:ctrl_modifier
     ;;
 esac
