@@ -71,8 +71,8 @@ padding-right = 1
 module-margin-left = 1
 module-margin-right = 1
 
-font-0 = Inconsolata:size=14
-font-1 = Inconsolata:weight=black:size=14
+font-0 = Iosevka:size=14
+font-1 = Iosevka:weight=black:size=14
 font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-3 = siji:pixelsize=10;1
 font-4 = Inconsolata:weight=semibold:size=11
