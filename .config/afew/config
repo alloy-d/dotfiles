@@ -1,8 +1,8 @@
 [MailMover]
-folders = protonmail/INBOX protonmail/Spam
+folders = mailbox.org/INBOX mailbox.org/Junk
 rename = True
 
 # rules
-protonmail/INBOX = 'tag:spam':protonmail/Spam 'NOT tag:inbox AND NOT tag:new':protonmail/Archive
-protonmail/Spam = 'NOT tag:spam AND tag:inbox':protonmail/INBOX 'NOT tag:spam':protonmail/Archive
+mailbox.org/INBOX = 'tag:spam':mailbox.org/Junk 'NOT tag:inbox AND NOT tag:new':mailbox.org/Archive
+mailbox.org/Junk = 'NOT tag:spam AND tag:inbox':mailbox.org/INBOX 'NOT tag:spam':mailbox.org/Archive
 #Archive = 'tag:spam':Spam

@@ -7,19 +7,40 @@ SSLType STARTTLS
 SSLVersions TLSv1.2
 CertificateFile ~/.cert/protonmail-bridge.crt
 
-IMAPStore remote
+IMAPStore protonmail-remote
 Account protonmail
 
 MaildirStore protonmail-local
 Path ~/.mail/protonmail/
 Inbox ~/.mail/protonmail/INBOX/
 
-Channel inbox
-Master :remote:
+Channel protonmail-inbox
+Master :protonmail-remote:
 Slave :protonmail-local:
 Patterns * !"Drafts" !"All Mail"
 Create Slave
 SyncState *
 
 Group protonmail
-Channel inbox
+Channel protonmail-inbox
+
+IMAPStore mailboxorg-remote
+Host imap.mailbox.org
+Port 993
+User adam@alloy-d.net
+PassCmd "pass machine-local/dogwood/mailbox.org"
+SSLType IMAPS
+
+MaildirStore mailboxorg-local
+Path ~/.mail/mailbox.org/
+Inbox ~/.mail/mailbox.org/INBOX/
+
+Channel mailboxorg-inbox
+Master :mailboxorg-remote:
+Slave :mailboxorg-local:
+Patterns * !"Drafts"
+Create Slave
+SyncState *
+
+Group mailboxorg
+Channel mailboxorg-inbox
