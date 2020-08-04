@@ -2,7 +2,8 @@
 
 YELLOW="$(xgetres polybar.color3)"
 BRIGHT_BLACK="$(xgetres polybar.color8)"
-FG_ALT="$BRIGHT_BLACK"
+BRIGHT_WHITE="$(xgetres polybar.color15)"
+FG_ALT="$BRIGHT_WHITE"
 
 CPU_TEMP_PREFIX="%{T2}%{F${FG_ALT}}CPU%{F- T-}"
 GPU_TEMP_PREFIX="%{T2}%{F${FG_ALT}}GPU%{F- T-}"
