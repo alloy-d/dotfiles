@@ -1,0 +1,292 @@
+# Default config for sway
+#
+# Copy this to ~/.config/sway/config and edit it to your liking.
+#
+# Read `man 5 sway` for a complete reference.
+
+### Variables
+#
+
+# Colors.
+include base16-theme.config
+
+# Logo key. Use Mod1 for Alt.
+set $mod Mod4
+# Home row direction keys, like vim
+set $left h
+set $down n
+set $up e
+set $right i
+# Your preferred terminal emulator
+set $term alacritty #kitty
+# Your preferred application launcher
+# Note: pass the final command to swaymsg so that the resulting window can be opened
+# on the original workspace that the command was run on.
+#set $menu rofi -modi combi -show combi -combi-modi run,window | xargs swaymsg exec --
+set $bemenuargs -l 20 \
+    --scrollbar=autohide \
+    --fn "Iosevka Slab Semibold Extended" 14 \
+    --tf=$base0D \
+    --tb=$base00 \
+    --fb=$base00 \
+    --ff=$base07 \
+    --hf=$base05 \
+    --hb=$base02 \
+    --nb=$base01
+
+set $menu bemenu-run $bemenuargs --no-exec | xargs swaymsg exec --
+
+set $workspacechooser \
+      swaymsg -r -t get_workspaces \
+        | jq -r '.[].name' \
+        | bemenu $bemenuargs -p 'workspace:'
+
+### Output configuration
+#
+# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
+output * bg /mnt/henry/media/Photos/2020/2020-07/2020-07-16/20200716-R0002308.JPG fill
+
+#
+# Example configuration:
+#
+#   output HDMI-A-1 resolution 1920x1080 position 1920,0
+#
+# You can get the names of your outputs by running: swaymsg -t get_outputs
+
+### Idle configuration
+#
+# Example configuration:
+#
+exec swayidle -w \
+         timeout 600 'swaymsg "output * dpms off"' \
+              resume 'swaymsg "output * dpms on"' # \
+         # before-sleep 'swaylock -f -c 000000'
+#
+# This will lock your screen after 300 seconds of inactivity, then turn off
+# your displays after another 300 seconds, and turn your screens back on when
+# resumed. It will also lock your screen before your computer goes to sleep.
+
+### Input configuration
+#
+# Example configuration:
+#
+#   input "2:14:SynPS/2_Synaptics_TouchPad" {
+#       dwt enabled
+#       tap enabled
+#       natural_scroll enabled
+#       middle_emulation enabled
+#   }
+#
+# You can get the names of your inputs by running: swaymsg -t get_inputs
+# Read `man 5 sway-input` for more information about this section.
+input * {
+  xkb_layout "us"
+  xkb_variant "colemak"
+}
+
+### Key bindings
+#
+# Basics:
+#
+    # Start a terminal
+    bindsym $mod+Return exec $term
+
+    # Kill focused window
+    bindsym $mod+Shift+q kill
+
+    # Start your launcher
+    bindsym $mod+Space exec $menu
+
+    # Drag floating windows by holding down $mod and left mouse button.
+    # Resize them with right mouse button + $mod.
+    # Despite the name, also works for non-floating windows.
+    # Change normal to inverse to use left mouse button for resizing and right
+    # mouse button for dragging.
+    floating_modifier $mod normal
+
+    # Reload the configuration file
+    bindsym $mod+Shift+c reload
+
+    # Exit sway (logs you out of your Wayland session)
+    bindsym $mod+Mod1+q exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+#
+# Moving around:
+#
+    # Move your focus around
+    bindsym $mod+$left focus left
+    bindsym $mod+$down focus down
+    bindsym $mod+$up focus up
+    bindsym $mod+$right focus right
+    # Or use $mod+[up|down|left|right]
+    bindsym $mod+Left focus left
+    bindsym $mod+Down focus down
+    bindsym $mod+Up focus up
+    bindsym $mod+Right focus right
+
+    # Move the focused window with the same, but add Shift
+    bindsym $mod+Shift+$left move left
+    bindsym $mod+Shift+$down move down
+    bindsym $mod+Shift+$up move up
+    bindsym $mod+Shift+$right move right
+    # Ditto, with arrow keys
+    bindsym $mod+Shift+Left move left
+    bindsym $mod+Shift+Down move down
+    bindsym $mod+Shift+Up move up
+    bindsym $mod+Shift+Right move right
+#
+# Workspaces:
+#
+    # Helpers to use workspace number shortcuts to access named
+    # workspaces:
+    set $lswkspc swaymsg -r -t get_workspaces
+    set $getwkspc1 $lswkspc | jq -r '.[0].name // 1'
+    set $getwkspc2 $lswkspc | jq -r '.[1].name // 2'
+    set $getwkspc3 $lswkspc | jq -r '.[2].name // 3'
+    set $getwkspc4 $lswkspc | jq -r '.[3].name // 4'
+    set $getwkspc5 $lswkspc | jq -r '.[4].name // 5'
+    set $getwkspc6 $lswkspc | jq -r '.[5].name // 6'
+    set $getwkspc7 $lswkspc | jq -r '.[6].name // 7'
+    set $getwkspc8 $lswkspc | jq -r '.[7].name // 8'
+    set $getwkspc9 $lswkspc | jq -r '.[8].name // 9'
+    set $getwkspc10 $lswkspc | jq -r '.[9].name // 10'
+
+    # Switch to workspace
+    set $chwkspc xargs swaymsg -- workspace
+    bindsym $mod+1 exec $getwkspc1 | $chwkspc
+    bindsym $mod+2 exec $getwkspc2 | $chwkspc
+    bindsym $mod+3 exec $getwkspc3 | $chwkspc
+    bindsym $mod+4 exec $getwkspc4 | $chwkspc
+    bindsym $mod+5 exec $getwkspc5 | $chwkspc
+    bindsym $mod+6 exec $getwkspc6 | $chwkspc
+    bindsym $mod+7 exec $getwkspc7 | $chwkspc
+    bindsym $mod+8 exec $getwkspc8 | $chwkspc
+    bindsym $mod+9 exec $getwkspc9 | $chwkspc
+    bindsym $mod+0 exec $getwkspc10 | $chwkspc
+
+    # Move focused container to workspace
+    set $mvwkspc xargs swaymsg -- move container to workspace
+    bindsym $mod+Shift+1 exec $getwkspc1 | $mvwkspc
+    bindsym $mod+Shift+2 exec $getwkspc2 | $mvwkspc
+    bindsym $mod+Shift+3 exec $getwkspc3 | $mvwkspc
+    bindsym $mod+Shift+4 exec $getwkspc4 | $mvwkspc
+    bindsym $mod+Shift+5 exec $getwkspc5 | $mvwkspc
+    bindsym $mod+Shift+6 exec $getwkspc6 | $mvwkspc
+    bindsym $mod+Shift+7 exec $getwkspc7 | $mvwkspc
+    bindsym $mod+Shift+8 exec $getwkspc8 | $mvwkspc
+    bindsym $mod+Shift+9 exec $getwkspc9 | $mvwkspc
+    bindsym $mod+Shift+0 exec $getwkspc10 | $mvwkspc
+
+    bindsym $mod+k exec $workspacechooser | xargs swaymsg -- workspace
+    bindsym $mod+Shift+k exec $workspacechooser | xargs swaymsg -- move container to workspace
+    bindsym $mod+Ctrl+k exec $workspacechooser | xargs swaymsg -- rename workspace to
+    bindsym $mod+Tab workspace next_on_output
+    bindsym $mod+Shift+Tab workspace prev_on_output
+#
+# Layout stuff:
+#
+    # You can "split" the current object of your focus with
+    # $mod+b or $mod+v, for horizontal and vertical splits
+    # respectively.
+    bindsym $mod+b splith
+    bindsym $mod+v splitv
+
+    # Switch the current container between different layout styles
+    bindsym $mod+s layout stacking
+    bindsym $mod+t layout tabbed
+    bindsym $mod+Shift+s layout toggle split
+
+    # Make the current focus fullscreen
+    bindsym $mod+f fullscreen
+
+    # Toggle the current focus between tiling and floating mode
+    bindsym $mod+Shift+space floating toggle
+
+    # Swap focus between the tiling area and the floating area
+    bindsym $mod+m focus mode_toggle
+
+    # Move focus to the parent container
+    bindsym $mod+a focus parent
+#
+# Scratchpad:
+#
+    # Sway has a "scratchpad", which is a bag of holding for windows.
+    # You can send windows there and get them back later.
+
+    # Move the currently focused window to the scratchpad
+    bindsym $mod+Shift+minus move scratchpad
+
+    # Show the next scratchpad window or hide the focused scratchpad window.
+    # If there are multiple scratchpad windows, this command cycles through them.
+    bindsym $mod+minus scratchpad show
+#
+# Resizing containers:
+#
+mode "resize" {
+    # left will shrink the containers width
+    # right will grow the containers width
+    # up will shrink the containers height
+    # down will grow the containers height
+    bindsym $left resize shrink width 10px
+    bindsym $down resize grow height 10px
+    bindsym $up resize shrink height 10px
+    bindsym $right resize grow width 10px
+
+    # Ditto, with arrow keys
+    bindsym Left resize shrink width 10px
+    bindsym Down resize grow height 10px
+    bindsym Up resize shrink height 10px
+    bindsym Right resize grow width 10px
+
+    # Return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+#
+# Appearance
+#
+font pango:Iosevka Slab Semibold Extended 10
+#gaps inner 10
+
+# Property Name         Border  BG      Text    Indicator Child Border
+client.focused          $base05 $base0D $base00 $base0D $base0D
+client.focused_inactive $base01 $base01 $base05 $base03 $base01
+client.unfocused        $base01 $base00 $base05 $base01 $base01
+client.urgent           $base08 $base08 $base00 $base08 $base08
+client.placeholder      $base00 $base00 $base05 $base00 $base00
+client.background       $base07
+
+hide_edge_borders smart_no_gaps
+
+for_window [title="."] title_format "%title (%app_id)"
+titlebar_border_thickness 2
+titlebar_padding 8 4
+
+#
+# Status Bar:
+#
+# Read `man 5 sway-bar` for more information about this section.
+bar {
+    position bottom
+
+    # When the status_command prints a new line to stdout, swaybar updates.
+    # The default just shows the current date and time.
+    status_command while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done
+
+    colors {
+        statusline $base05
+        background $base00
+        # State            Border  BG      Text
+        focused_workspace  $base00 $base01 $base0D
+        inactive_workspace $base00 $base00 $base05
+    }
+}
+
+#
+# Utilities &c
+#
+exec gammastep
+
+include /etc/sway/config.d/*
+#include ~/.config/sway/config.d/*
