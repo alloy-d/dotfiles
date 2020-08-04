@@ -3,6 +3,7 @@
 BASE16="${HOME}/.local/share/base16"
 BASE16_KITTY="${BASE16}/kitty"
 BASE16_ROFI="${BASE16}/rofi"
+BASE16_SWAY="${BASE16}/sway"
 BASE16_XRESOURCES="${BASE16}/xresources"
 
 SHELL_THEME_LINK="${HOME}/.base16_theme"
@@ -17,6 +18,15 @@ set_xresources() {
   cat "$source" > "$HOME/.Xresources"
 
   xrdb -merge "$HOME/.Xresources"
+}
+
+set_sway() {
+  echo "Configuring sway..."
+  source="${BASE16_SWAY}/themes/${THEME}.config"
+
+  ln -sf "$source" "$HOME/.config/sway/base16-theme.config"
+
+  pgrep -x sway > /dev/null && swaymsg reload
 }
 
 set_rofi() {
@@ -56,7 +66,7 @@ set_kitty() {
   cat < "${colors_config}" >> "${config}"
 
   # Set colors now in currently running kitties.
-  kitty @ set-colors -a "${colors_config}" >/dev/null 2>&1 || true
+  pgrep -x kitty && kitty @ set-colors -a "${colors_config}" >/dev/null 2>&1 || true
 }
 
 if [ ! -L "$SHELL_THEME_LINK" ]; then
@@ -69,4 +79,5 @@ echo "Setting theme ${THEME}..."
 
 set_kitty
 set_rofi
+set_sway
 set_xresources
