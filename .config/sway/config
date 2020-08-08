@@ -43,8 +43,11 @@ set $workspacechooser \
 
 ### Output configuration
 #
-# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 output * bg /mnt/henry/media/Photos/2020/2020-07/2020-07-16/20200716-R0002308.JPG fill
+
+output HDMI-A-1 {
+  mode 2560x1440
+}
 
 #
 # Example configuration:
@@ -138,43 +141,33 @@ input * {
 #
     # Helpers to use workspace number shortcuts to access named
     # workspaces:
-    set $lswkspc swaymsg -r -t get_workspaces
-    set $getwkspc1 $lswkspc | jq -r '.[0].name // 1'
-    set $getwkspc2 $lswkspc | jq -r '.[1].name // 2'
-    set $getwkspc3 $lswkspc | jq -r '.[2].name // 3'
-    set $getwkspc4 $lswkspc | jq -r '.[3].name // 4'
-    set $getwkspc5 $lswkspc | jq -r '.[4].name // 5'
-    set $getwkspc6 $lswkspc | jq -r '.[5].name // 6'
-    set $getwkspc7 $lswkspc | jq -r '.[6].name // 7'
-    set $getwkspc8 $lswkspc | jq -r '.[7].name // 8'
-    set $getwkspc9 $lswkspc | jq -r '.[8].name // 9'
-    set $getwkspc10 $lswkspc | jq -r '.[9].name // 10'
+    set $getwkspc "$HOME/.config/sway/workspace-number-to-name.sh"
 
     # Switch to workspace
     set $chwkspc xargs swaymsg -- workspace
-    bindsym $mod+1 exec $getwkspc1 | $chwkspc
-    bindsym $mod+2 exec $getwkspc2 | $chwkspc
-    bindsym $mod+3 exec $getwkspc3 | $chwkspc
-    bindsym $mod+4 exec $getwkspc4 | $chwkspc
-    bindsym $mod+5 exec $getwkspc5 | $chwkspc
-    bindsym $mod+6 exec $getwkspc6 | $chwkspc
-    bindsym $mod+7 exec $getwkspc7 | $chwkspc
-    bindsym $mod+8 exec $getwkspc8 | $chwkspc
-    bindsym $mod+9 exec $getwkspc9 | $chwkspc
-    bindsym $mod+0 exec $getwkspc10 | $chwkspc
+    bindsym $mod+1 exec $getwkspc 1 | $chwkspc
+    bindsym $mod+2 exec $getwkspc 2 | $chwkspc
+    bindsym $mod+3 exec $getwkspc 3 | $chwkspc
+    bindsym $mod+4 exec $getwkspc 4 | $chwkspc
+    bindsym $mod+5 exec $getwkspc 5 | $chwkspc
+    bindsym $mod+6 exec $getwkspc 6 | $chwkspc
+    bindsym $mod+7 exec $getwkspc 7 | $chwkspc
+    bindsym $mod+8 exec $getwkspc 8 | $chwkspc
+    bindsym $mod+9 exec $getwkspc 9 | $chwkspc
+    bindsym $mod+0 exec $getwkspc 10 | $chwkspc
 
     # Move focused container to workspace
     set $mvwkspc xargs swaymsg -- move container to workspace
-    bindsym $mod+Shift+1 exec $getwkspc1 | $mvwkspc
-    bindsym $mod+Shift+2 exec $getwkspc2 | $mvwkspc
-    bindsym $mod+Shift+3 exec $getwkspc3 | $mvwkspc
-    bindsym $mod+Shift+4 exec $getwkspc4 | $mvwkspc
-    bindsym $mod+Shift+5 exec $getwkspc5 | $mvwkspc
-    bindsym $mod+Shift+6 exec $getwkspc6 | $mvwkspc
-    bindsym $mod+Shift+7 exec $getwkspc7 | $mvwkspc
-    bindsym $mod+Shift+8 exec $getwkspc8 | $mvwkspc
-    bindsym $mod+Shift+9 exec $getwkspc9 | $mvwkspc
-    bindsym $mod+Shift+0 exec $getwkspc10 | $mvwkspc
+    bindsym $mod+Shift+1 exec $getwkspc 1 | $mvwkspc
+    bindsym $mod+Shift+2 exec $getwkspc 2 | $mvwkspc
+    bindsym $mod+Shift+3 exec $getwkspc 3 | $mvwkspc
+    bindsym $mod+Shift+4 exec $getwkspc 4 | $mvwkspc
+    bindsym $mod+Shift+5 exec $getwkspc 5 | $mvwkspc
+    bindsym $mod+Shift+6 exec $getwkspc 6 | $mvwkspc
+    bindsym $mod+Shift+7 exec $getwkspc 7 | $mvwkspc
+    bindsym $mod+Shift+8 exec $getwkspc 8 | $mvwkspc
+    bindsym $mod+Shift+9 exec $getwkspc 9 | $mvwkspc
+    bindsym $mod+Shift+0 exec $getwkspc 10 | $mvwkspc
 
     bindsym $mod+k exec $workspacechooser | xargs swaymsg -- workspace
     bindsym $mod+Shift+k exec $workspacechooser | xargs swaymsg -- move container to workspace
