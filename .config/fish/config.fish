@@ -75,6 +75,11 @@ set -x GOPATH $HOME/.go
 prepend_to_path $HOME/.local/bin $HOME/.rbenv/shims
 append_to_path /usr/local/sbin
 
+if test -d /opt/homebrew/
+  prepend_to_path /opt/homebrew/bin
+  append_to_path /opt/homebrew/sbin
+end
+
 set -x COWPATH "$HOME/.cows:$COWPATH"
 
 set -x BAT_THEME "ansi-dark"
