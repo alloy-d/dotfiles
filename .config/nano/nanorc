@@ -7,6 +7,10 @@ bind ^C exit main
 bind ^W chopwordleft all
 
 include /usr/share/nano/nanorc.nanorc
+include /opt/homebrew/opt/nano/share/nano/nanorc.nanorc
 include /usr/share/nano/json.nanorc
+include /opt/homebrew/opt/nano/share/nano/json.nanorc
 include /usr/share/nano/lua.nanorc
+include /opt/homebrew/opt/nano/share/nano/lua.nanorc
 include /usr/share/nano/sh.nanorc
+include /opt/homebrew/opt/nano/share/nano/sh.nanorc
