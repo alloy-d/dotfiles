@@ -19,6 +19,7 @@ alias tls='tmux ls'
 
 # Aliases for git:
 alias gap='git add -p'
+alias gfpo='git fetch --prune origin'
 alias gci='git ci'
 alias gp='git push'
 alias gpc='git push origin (git current)'
