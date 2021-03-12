@@ -14,6 +14,7 @@ alias ndiff='nvim -d'
 
 # Aliases for tmux:
 alias tat='tmux attach -t'
+alias tnt='tmux new -t'
 alias tns='tmux new -s'
 alias tls='tmux ls'
 
