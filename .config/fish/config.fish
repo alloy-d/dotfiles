@@ -84,7 +84,7 @@ end
 
 set -x COWPATH "$HOME/.cows:$COWPATH"
 
-set -x BAT_THEME "ansi-dark"
+set -x BAT_THEME "base16"
 
 set -x NVM_DIR "$HOME/.nvm"
 
@@ -106,9 +106,12 @@ gpg-connect-agent updatestartuptty /bye > /dev/null
 # asdf version manager
 # On macOS, this would be (brew --prefix asdf)/asdf.fish,
 # but it's much, much faster to *not* run that.
-set -l ASDF_SETUP /usr/local/opt/asdf/asdf.fish
-if test -e "$ASDF_SETUP"
-  source "$ASDF_SETUP"
+set -l ASDF_MACOS "/usr/local/opt/asdf"
+set -l ASDF_ARCHLINUX "/opt/asdf-vm"
+if test -e "$ASDF_MACOS/asdf.fish"
+  source "$ASDF_MACOS/asdf.fish"
+else if test -e "$ASDF_ARCHLINUX/asdf.fish"
+  source "$ASDF_ARCHLINUX/asdf.fish"
 end
 
 # opam configuration
