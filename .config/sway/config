@@ -12,6 +12,9 @@ include base16-theme.config
 
 # Logo key. Use Mod1 for Alt.
 set $mod Mod4
+# Hyper
+set $hyper Shift+Control+Mod1+Mod4
+
 # Home row direction keys, like vim
 set $left h
 set $down n
@@ -43,10 +46,18 @@ set $workspacechooser \
 
 ### Output configuration
 #
-output * bg /mnt/henry/media/Photos/2020/2020-07/2020-07-16/20200716-R0002308.JPG fill
+output "Unknown HP Z27 CN401600FP" {
+  # on left
+  scale 1.5
+  mode 3840x2160@60Hz
+  pos 0 0
+}
 
-output HDMI-A-1 {
-  mode 2560x1440
+output "Unknown HP Z27 CN401600FY" {
+  # on right
+  scale 1.5
+  mode 3840x2160@60Hz
+  pos 2560 0
 }
 
 #

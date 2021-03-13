@@ -4,7 +4,7 @@ NUM="$1"
 INDEX=`expr $NUM - 1`
 
 # waybar sorts workspace names, swaybar does not.
-SORT="true"
+SORT=""
 
 getworkspaces() {
   swaymsg -r -t get_workspaces
