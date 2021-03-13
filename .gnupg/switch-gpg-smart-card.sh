@@ -34,7 +34,7 @@ if [ "${OPERATION:-empty}" = "empty" ]; then
 fi
 
 validate_card() {
-  if [[ ("$CARD" != "nano") && ("$CARD" != "NFC") ]]; then
+  if [[ ("$CARD" != "nano") && ("$CARD" != "NFC") && ("$CARD" != "5C-NFC") && ("$CARD" != "5C-nano")]]; then
     echo "Sorry, never heard of card ${CARD}."
     exit 1
   fi

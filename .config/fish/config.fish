@@ -14,11 +14,13 @@ alias ndiff='nvim -d'
 
 # Aliases for tmux:
 alias tat='tmux attach -t'
+alias tnt='tmux new -t'
 alias tns='tmux new -s'
 alias tls='tmux ls'
 
 # Aliases for git:
 alias gap='git add -p'
+alias gfpo='git fetch --prune origin'
 alias gci='git ci'
 alias gp='git push'
 alias gpc='git push origin (git current)'
@@ -74,6 +76,11 @@ set -x GOPATH $HOME/.go
 
 prepend_to_path $HOME/.local/bin $HOME/.rbenv/shims
 append_to_path /usr/local/sbin
+
+if test -d /opt/homebrew/
+  prepend_to_path /opt/homebrew/bin
+  append_to_path /opt/homebrew/sbin
+end
 
 set -x COWPATH "$HOME/.cows:$COWPATH"
 
