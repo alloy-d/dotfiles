@@ -19,7 +19,7 @@ config.bind('i', 'scroll right')
 
 config.bind('k', 'search-next')
 config.bind('K', 'search-prev')
-config.bind('s', 'enter-mode insert')
+config.bind('s', 'mode-enter insert')
 # Not necessary, but let's be clear that these things will no longer
 # work.
 for binding in ('sf', 'sk', 'sl', 'ss'):
