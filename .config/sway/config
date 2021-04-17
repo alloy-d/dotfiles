@@ -44,29 +44,6 @@ set $workspacechooser \
         | jq -r '.[].name' \
         | bemenu $bemenuargs -p 'workspace:'
 
-### Output configuration
-#
-output "Unknown HP Z27 CN401600FP" {
-  # on left
-  scale 1.5
-  mode 3840x2160@60Hz
-  pos 0 0
-}
-
-output "Unknown HP Z27 CN401600FY" {
-  # on right
-  scale 1.5
-  mode 3840x2160@60Hz
-  pos 2560 0
-}
-
-#
-# Example configuration:
-#
-#   output HDMI-A-1 resolution 1920x1080 position 1920,0
-#
-# You can get the names of your outputs by running: swaymsg -t get_outputs
-
 ### Idle configuration
 #
 # Example configuration:
@@ -248,10 +225,17 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 #
+# Some extra stuff:
+#
+bindsym Mod4+Control+q output * dpms off
+bindsym $hyper+p exec spt playback --toggle
+
+#
 # Appearance
 #
 font pango:Iosevka Slab Semibold Extended 10
-#gaps inner 10
+gaps inner 10
+gaps outer 5
 
 # Property Name         Border  BG      Text    Indicator Child Border
 client.focused          $base05 $base0D $base00 $base0D $base0D
@@ -293,4 +277,4 @@ bar {
 exec gammastep
 
 include /etc/sway/config.d/*
-#include ~/.config/sway/config.d/*
+include ~/.config/sway/config.d/*
