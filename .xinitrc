@@ -1,6 +1,7 @@
 #!/bin/sh
 
 userresources=$HOME/.Xresources
+userresourcescolors=$HOME/.Xresources-colors
 usermodmap=$HOME/.Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
 sysmodmap=/etc/X11/xinit/.Xmodmap
@@ -17,6 +18,10 @@ fi
 
 if [ -f "$userresources" ]; then
     xrdb -merge "$userresources"
+fi
+
+if [ -f "$userresourcescolors" ]; then
+    xrdb -merge "$userresourcescolors"
 fi
 
 if [ -f "$usermodmap" ]; then

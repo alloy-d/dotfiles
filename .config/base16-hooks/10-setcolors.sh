@@ -9,15 +9,17 @@ BASE16_XRESOURCES="${BASE16}/xresources"
 SHELL_THEME_LINK="${HOME}/.base16_theme"
 
 set_xresources() {
-  echo "Clobbering ~/.Xresources..."
+  echo "Clobbering ~/.Xresources-colors..."
   source="${BASE16_XRESOURCES}/xresources/${THEME}-256.Xresources"
   if [ ! -f "$source" ]; then
-    echo "Problem setting ~/.Xresources: '${source}' doesn't exist." >&2
+    echo "Problem setting ~/.Xresources-colors: '${source}' doesn't exist." >&2
     return 2
   fi
-  cat "$source" > "$HOME/.Xresources"
+  cat "$source" > "$HOME/.Xresources-colors"
 
-  xrdb -merge "$HOME/.Xresources"
+  if [ ! -z "$DISPLAY" ]; then
+    xrdb -merge "$HOME/.Xresources-colors"
+  fi
 }
 
 set_sway() {
