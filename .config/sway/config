@@ -251,6 +251,8 @@ for_window [title="."] title_format "%title (%app_id)"
 titlebar_border_thickness 2
 titlebar_padding 8 4
 
+for_window [title="Firefox — Sharing Indicator"] floating enable
+
 #
 # Status Bar:
 #
