@@ -25,6 +25,8 @@
   prompt = false
 [diff]
   tool = nvim diff
+[init]
+  defaultBranch = trunk
 [pull]
   rebase = false
 [push]
