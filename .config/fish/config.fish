@@ -30,7 +30,7 @@ function gmtm --wraps 'git merge' --description 'merge a branch into the latest 
   git co master && git pull origin master && git merge --no-ff $argv
 end
 function gmm --wraps 'git merge' --description 'merge the latest master into the current branch'
-  git fetch origin && git merge --no-ff origin/master $argv
+  git fetch origin && git merge --ff-only origin/master $argv
 end
 function gdel --wraps 'git branch' --description 'deletes a git branch real good'
   git branch -d "$argv[1]" && git push origin ":$argv[1]"
