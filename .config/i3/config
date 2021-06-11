@@ -193,16 +193,21 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-gaps inner 14
-gaps outer 6
+for_window [class=".*"] border pixel 1
+
+# gaps inner 14
+# gaps outer 6
+
+smart_borders no_gaps
+hide_edge_borders smart_no_gaps
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
   status_command i3status
   colors {
-    background $color0
-    separator  $color18
+    background $color18
+    separator  $color0
     statusline $color20
 
     # State             Border  BG      Text
