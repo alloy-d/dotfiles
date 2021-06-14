@@ -9,8 +9,8 @@ if status --is-interactive
   set -g fish_color_error brred
   set -g fish_color_escape cyan
   set -g fish_color_history_current --bold
-  set -g fish_color_host normal
-  set -g fish_color_host_remote yellow
+  set -g fish_color_host yellow
+  set -g fish_color_host_remote cyan
   set -g fish_color_match --background=brblue
   set -g fish_color_normal normal
   set -g fish_color_operator yellow
