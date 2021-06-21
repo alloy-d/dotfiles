@@ -59,5 +59,9 @@ def load_base16_colors():
 
     config.source(colors_config_file)
 
+    c.colors.tabs.selected.odd.bg = c.colors.statusbar.insert.bg
+    c.colors.tabs.selected.odd.fg = c.colors.statusbar.insert.fg
+    c.colors.tabs.selected.even.bg = c.colors.statusbar.insert.bg
+    c.colors.tabs.selected.even.fg = c.colors.statusbar.insert.fg
 
 load_base16_colors()
