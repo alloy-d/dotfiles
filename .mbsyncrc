@@ -15,10 +15,10 @@ Path ~/.mail/protonmail/
 Inbox ~/.mail/protonmail/INBOX/
 
 Channel protonmail-inbox
-Master :protonmail-remote:
-Slave :protonmail-local:
+Far :protonmail-remote:
+Near :protonmail-local:
 Patterns * !"Drafts" !"All Mail"
-Create Slave
+Create Near
 SyncState *
 
 Group protonmail
@@ -36,10 +36,10 @@ Path ~/.mail/mailbox.org/
 Inbox ~/.mail/mailbox.org/INBOX/
 
 Channel mailboxorg-inbox
-Master :mailboxorg-remote:
-Slave :mailboxorg-local:
+Far :mailboxorg-remote:
+Near :mailboxorg-local:
 Patterns * !"Drafts"
-Create Slave
+Create Near
 SyncState *
 
 Group mailboxorg
