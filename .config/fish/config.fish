@@ -67,8 +67,9 @@ end
 # Environment
 # -----------
 
+set -x DIFFPROG 'nvim -d'
 set -x EDITOR nvim
-set -x TERMINAL kitty
+set -x TERMINAL alacritty
 set -x MANPAGER most
 set -x MANWIDTH 80
 
