@@ -21,6 +21,7 @@
   cmd = ksdiff-wrapper git \"$LOCAL\" \"$REMOTE\"
 [difftool "nvim diff"]
   cmd = nvim -R -d \"$LOCAL\" \"$REMOTE\"
+  trustExitCode = true
 [difftool]
   prompt = false
 [diff]
