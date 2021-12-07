@@ -34,15 +34,20 @@ set_sway() {
 set_rofi() {
   echo "Configuring rofi..."
   source="${BASE16_ROFI}/themes/${THEME}.rasi"
-  config="${HOME}/.config/rofi/config"
+  config="${HOME}/.config/rofi/config.rasi"
 
   if [ ! -f "$source" ]; then
     echo "Problem setting rofi theme: '${source}' doesn't exist." >&2
     return 2
   fi
 
-  sed -i '/^rofi\.theme: /d' "${config}"
-  echo "rofi.theme: ${source}" >> "${config}"
+  cat <<EOF > $config
+/* DON'T EDIT THIS, DOOFUS. IT'S AUTOMATICALLY GENERATED. */
+configuration {
+  font: "Iosevka Semibold 18";
+}
+@theme "${source}"
+EOF
 }
 
 set_kitty() {
