@@ -6,9 +6,28 @@
 
 config_version: 2
 settings:
+  content.desktop_capture:
+    https://meet.google.com: true
+    https://mozilla.github.io: true
+    https://teams.microsoft.com: true
   content.geolocation:
     https://www.homedepot.com: false
-  content.media_capture:
+  content.media.audio_capture:
+    https://meet.around.co: true
+    https://meet.google.com: true
+    https://teams.microsoft.com: true
     https://whereby.com: true
-  content.notifications:
+  content.media.audio_video_capture:
+    https://meet.google.com: true
+    https://teams.microsoft.com: true
+    https://whereby.com: true
+  content.media.video_capture:
+    https://meet.around.co: true
+    https://meet.google.com: true
+    https://teams.microsoft.com: true
+    https://whereby.com: true
+  content.notifications.enabled:
+    https://meet.google.com: false
     https://www.reddit.com: false
+  qt.highdpi:
+    global: true

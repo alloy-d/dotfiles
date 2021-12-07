@@ -41,15 +41,8 @@ fi
 
 [ -x "$HOME/.xinit-input.sh" ] && ~/.xinit-input.sh
 
-# notifications for AppArmor DENIED actions
-pgrep -x aa-notify || aa-notify -p -s 1 -w 60 -f /var/log/audit/audit.log
-
 # adjust colors at night
 redshift &
-
-# remap caps lock to escape
-# (it also gets mapped to ctrl separately by setxkbmap)
-xcape -e "Caps_Lock=Escape" -t 100
 
 # deal with devices being connected and disconnected
 xplugd
@@ -57,10 +50,20 @@ xplugd
 # enable compositing
 picom -b
 
-session=${1-bspwm}
+# notifications
+dunst &
+
+# fix displays
+xrandr --output DisplayPort-3 --left-of DisplayPort-2
+
+# turn off DPMS and blanking
+xset s off -dpms
+
+session=${1-i3}
 case $session in
   2bwm) exec 2bwm;;
   bspwm) exec bspwm;;
   openbox) exec openbox-session;;
+  i3) exec i3;;
   *) exec $1;;
 esac
