@@ -76,6 +76,13 @@ set_kitty() {
   pgrep -x kitty && kitty @ set-colors -a "${colors_config}" >/dev/null 2>&1 || true
 }
 
+reload_i3() {
+  echo "Reloading i3..."
+  # Colors come from Xresources, so just need to reload.
+
+  pgrep -x i3 > /dev/null && i3-msg reload
+}
+
 if [ ! -L "$SHELL_THEME_LINK" ]; then
   echo "${SHELL_THEME_LINK} doesn't exist or isn't a link; aborting." >&2
   exit 1
@@ -88,3 +95,5 @@ set_kitty
 set_rofi
 set_sway
 set_xresources
+
+reload_i3
