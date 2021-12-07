@@ -20,10 +20,10 @@
 [difftool "Kaleidoscope"]
   cmd = ksdiff-wrapper git \"$LOCAL\" \"$REMOTE\"
 [difftool "nvim diff"]
-  cmd = nvim -R -d \"$LOCAL\" \"$REMOTE\"
-  trustExitCode = true
+  cmd = nvim -d \"$LOCAL\" \"$MERGED\"
 [difftool]
   prompt = false
+  trustExitCode = true
 [diff]
   tool = nvim diff
 [init]
