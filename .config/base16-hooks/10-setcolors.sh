@@ -64,8 +64,8 @@ fi
 THEME=$(basename "$(readlink "$SHELL_THEME_LINK")" .sh)
 echo "Setting theme ${THEME}..."
 
-set_rofi
-set_sway
-set_xresources
+set_rofi || echo "Trouble setting colors for rofi." >&2
+set_sway || echo "Trouble setting colors for sway." >&2
+set_xresources || echo "Trouble setting colors in Xresources." >&2
 
-reload_i3
+reload_i3 || echo "Trouble reloading i3." >&2
