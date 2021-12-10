@@ -64,6 +64,7 @@ edit:small-word-abbr['gp'] = 'git push'
 edit:small-word-abbr['gpsu'] = 'git push --set-upstream'
 
 fn gpc { git push origin (git current) }
+fn gplc { git pull origin (git current) }
 fn gfpo { git fetch --prune origin }
 
 # 2}}}
