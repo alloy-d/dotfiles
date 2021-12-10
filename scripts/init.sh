@@ -11,6 +11,7 @@ mac_checkout() {
 /.pryrc
 /.tmux.conf
 
+/.config/elvish
 /.config/fish
 /.config/git
 /.config/kitty
@@ -26,6 +27,7 @@ EOF
 linux_checkout() {
   cat <<EOF
 /*
+!/.config/kitty
 EOF
 }
 
