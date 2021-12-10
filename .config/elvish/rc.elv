@@ -2,6 +2,7 @@
 
 use readline-binding
 use direnv
+use str
 
 use base16
 
@@ -28,17 +29,26 @@ gpg-connect-agent updatestartuptty /bye > /dev/null
 
 # Environment & Path {{{
 
-set-env DIFFPROG 'nvim -d'
-set-env EDITOR 'nvim'
-set-env TERMINAL 'alacritty'
-set-env MANPAGER 'most'
-set-env MANWIDTH 80
+set-env DIFFPROG  'nvim -d'
+set-env EDITOR    'nvim'
+set-env LANG      'en_US.UTF-8'
+set-env LC_ALL    'en_US.UTF-8'
+set-env MANPAGER  'most'
+set-env MANWIDTH  80
+set-env TERMINAL  'alacritty'
 
 set paths = [$@paths ~/.local/bin]
 
 # }}}
 
 # Aliases {{{
+
+# These are a mix of small word abbreviations and functions.
+# Generally, I like the small word abbreviations better because they
+# expand immediately to the real command.  The exception is commands
+# that don't take arguments, since abbreviations require you to type
+# a trigger character after them, and hitting enter doesn't trigger the
+# abbreviation.
 
 # Aliases for git {{{2
 
@@ -52,17 +62,37 @@ fn gfpo { git fetch --prune origin }
 
 # Aliases for tmux {{{2
 
-# Function style:
-# fn tat [@args]{ tmux attach -t $@args }
-# fn tnt [@args]{ tmux new -t $@args }
-# fn tns [@args]{ tmux new -s $@args }
-fn tls [@args]{ tmux ls $@args }
-
-# Abbreviation style:
 edit:small-word-abbr['tat'] = 'tmux attach -t'  # attach to session
 edit:small-word-abbr['tns'] = 'tmux new -s'     # new session
 edit:small-word-abbr['tnt'] = 'tmux new -t'     # new session in group
-# edit:small-word-abbr['tls'] = 'tmux ls'         # list sessions
+fn tls [@args]{ tmux ls $@args }                # list sessions
+
 # 2}}}
 
 #}}}
+
+# {{{ Prompts
+
+edit:prompt = { tilde-abbr $pwd; styled '> ' green }
+edit:rprompt = (constantly (styled (whoami)@(hostname) dim))
+
+# }}}
+
+# Half-baked experiments {{{
+
+# Sets the title of a terminal window.
+fn set-title [@title]{
+  formatted-title = (str:join ' ' $title)
+  print "\e]0;"$formatted-title"\007"
+}
+
+# Sets the title of a tmux window.
+fn set-name [@name]{
+  formatted-name = (str:join ' ' $name)
+  print "\033k"$formatted-name"\033\\"
+}
+
+set edit:after-command = [ $@edit:after-command [_]{ set-name "elvish" } ]
+set edit:after-readline = [ $@edit:after-readline [line]{ set-name (edit:wordify $line | take 1) } ]
+
+# }}}
