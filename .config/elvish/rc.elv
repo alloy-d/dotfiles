@@ -2,6 +2,7 @@
 
 use readline-binding
 use direnv
+use platform
 use str
 
 use base16
@@ -14,6 +15,13 @@ eval (zoxide init elvish --cmd j | slurp)
 # 2}}}
 
 # ASDF, a generic version manager. {{{2
+
+# On Apple silicon Macs, we need to point ASDF at its unusual
+# installation location.  Haven't yet checked an Intel Mac.
+if (and (==s $platform:os "darwin") (==s $platform:arch "arm64")) {
+  set-env ASDF_DIR /opt/homebrew/opt/asdf/libexec
+}
+
 use asdf _asdf
 fn asdf [@args]{ _asdf:asdf $@args }
 edit:completion:arg-completer[asdf] = $_asdf:arg-completer~
