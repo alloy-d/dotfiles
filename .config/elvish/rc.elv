@@ -86,10 +86,18 @@ fn set-title [@title]{
   print "\e]0;"$formatted-title"\007"
 }
 
+fn in-tmux {
+  and (has-env TMUX) ^
+      (or (==s $E:TERM "screen-256color") ^
+          (==s $E:TERM "screen"))
+}
+
 # Sets the title of a tmux window.
 fn set-name [@name]{
-  formatted-name = (str:join ' ' $name)
-  print "\033k"$formatted-name"\033\\"
+  if (in-tmux) {
+    formatted-name = (str:join ' ' $name)
+    print "\033k"$formatted-name"\033\\"
+  }
 }
 
 set edit:after-command = [ $@edit:after-command [_]{ set-name "elvish" } ]
