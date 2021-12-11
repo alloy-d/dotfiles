@@ -1,14 +1,14 @@
-set theme-scripts-dir = ~/.local/share/base16/shell/scripts
-set shell-hooks-dir = ~/.config/base16-hooks
+var theme-scripts-dir = ~/.local/share/base16/shell/scripts
+var shell-hooks-dir = ~/.config/base16-hooks
 
-set current-theme-script = ~/.base16_theme
+var current-theme-script = ~/.base16_theme
 
 if ?(test -e $current-theme-script) {
   sh $current-theme-script
 }
 
-fn use [theme-name]{
-  set theme-script = $theme-scripts-dir"/base16-"$theme-name".sh"
+fn use {|theme-name|
+  var theme-script = $theme-scripts-dir"/base16-"$theme-name".sh"
 
   try {
     test -e $theme-script
@@ -20,7 +20,7 @@ fn use [theme-name]{
 
   ln -sf $theme-script $current-theme-script
 
-  put $shell-hooks-dir/*.sh | peach [hook]{
+  put $shell-hooks-dir/*.sh | peach {|hook|
     try {
       test -f $hook
       test -x $hook
