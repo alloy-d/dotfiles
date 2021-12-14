@@ -124,44 +124,56 @@ input * {
     bindsym $mod+Shift+Down move down
     bindsym $mod+Shift+Up move up
     bindsym $mod+Shift+Right move right
+
+    # Ditto, but move whole workspaces
+    bindsym $hyper+$left move workspace to output left
+    bindsym $hyper+$right move workspace to output right
+
 #
 # Workspaces:
 #
-    # Helpers to use workspace number shortcuts to access named
-    # workspaces:
-    set $getwkspc "$HOME/.config/sway/workspace-number-to-name.sh"
-
-    # Switch to workspace
-    set $chwkspc xargs swaymsg -- workspace
-    bindsym $mod+1 exec $getwkspc 1 | $chwkspc
-    bindsym $mod+2 exec $getwkspc 2 | $chwkspc
-    bindsym $mod+3 exec $getwkspc 3 | $chwkspc
-    bindsym $mod+4 exec $getwkspc 4 | $chwkspc
-    bindsym $mod+5 exec $getwkspc 5 | $chwkspc
-    bindsym $mod+6 exec $getwkspc 6 | $chwkspc
-    bindsym $mod+7 exec $getwkspc 7 | $chwkspc
-    bindsym $mod+8 exec $getwkspc 8 | $chwkspc
-    bindsym $mod+9 exec $getwkspc 9 | $chwkspc
-    bindsym $mod+0 exec $getwkspc 10 | $chwkspc
-
-    # Move focused container to workspace
-    set $mvwkspc xargs swaymsg -- move container to workspace
-    bindsym $mod+Shift+1 exec $getwkspc 1 | $mvwkspc
-    bindsym $mod+Shift+2 exec $getwkspc 2 | $mvwkspc
-    bindsym $mod+Shift+3 exec $getwkspc 3 | $mvwkspc
-    bindsym $mod+Shift+4 exec $getwkspc 4 | $mvwkspc
-    bindsym $mod+Shift+5 exec $getwkspc 5 | $mvwkspc
-    bindsym $mod+Shift+6 exec $getwkspc 6 | $mvwkspc
-    bindsym $mod+Shift+7 exec $getwkspc 7 | $mvwkspc
-    bindsym $mod+Shift+8 exec $getwkspc 8 | $mvwkspc
-    bindsym $mod+Shift+9 exec $getwkspc 9 | $mvwkspc
-    bindsym $mod+Shift+0 exec $getwkspc 10 | $mvwkspc
 
     bindsym $mod+k exec $workspacechooser | xargs swaymsg -- workspace
     bindsym $mod+Shift+k exec $workspacechooser | xargs swaymsg -- move container to workspace
     bindsym $mod+Ctrl+k exec $workspacechooser | xargs swaymsg -- rename workspace to
     bindsym $mod+Tab workspace next_on_output
     bindsym $mod+Shift+Tab workspace prev_on_output
+
+    set $ws1 "1"
+    set $ws2 "2"
+    set $ws3 "3"
+    set $ws4 "4"
+    set $ws5 "5"
+    set $ws6 "6"
+    set $ws7 "7"
+    set $ws8 "8"
+    set $ws9 "9"
+    set $ws10 "10"
+
+    # switch to workspace
+    bindsym $mod+1 workspace number $ws1
+    bindsym $mod+2 workspace number $ws2
+    bindsym $mod+3 workspace number $ws3
+    bindsym $mod+4 workspace number $ws4
+    bindsym $mod+5 workspace number $ws5
+    bindsym $mod+6 workspace number $ws6
+    bindsym $mod+7 workspace number $ws7
+    bindsym $mod+8 workspace number $ws8
+    bindsym $mod+9 workspace number $ws9
+    bindsym $mod+0 workspace number $ws10
+
+    # move focused container to workspace
+    bindsym $mod+Shift+1 move container to workspace number $ws1
+    bindsym $mod+Shift+2 move container to workspace number $ws2
+    bindsym $mod+Shift+3 move container to workspace number $ws3
+    bindsym $mod+Shift+4 move container to workspace number $ws4
+    bindsym $mod+Shift+5 move container to workspace number $ws5
+    bindsym $mod+Shift+6 move container to workspace number $ws6
+    bindsym $mod+Shift+7 move container to workspace number $ws7
+    bindsym $mod+Shift+8 move container to workspace number $ws8
+    bindsym $mod+Shift+9 move container to workspace number $ws9
+    bindsym $mod+Shift+0 move container to workspace number $ws10
+
 #
 # Layout stuff:
 #
@@ -229,6 +241,8 @@ bindsym $mod+r mode "resize"
 #
 bindsym Mod4+Control+q output * dpms off
 bindsym $hyper+p exec spt playback --toggle
+bindsym $hyper+m exec toggle-mic.sh
+bindsym $mod+backslash exec passmenu
 
 #
 # Appearance
@@ -252,6 +266,7 @@ titlebar_border_thickness 2
 titlebar_padding 8 4
 
 for_window [title="Firefox — Sharing Indicator"] floating enable
+for_window [app_id="pinentry-qt"] floating enable
 
 #
 # Status Bar:
