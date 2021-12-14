@@ -1,3 +1,3 @@
-if which zoxide > /dev/null 2>&1
+if command -q zoxide
   zoxide init fish --cmd j | source
 end

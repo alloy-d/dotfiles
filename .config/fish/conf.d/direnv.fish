@@ -1,3 +1,3 @@
-if which direnv > /dev/null 2>&1
+if command -q direnv
   direnv hook fish | source
 end

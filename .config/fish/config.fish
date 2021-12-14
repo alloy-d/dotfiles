@@ -24,6 +24,7 @@ alias gfpo='git fetch --prune origin'
 alias gci='git ci'
 alias gp='git push'
 alias gpc='git push origin (git current)'
+alias gplc='git pull origin (git current)'
 alias gpffc='git pull --ff-only origin (git current)'
 alias gpsu='git push --set-upstream'
 alias gst='git st'
@@ -92,7 +93,6 @@ set -x NVM_DIR "$HOME/.nvm"
 
 set -x ARDUINO_DIR /Applications/Arduino.app/Contents/Java/
 set -x ARDMK_DIR $HOME/Code/Arduino-Makefile
-
 
 # GPG Agent
 # ---------

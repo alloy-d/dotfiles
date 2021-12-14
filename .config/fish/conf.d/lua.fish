@@ -1,4 +1,4 @@
-if which luarocks > /dev/null 2>&1
+if command -q luarocks
   set -x LUA_PATH (luarocks path --lr-path)
   set -x LUA_CPATH (luarocks path --lr-cpath)
 

@@ -1,3 +1,3 @@
-if which mix > /dev/null 2>&1
+if command -q mix
   append_to_path "$HOME/.mix/escripts"
 end
