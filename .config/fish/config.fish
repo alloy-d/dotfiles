@@ -3,31 +3,40 @@ set fish_greeting
 set -l OS (uname)
 set -x HOST (hostname -s) # sic, used by other configs
 
-# Aliases
-# -------
+# Abbreviations
+# -------------
+if status --is-interactive
+  # neovim
+  abbr -ag nview 'nvim -R'
+  abbr -ag ndiff 'nvim -d'
 
-alias c='curl -D - -H -'
+  # tmux
+  abbr -ag tat 'tmux attach -t'
+  abbr -ag tnt 'tmux new -t'
+  abbr -ag tns 'tmux new -s'
+  abbr -ag tls 'tmux ls'
 
-# Aliases for vim:
-alias nview='nvim -R'
-alias ndiff='nvim -d'
+  # git
+  abbr -ag gap 'git add -p'
+  abbr -ag gfpo 'git fetch --prune origin'
+  abbr -ag gci 'git ci'
+  abbr -ag gp 'git push'
+  abbr -ag gpc 'git push origin (git current)'
+  abbr -ag gplc 'git pull origin (git current)'
+  abbr -ag gpffc 'git pull --ff-only origin (git current)'
+  abbr -ag gpsu 'git push --set-upstream'
+  abbr -ag gst 'git st'
 
-# Aliases for tmux:
-alias tat='tmux attach -t'
-alias tnt='tmux new -t'
-alias tns='tmux new -s'
-alias tls='tmux ls'
+  # bundler
+  abbr -ag bundlex 'bundle exec'
+  abbr -ag bx 'bundle exec'
 
-# Aliases for git:
-alias gap='git add -p'
-alias gfpo='git fetch --prune origin'
-alias gci='git ci'
-alias gp='git push'
-alias gpc='git push origin (git current)'
-alias gplc='git pull origin (git current)'
-alias gpffc='git pull --ff-only origin (git current)'
-alias gpsu='git push --set-upstream'
-alias gst='git st'
+  # vagrant
+  abbr -ag vp 'vagrant provision'
+  abbr -ag vssh 'vagrant ssh'
+end
+
+
 function gmtm --wraps 'git merge' --description 'merge a branch into the latest master'
   git co master && git pull origin master && git merge --no-ff $argv
 end
@@ -53,14 +62,6 @@ alias kng='kubenamegrep'
 function podgrep --wraps 'grep' --description 'grep for a pod name'
   kubectl get pods | kubenamegrep $argv
 end
-
-# Some convenience aliases for bundler:
-alias bundlex='bundle exec'
-alias bx='bundle exec'
-
-# Convenience aliases for Vagrant:
-alias vp='vagrant provision'
-alias vssh='vagrant ssh'
 
 function rgl --wraps rg --description 'rg with pager'
   rg --color=always --heading --line-number $argv | less -R
