@@ -34,3 +34,5 @@
   default = simple
 [gpg]
   program = gpg
+[includeIf "gitdir:~/work/"]
+  path = ~/work/.gitconfig
