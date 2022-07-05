@@ -27,6 +27,6 @@ snowballstemmer==2.2.0
 toml==0.10.2
 tomli==1.2.3
 typing_extensions==4.0.1
-ujson==5.1.0
+ujson==5.4.0
 wrapt==1.13.3
 yapf==0.32.0
