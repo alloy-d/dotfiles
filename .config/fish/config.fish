@@ -97,7 +97,7 @@ set -x ARDMK_DIR $HOME/Code/Arduino-Makefile
 
 # GPG Agent
 # ---------
-if test -e "$SSH_AUTH_SOCK"
+if test -z "$SSH_AUTH_SOCK"
   # Could already be set by pam_env.
   set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
 end
