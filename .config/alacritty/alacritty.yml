@@ -50,3 +50,12 @@ key_bindings:
   - { key: Equals,   mods: Control,       action: IncreaseFontSize }
   - { key: Plus,     mods: Control,       action: IncreaseFontSize }
   - { key: Minus,    mods: Control,       action: DecreaseFontSize }
+  - key: Key1
+    mods: Control
+    command: { program: "alacritty", args: ["msg", "config", "font.size=14"] }
+  - key: Key2
+    mods: Control
+    command: { program: "alacritty", args: ["msg", "config", "font.size=18"] }
+  - key: Key3
+    mods: Control
+    command: { program: "alacritty", args: ["msg", "config", "font.size=24"] }
