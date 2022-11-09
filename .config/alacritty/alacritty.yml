@@ -13,7 +13,9 @@ cursor:
   #   - ▇ Block
   #   - _ Underline
   #   - | Beam
-  style: Underline
+  style:
+    shape: Underline
+    blinking: On
 
   # If this is `true`, the cursor will be rendered as a hollow box when the
   # window is not focused.
