@@ -78,12 +78,12 @@ set -x MANWIDTH 80
 
 set -x GOPATH $HOME/.go
 
-prepend_to_path $HOME/.local/bin $HOME/.rbenv/shims
-append_to_path /usr/local/sbin
+fish_add_path --path --prepend $HOME/.local/bin $HOME/.rbenv/shims
+fish_add_path --path --append /usr/local/sbin
 
 if test -d /opt/homebrew/
-  prepend_to_path /opt/homebrew/bin
-  append_to_path /opt/homebrew/sbin
+  fish_add_path --path --prepend /opt/homebrew/bin
+  fish_add_path --path --append /opt/homebrew/sbin
 end
 
 set -x COWPATH "$HOME/.cows:$COWPATH"
