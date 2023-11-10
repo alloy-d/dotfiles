@@ -90,8 +90,6 @@ set -x COWPATH "$HOME/.cows:$COWPATH"
 
 set -x BAT_THEME "base16"
 
-set -x NVM_DIR "$HOME/.nvm"
-
 set -x ARDUINO_DIR /Applications/Arduino.app/Contents/Java/
 set -x ARDMK_DIR $HOME/Code/Arduino-Makefile
 
@@ -105,9 +103,6 @@ set -x GPG_TTY (tty)
 gpgconf --launch gpg-agent
 gpg-connect-agent updatestartuptty /bye > /dev/null
 
-
-# opam configuration
-source /Users/adam/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
 
 set -l OS_SPECIFIC_CONFIG "$HOME/.config/fish/os-specific/$OS.fish"
 set -l HOST_SPECIFIC_CONFIG "$HOME/.config/fish/host-specific/$HOST.fish"
