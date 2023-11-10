@@ -7,33 +7,33 @@ set -x HOST (hostname -s) # sic, used by other configs
 # -------------
 if status --is-interactive
   # neovim
-  abbr -ag nview 'nvim -R'
-  abbr -ag ndiff 'nvim -d'
+  abbr -a nview 'nvim -R'
+  abbr -a ndiff 'nvim -d'
 
   # tmux
-  abbr -ag tat 'tmux attach -t'
-  abbr -ag tnt 'tmux new -t'
-  abbr -ag tns 'tmux new -s'
-  abbr -ag tls 'tmux ls'
+  abbr -a tat 'tmux attach -t'
+  abbr -a tnt 'tmux new -t'
+  abbr -a tns 'tmux new -s'
+  abbr -a tls 'tmux ls'
 
   # git
-  abbr -ag gap 'git add -p'
-  abbr -ag gfpo 'git fetch --prune origin'
-  abbr -ag gci 'git ci'
-  abbr -ag gp 'git push'
-  abbr -ag gpc 'git push origin (git current)'
-  abbr -ag gplc 'git pull origin (git current)'
-  abbr -ag gpffc 'git pull --ff-only origin (git current)'
-  abbr -ag gpsu 'git push --set-upstream'
-  abbr -ag gst 'git st'
+  abbr -a gap 'git add -p'
+  abbr -a gfpo 'git fetch --prune origin'
+  abbr -a gci 'git ci'
+  abbr -a gp 'git push'
+  abbr -a gpc 'git push origin (git current)'
+  abbr -a gplc 'git pull origin (git current)'
+  abbr -a gpffc 'git pull --ff-only origin (git current)'
+  abbr -a gpsu 'git push --set-upstream'
+  abbr -a gst 'git st'
 
   # bundler
-  abbr -ag bundlex 'bundle exec'
-  abbr -ag bx 'bundle exec'
+  abbr -a bundlex 'bundle exec'
+  abbr -a bx 'bundle exec'
 
   # vagrant
-  abbr -ag vp 'vagrant provision'
-  abbr -ag vssh 'vagrant ssh'
+  abbr -a vp 'vagrant provision'
+  abbr -a vssh 'vagrant ssh'
 end
 
 
