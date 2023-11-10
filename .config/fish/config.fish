@@ -106,17 +106,6 @@ gpgconf --launch gpg-agent
 gpg-connect-agent updatestartuptty /bye > /dev/null
 
 
-# asdf version manager
-# On macOS, this would be (brew --prefix asdf)/asdf.fish,
-# but it's much, much faster to *not* run that.
-set -l ASDF_MACOS "/usr/local/opt/asdf"
-set -l ASDF_ARCHLINUX "/opt/asdf-vm"
-if test -e "$ASDF_MACOS/asdf.fish"
-  source "$ASDF_MACOS/asdf.fish"
-else if test -e "$ASDF_ARCHLINUX/asdf.fish"
-  source "$ASDF_ARCHLINUX/asdf.fish"
-end
-
 # opam configuration
 source /Users/adam/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
 
