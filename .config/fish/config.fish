@@ -1,8 +1,5 @@
 set fish_greeting
 
-set -l OS (uname)
-set -x HOST (hostname -s) # sic, used by other configs
-
 # Abbreviations
 # -------------
 if status --is-interactive
@@ -87,13 +84,3 @@ set -x BAT_THEME "base16"
 
 set -x ARDUINO_DIR /Applications/Arduino.app/Contents/Java/
 set -x ARDMK_DIR $HOME/Code/Arduino-Makefile
-
-set -l OS_SPECIFIC_CONFIG "$HOME/.config/fish/os-specific/$OS.fish"
-set -l HOST_SPECIFIC_CONFIG "$HOME/.config/fish/host-specific/$HOST.fish"
-
-if test -e "$OS_SPECIFIC_CONFIG"
-  source "$OS_SPECIFIC_CONFIG"
-end
-if test -e "$HOST_SPECIFIC_CONFIG"
-  source "$HOST_SPECIFIC_CONFIG"
-end
