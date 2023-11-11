@@ -88,17 +88,6 @@ set -x BAT_THEME "base16"
 set -x ARDUINO_DIR /Applications/Arduino.app/Contents/Java/
 set -x ARDMK_DIR $HOME/Code/Arduino-Makefile
 
-# GPG Agent
-# ---------
-if test -z "$SSH_AUTH_SOCK"
-  # Could already be set by pam_env.
-  set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
-end
-set -x GPG_TTY (tty)
-gpgconf --launch gpg-agent
-gpg-connect-agent updatestartuptty /bye > /dev/null
-
-
 set -l OS_SPECIFIC_CONFIG "$HOME/.config/fish/os-specific/$OS.fish"
 set -l HOST_SPECIFIC_CONFIG "$HOME/.config/fish/host-specific/$HOST.fish"
 
