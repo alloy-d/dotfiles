@@ -81,11 +81,6 @@ set -x GOPATH $HOME/.go
 fish_add_path --path --prepend $HOME/.local/bin $HOME/.rbenv/shims
 fish_add_path --path --append /usr/local/sbin
 
-if test -d /opt/homebrew/
-  fish_add_path --path --prepend /opt/homebrew/bin
-  fish_add_path --path --append /opt/homebrew/sbin
-end
-
 set -x COWPATH "$HOME/.cows:$COWPATH"
 
 set -x BAT_THEME "base16"
