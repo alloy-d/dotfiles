@@ -24,6 +24,9 @@ if status --is-interactive
   abbr -a gpffc 'git pull --ff-only origin (git current)'
   abbr -a gpsu 'git push --set-upstream'
 
+  # ripgrep, but with a useful pager
+  abbr -a rgl --set-cursor 'rg --color=always --heading --line-number % | less -R'
+
   # bundler
   abbr -a bundlex 'bundle exec'
   abbr -a bx 'bundle exec'
@@ -35,26 +38,6 @@ end
 
 function gdel --wraps 'git branch' --description 'deletes a git branch real good'
   git branch -d "$argv[1]" && git push origin ":$argv[1]"
-end
-
-# Functions for working with Kubernetes:
-# TODO: move these into a k8s specific file.
-function kubenames --wraps 'kubectl' --description 'get just the names of things from kubectl output'
-  cut -f1 -d' ' | grep -v '^NAME$'
-end
-
-function kubenamegrep --wraps 'grep' --description 'grep just the names of things from kubectl output'
-  grep $argv | kubenames
-end
-alias knames='kubenames'
-alias kng='kubenamegrep'
-
-function podgrep --wraps 'grep' --description 'grep for a pod name'
-  kubectl get pods | kubenamegrep $argv
-end
-
-function rgl --wraps rg --description 'rg with pager'
-  rg --color=always --heading --line-number $argv | less -R
 end
 
 # Environment
