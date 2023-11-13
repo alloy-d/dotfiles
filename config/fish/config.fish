@@ -43,11 +43,17 @@ end
 # Environment
 # -----------
 
-set -x DIFFPROG 'nvim -d'
-set -x EDITOR nvim
 set -x TERMINAL alacritty
-set -x MANPAGER most
 set -x MANWIDTH 80
+
+if command -q nvim
+  set -x DIFFPROG 'nvim -d'
+  set -x EDITOR nvim
+else if command -q nano
+  set -x EDITOR nano
+end
+
+command -q most; and set -x MANPAGER most
 
 set -x GOPATH $HOME/.go
 
