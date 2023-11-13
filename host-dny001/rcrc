@@ -1,2 +1,2 @@
-EXCLUDES="README.md scripts/"
+EXCLUDES="README.md"
 TAGS="linux x11 wayland"
