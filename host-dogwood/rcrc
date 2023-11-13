@@ -1,0 +1,2 @@
+EXCLUDES="README.md scripts/"
+TAGS="linux mail wayland"
