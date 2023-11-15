@@ -22,7 +22,7 @@
 # leave everything else alone.
 
 if command -q gpg-agent; and command -q gpg-connect-agent
-  if string match -q "*com.apple.launchd*" "$SSH_AUTH_SOCK"
+  if test -z "$SSH_AUTH_SOCK"; or string match -q "*com.apple.launchd*" "$SSH_AUTH_SOCK"
     set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
   end
 
