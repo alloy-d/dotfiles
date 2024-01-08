@@ -1,4 +1,3 @@
-dynamic_title = true
 import = ["/Users/awl/.config/alacritty/local.toml"]
 live_config_reload = true
 
