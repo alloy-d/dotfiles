@@ -1,0 +1,24 @@
+[font]
+size = 16.0
+
+[font.bold]
+style = "Semibold"
+
+[font.bold_italic]
+style = "Semibold Italic"
+
+[font.italic]
+style = "Italic"
+
+[font.normal]
+family = "Iosevka Term Slab"
+style = "Regular"
+
+[font.offset]
+x = 0
+y = 0
+
+[window]
+decorations = "full"
+dynamic_padding = true
+opacity = 1.0

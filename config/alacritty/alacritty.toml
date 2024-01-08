@@ -1,0 +1,85 @@
+dynamic_title = true
+import = ["/Users/awl/.config/alacritty/local.toml"]
+live_config_reload = true
+
+[cursor]
+unfocused_hollow = true
+
+[cursor.style]
+blinking = "On"
+shape = "Underline"
+
+[hints]
+alphabet = "arstneio"
+
+[[hints.enabled]]
+command = "open"
+post_processing = true
+regex = "(magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\u0000-\u001F\u007F-<>\"\\s{-}\\^⟨⟩`]+"
+
+[hints.enabled.binding]
+key = "H"
+mods = "Control|Shift"
+
+[hints.enabled.mouse]
+enabled = true
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "Paste"
+key = "V"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "Copy"
+key = "C"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "PasteSelection"
+key = "Insert"
+mods = "Shift"
+
+[[keyboard.bindings]]
+action = "ResetFontSize"
+key = "Key0"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "IncreaseFontSize"
+key = "Equals"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "IncreaseFontSize"
+key = "Plus"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "DecreaseFontSize"
+key = "Minus"
+mods = "Control"
+
+[[keyboard.bindings]]
+key = "Key1"
+mods = "Control"
+
+[keyboard.bindings.command]
+args = ["msg", "config", "font.size=14"]
+program = "alacritty"
+
+[[keyboard.bindings]]
+key = "Key2"
+mods = "Control"
+
+[keyboard.bindings.command]
+args = ["msg", "config", "font.size=18"]
+program = "alacritty"
+
+[[keyboard.bindings]]
+key = "Key3"
+mods = "Control"
+
+[keyboard.bindings.command]
+args = ["msg", "config", "font.size=24"]
+program = "alacritty"
