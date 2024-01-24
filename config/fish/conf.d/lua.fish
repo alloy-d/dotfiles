@@ -1,4 +1,4 @@
-if command -q luarocks
+if status --is-login; and command -q luarocks
   set -x LUA_PATH (luarocks path --lr-path)
   set -x LUA_CPATH (luarocks path --lr-cpath)
 
