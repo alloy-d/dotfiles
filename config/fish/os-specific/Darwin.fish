@@ -1,5 +1,5 @@
-if test -d /opt/homebrew/
-  fish_add_path --path --move --prepend /opt/homebrew/bin
+if status --is-login; and test -d /opt/homebrew/
+  fish_add_path --path --prepend /opt/homebrew/bin
   fish_add_path --path --append /opt/homebrew/sbin
 end
 

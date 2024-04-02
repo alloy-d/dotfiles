@@ -43,26 +43,28 @@ end
 # Environment
 # -----------
 
-set -x TERMINAL alacritty
-set -x MANWIDTH 80
+if status --is-login
+  set -x TERMINAL alacritty
+  set -x MANWIDTH 80
 
-if command -q nvim
-  set -x DIFFPROG 'nvim -d'
-  set -x EDITOR nvim
-else if command -q nano
-  set -x EDITOR nano
+  if command -q nvim
+    set -x DIFFPROG 'nvim -d'
+    set -x EDITOR nvim
+  else if command -q nano
+    set -x EDITOR nano
+  end
+
+  command -q most; and set -x MANPAGER most
+
+  set -x GOPATH $HOME/.go
+
+  fish_add_path --path --prepend $HOME/.local/bin
+  fish_add_path --path --append /usr/local/sbin
+
+  set -x COWPATH "$HOME/.cows:$COWPATH"
+
+  set -x BAT_THEME "base16"
+
+  set -x ARDUINO_DIR /Applications/Arduino.app/Contents/Java/
+  set -x ARDMK_DIR $HOME/Code/Arduino-Makefile
 end
-
-command -q most; and set -x MANPAGER most
-
-set -x GOPATH $HOME/.go
-
-fish_add_path --path --prepend $HOME/.local/bin $HOME/.rbenv/shims
-fish_add_path --path --append /usr/local/sbin
-
-set -x COWPATH "$HOME/.cows:$COWPATH"
-
-set -x BAT_THEME "base16"
-
-set -x ARDUINO_DIR /Applications/Arduino.app/Contents/Java/
-set -x ARDMK_DIR $HOME/Code/Arduino-Makefile
