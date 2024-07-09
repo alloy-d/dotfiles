@@ -11,6 +11,7 @@
   current = rev-parse --abbrev-ref HEAD
   autocommit = !"git commit -m \"$(curl -s 'http://whatthecommit.com' | grep -A1 'id=\"content\"' | tail -n 1 | tr -d '<p>')\""
   lol = log --oneline --graph --decorate
+  vert = commit
 [color]
   ui = auto
 [commit]
