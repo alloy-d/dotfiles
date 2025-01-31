@@ -26,10 +26,16 @@ if command -q gpg-agent; and command -q gpg-connect-agent
     set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
   end
 
-  # This is for the odd case where you're not using a pinentry GUI.
-  # We have to tell GPG what terminal we're on, otherwise it won't be able
-  # to find us to ask for a PIN.
-  set -x GPG_TTY (tty)
-  gpgconf --launch gpg-agent
-  gpg-connect-agent updatestartuptty /bye > /dev/null
+  # If we're running in an SSH session, we probably don't want to
+  # start our own GPG agent.  We might have gotten one forwarded.
+  # But if we didn't get one forwarded, we definitely don't have
+  # the physical key, so an agent would be useless anyway.
+  if test -z "$SSH_CONNECTION"
+    # This is for the odd case where you're not using a pinentry GUI.
+    # We have to tell GPG what terminal we're on, otherwise it won't be able
+    # to find us to ask for a PIN.
+    set -x GPG_TTY (tty)
+    gpgconf --launch gpg-agent
+    gpg-connect-agent updatestartuptty /bye > /dev/null
+  end
 end
