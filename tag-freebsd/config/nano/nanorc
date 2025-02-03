@@ -3,8 +3,10 @@ set cutfromcursor
 set tabsize 2
 set tabstospaces
 
-bind ^C exit main
+bind ^F forward main
+bind ^B back main
 bind ^W chopwordleft all
+bind ^C exit main
 
 include /usr/local/share/nano/nanorc.nanorc
 include /usr/local/share/nano/json.nanorc
