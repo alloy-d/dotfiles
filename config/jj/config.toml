@@ -1,0 +1,6 @@
+[user]
+name = "Adam Lloyd"
+email = "adam@alloy-d.net"
+
+[git]
+sign-on-push = true
