@@ -4,3 +4,28 @@ email = "adam@alloy-d.net"
 
 [git]
 sign-on-push = true
+
+[signing]
+# This configuration option has changed in trunk, and leaving it
+# unspecified seems Fine™ anyway.
+#
+# sign-all = false
+# behavior = "drop"
+
+
+# It seems like git.sign-on-push isn't working as expected with the GPG
+# backend right now, but the SSH backend is working fine.
+#
+# This is fine; my SSH key is just my GPG key, anyway.
+
+# backend = "gpg"
+# key = "CE6763347250996E"
+backend = "ssh"
+key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDSXrcB4VkZ5JR9Jv19fxrr3GEk5TwF+FXYtB0H+MhcHu9+7T2p0ZX157ub5DKedMMgFARK4lpXi38f2mMPYo1jdsjlVhduhXXhc5AR4SZ7QwEtwbx+TH+O/X8sbK/90TU4/Wd6/g+BdDlRbfbDvvLV5eU1ii2UkW0FyDeCmfbsjAr3GWDTA7vu9fWOy7EPKLglb54uBatoycgh+V2k+rkQPx84gf5J8KhNzOS2MdlTexnPNvGHGbg1ePtOSAcCwElGknwSSKB3bfOCiwxNBqiI0YJbehzw3iJlNDsT29YRa931rRDomdl4uYaoSkfu5xVAMdazeYwmeb4BkMmk9cAvvP726arnk88vAklaXTstBCDuZvnqtWRzsjaO9nr3MYVx0IeUl2FKQRvg8cVrmDpT+Vk7FbKSARzJLetOuYb8VWJK7Ho7RzKfwGxFA70Rlx3Tr3HRv12igxbWhe3OPpLpYg7aoHAUHdBoFPBOmsknMSPDaz3AUEwWDhT3pyjAUzBFEzgBe1zhneyltkUzCPrdyKbsS/XX8+4a4dJlC7XnNslWLMAPDYBvxB+C6qeOMrKQc5FiS1vD9kgzafMv9KZthilU2v7HIP3nvwFo/s2dKXEuDaXe4IaZm6ELKgrqKDh9vs4k9cx5oZuedqaj+f55JKtuFYA989mjZpB1sICB6Q=="
+
+[template-aliases]
+'commit_timestamp(commit)' = 'commit.author().timestamp()'
+
+[ui]
+diff-editor = ":builtin"
+show-cryptographic-signatures = true
