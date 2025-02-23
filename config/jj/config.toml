@@ -2,29 +2,56 @@
 name = "Adam Lloyd"
 email = "adam@alloy-d.net"
 
-[git]
-sign-on-push = true
-
-[signing]
-# This configuration option has changed in trunk, and leaving it
-# unspecified seems Fine™ anyway.
+### GPG signing setup
 #
+# Here's the deal: firstly, it seems like signing.sign-all does not have
+# any effect on the GPG backend at the moment (jj 0.26.0), and it always
+# tries to sign every jj operation.  Since I have to touch a hardware
+# key every time I sign something, this is *hugely* inconvenient.
+#
+# However, even if signing on push did work correctly, I'm not sure
+# security juice is worth the squeeze: if I'm blindly tapping a key to
+# sign a batch of commits, is that meaningfully more secure than using
+# an SSH key that doesn't require interaction at the time of signing?
+# I think not; I think it's just more inconvenient and causes more havoc
+# in the commit metadata (since the committer date changes when the
+# commit is signed).
+#
+# I think the nature of how jj works just is not going to play nicely
+# with attended commit signing, so this seems like a reasonable
+# compromise.  The SSH key is still somewhat tied to my session via the
+# agent, so it's still somewhat better than not signing at all.
+#
+# [git]
+# sign-on-push = true
+#
+# [signing]
 # sign-all = false
 # behavior = "drop"
-
-
-# It seems like git.sign-on-push isn't working as expected with the GPG
-# backend right now, but the SSH backend is working fine.
 #
-# This is fine; my SSH key is just my GPG key, anyway.
-
 # backend = "gpg"
 # key = "CE6763347250996E"
+
+### SSH signing setup
+[signing]
+# This configuration option has changed in trunk,
+# so sign-all will be replaced with behavior Soon™.
+sign-all = true
+# behavior = "own"
+
 backend = "ssh"
-key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDSXrcB4VkZ5JR9Jv19fxrr3GEk5TwF+FXYtB0H+MhcHu9+7T2p0ZX157ub5DKedMMgFARK4lpXi38f2mMPYo1jdsjlVhduhXXhc5AR4SZ7QwEtwbx+TH+O/X8sbK/90TU4/Wd6/g+BdDlRbfbDvvLV5eU1ii2UkW0FyDeCmfbsjAr3GWDTA7vu9fWOy7EPKLglb54uBatoycgh+V2k+rkQPx84gf5J8KhNzOS2MdlTexnPNvGHGbg1ePtOSAcCwElGknwSSKB3bfOCiwxNBqiI0YJbehzw3iJlNDsT29YRa931rRDomdl4uYaoSkfu5xVAMdazeYwmeb4BkMmk9cAvvP726arnk88vAklaXTstBCDuZvnqtWRzsjaO9nr3MYVx0IeUl2FKQRvg8cVrmDpT+Vk7FbKSARzJLetOuYb8VWJK7Ho7RzKfwGxFA70Rlx3Tr3HRv12igxbWhe3OPpLpYg7aoHAUHdBoFPBOmsknMSPDaz3AUEwWDhT3pyjAUzBFEzgBe1zhneyltkUzCPrdyKbsS/XX8+4a4dJlC7XnNslWLMAPDYBvxB+C6qeOMrKQc5FiS1vD9kgzafMv9KZthilU2v7HIP3nvwFo/s2dKXEuDaXe4IaZm6ELKgrqKDh9vs4k9cx5oZuedqaj+f55JKtuFYA989mjZpB1sICB6Q=="
+key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPl55gX1G01agzhO2IjR5ph00FnGov/ewlghcdm5RDu5 SSH commit signing"
+
+# Seems like this must be an absolute path, and ~ is not expanded:
+backends.ssh.allowed-signers = "/Users/awl/.ssh/allowed_signers"
 
 [template-aliases]
-'commit_timestamp(commit)' = 'commit.author().timestamp()'
+# I changed this when using git.sign-on-push.  That caused every commit
+# to have the same timestamp, and I thought that was unhelpful and
+# weird.  Now that I've changed my signing setup, I'll give the defaults
+# another try.
+#
+#'commit_timestamp(commit)' = 'commit.author().timestamp()'
 
 [ui]
 diff-editor = ":builtin"
