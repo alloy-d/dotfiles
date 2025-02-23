@@ -2,6 +2,12 @@
 name = "Adam Lloyd"
 email = "adam@alloy-d.net"
 
+[aliases]
+# "new parent"
+np = ["new", "-B", "@", "--no-edit"]
+# "squash [into] parent"
+sp = ["squash", "--interactive", "--into", "@-"]
+
 ### GPG signing setup
 #
 # Here's the deal: firstly, it seems like signing.sign-all does not have
