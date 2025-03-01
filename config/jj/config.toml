@@ -2,6 +2,17 @@
 name = "Adam Lloyd"
 email = "adam@alloy-d.net"
 
+[fix.tools.deno-ts]
+command = ["deno", "fmt", "-", "--ext", "ts"]
+patterns = ["glob:'**/*.ts'"]
+
+[fix.tools.deno-jsonc]
+command = ["deno", "fmt", "-", "--ext", "jsonc"]
+patterns = ["glob:'**/*.json'", "glob:'**/*.jsonc'"]
+
+[fix.tools.deno-svelte]
+command = ["deno", "fmt", "-", "--unstable-component", "--ext", "svelte"]
+patterns = ["glob:'**/*.svelte'"]
 
 ### GPG signing setup
 #
