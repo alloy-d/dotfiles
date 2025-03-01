@@ -68,3 +68,4 @@ backends.ssh.allowed-signers = "/Users/awl/.ssh/allowed_signers"
 [ui]
 diff-editor = ":builtin"
 show-cryptographic-signatures = true
+default-command = "log"
