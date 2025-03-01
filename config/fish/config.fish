@@ -24,6 +24,12 @@ if status --is-interactive
   abbr -a gpffc 'git pull --ff-only origin (git current)'
   abbr -a gpsu 'git push --set-upstream'
 
+  # jj
+  abbr -a -c jj np 'new --no-edit -B @'             # "new parent"
+  abbr -a -c jj sp 'squash --interactive --into @-' # "squash into parent"
+  abbr -a -c jj gp 'git push'
+  abbr -a -c jj gpa 'git push --all'
+
   # ripgrep, but with a useful pager
   abbr -a rgl --set-cursor 'rg --color=always --heading --line-number % | less -R'
 
