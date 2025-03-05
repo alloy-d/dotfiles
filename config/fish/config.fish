@@ -28,6 +28,13 @@ if status --is-interactive
   if test (string sub -l 1 $version) -ge 4
     abbr -a -c jj np 'new --no-edit -B @'             # "new parent"
     abbr -a -c jj sp 'squash --interactive --into @-' # "squash into parent"
+    abbr -a -c jj nne 'new --no-edit'
+    abbr -a -c jj nnea 'new --no-edit --after'
+    abbr -a -c jj nneb 'new --no-edit --before'
+    abbr -a -c jj si 'squash --interactive'
+    abbr -a -c jj sit 'squash --interactive --to'
+    abbr -a -c jj bmt 'bookmark move trunk'
+    abbr -a -c jj bmtt 'bookmark move trunk --to'
     abbr -a -c jj gp 'git push'
     abbr -a -c jj gpa 'git push --all'
   end
