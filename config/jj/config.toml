@@ -6,6 +6,10 @@ email = "adam@alloy-d.net"
 command = ["deno", "fmt", "-", "--ext", "ts"]
 patterns = ["glob:'**/*.ts'"]
 
+[fix.tools.deno-css]
+command = ["deno", "fmt", "-", "--ext", "css"]
+patterns = ["glob:'**/*.css'"]
+
 [fix.tools.deno-jsonc]
 command = ["deno", "fmt", "-", "--ext", "jsonc"]
 patterns = ["glob:'**/*.json'", "glob:'**/*.jsonc'"]
