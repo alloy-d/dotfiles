@@ -33,7 +33,7 @@ if status --is-interactive
     abbr -a -c jj nneb 'new --no-edit --before'
     abbr -a -c jj si 'squash --interactive'
     abbr -a -c jj sit 'squash --interactive --to'
-    abbr -a -c jj bmt 'bookmark move trunk'
+    abbr -a -c jj bmt 'bookmark move trunk --to @'
     abbr -a -c jj bmtt 'bookmark move trunk --to'
     abbr -a -c jj gp 'git push'
     abbr -a -c jj gpa 'git push --all'
