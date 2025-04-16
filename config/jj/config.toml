@@ -50,10 +50,7 @@ patterns = ["glob:'**/*.svelte'"]
 
 ### SSH signing setup
 [signing]
-# This configuration option has changed in trunk,
-# so sign-all will be replaced with behavior Soon™.
-sign-all = true
-# behavior = "own"
+behavior = "own"
 
 backend = "ssh"
 key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPl55gX1G01agzhO2IjR5ph00FnGov/ewlghcdm5RDu5 SSH commit signing"
