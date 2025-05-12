@@ -1,0 +1,2 @@
+# rg doesn't respect gitignore inside jj directories by default
+--no-require-git

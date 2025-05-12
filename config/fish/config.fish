@@ -82,4 +82,6 @@ if status --is-login
 
   set -x ARDUINO_DIR /Applications/Arduino.app/Contents/Java/
   set -x ARDMK_DIR $HOME/Code/Arduino-Makefile
+
+  set -x RIPGREP_CONFIG_PATH $HOME/.config/ripgrep/rc
 end
