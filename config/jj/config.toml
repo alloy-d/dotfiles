@@ -18,6 +18,14 @@ patterns = ["glob:'**/*.json'", "glob:'**/*.jsonc'"]
 command = ["deno", "fmt", "-", "--unstable-component", "--ext", "svelte"]
 patterns = ["glob:'**/*.svelte'"]
 
+# [fix.tools.deno-svg]
+# command = ["deno", "fmt", "-", "--unstable-component", "--ext", "svg"]
+# patterns = ["glob:'**/*.svg'"]
+
+[fix.tools.swift-format]
+command = ["swift-format", "format", "-"]
+patterns = ["glob:'**/*.swift'"]
+
 ### GPG signing setup
 #
 # Here's the deal: firstly, it seems like signing.sign-all does not have
