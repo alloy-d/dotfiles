@@ -20,7 +20,28 @@
 # ==========================
 # # The config file consists of simple key-value pairs,
 # # separated by equals signs.
-font-family = Iosevka Term
+# font-family = Victor Mono
+# font-style = SemiBold
+
+font-family = Iosevka Term Slab
+font-style = Regular
+font-size = 15
+
+# font-family = Inconsolata
+# font-style = SemiCondensed Regular
+# font-size = 18
+
+# font-family = Lilex
+# font-style = Medium
+
+# font-family = Maple Mono
+# font-style = SemiBold
+# font-size = 14
+
+cursor-style-blink = true
+
+macos-titlebar-proxy-icon = hidden
+macos-icon = xray
 # window-padding-x = 2
 #
 # # Spacing around the equals sign does not matter.
