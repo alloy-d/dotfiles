@@ -3,4 +3,4 @@ if status --is-login; and test -d /opt/homebrew/
   fish_add_path --path --append /opt/homebrew/sbin
 end
 
-alias swift="env PATH=/System/Library/Frameworks/Python.framework/Versions/Current/bin:$PATH swift"
+alias lsregister='/System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Versions/Current/Support/lsregister'
