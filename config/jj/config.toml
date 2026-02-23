@@ -22,6 +22,10 @@ patterns = ["glob:'**/*.svelte'"]
 # command = ["deno", "fmt", "-", "--unstable-component", "--ext", "svg"]
 # patterns = ["glob:'**/*.svg'"]
 
+[fix.tools.fnlfmt]
+command = ["fnlfmt", "-"]
+patterns = ["glob:'**/*.fnl'", "glob:'**/*.fnlm'"]
+
 [fix.tools.swift-format]
 command = ["swift", "format", "-"]
 patterns = ["glob:'**/*.swift'"]
