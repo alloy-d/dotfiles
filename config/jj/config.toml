@@ -23,7 +23,7 @@ patterns = ["glob:'**/*.svelte'"]
 # patterns = ["glob:'**/*.svg'"]
 
 [fix.tools.swift-format]
-command = ["swift-format", "format", "-"]
+command = ["swift", "format", "-"]
 patterns = ["glob:'**/*.swift'"]
 
 ### GPG signing setup
